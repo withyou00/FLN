@@ -1,11 +1,19 @@
 <!DOCTYPE html>
 <html lang="kn">
 <head>
-
     <meta charset="UTF-8">
     <title>FLN Baseline Stage Assessment (ಕನ್ನಡ, ಇಂಗ್ಲಿಷ್, ಗಣಿತ)</title>
+    
+    <!-- WhatsApp Preview Meta Tags -->
+    <meta property="og:title" content="FLN ಹಂತವಾರು ಮೌಲ್ಯಾಂಕನ ಡಿಜಿಟಲ್ ನಮೂನೆ (2026-27)">
+    <meta property="og:description" content="ಕನ್ನಡ, ಇಂಗ್ಲಿಷ್ ಮತ್ತು ಗಣಿತ ವಿಷಯಗಳ ಆಟೋ ಗ್ರೇಡಿಂಗ್, ಆಟೋ ಕೌಂಟ್, Excel Import ಮತ್ತು Auto-Save ಸೌಲಭ್ಯವಿರುವ ಡಿಜಿಟಲ್ ಟೂಲ್.">
+    <meta property="og:image" content="https://withyou00.github.io/FLN/preview.jpg">
+    <meta property="og:url" content="https://withyou00.github.io/FLN/">
+    <meta property="og:type" content="website">
+
     <!-- SheetJS for Excel Import -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    
     <style>
         @page {
             size: A4 landscape;
@@ -23,19 +31,20 @@
             background: #fff;
         }
         .no-print {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             display: flex;
-            gap: 10px;
+            gap: 8px;
             align-items: center;
             background: #f8f9fa;
             padding: 8px;
             border-radius: 6px;
             border: 1px solid #ddd;
+            flex-wrap: wrap;
         }
         .select-control {
             font-size: 12px;
             font-weight: bold;
-            padding: 5px 8px;
+            padding: 4px 8px;
             border-radius: 4px;
             border: 1px solid #777;
             background: #fff;
@@ -45,7 +54,7 @@
             background-color: #0d6efd;
             color: white;
             border: none;
-            padding: 6px 14px;
+            padding: 6px 13px;
             font-size: 12px;
             cursor: pointer;
             border-radius: 4px;
@@ -54,6 +63,15 @@
         .btn-excel { background-color: #198754; }
         .btn-print { background-color: #212529; }
         .btn-clear { background-color: #dc3545; }
+        
+        .save-indicator {
+            font-size: 11px;
+            color: #198754;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            margin-left: auto;
+        }
 
         .header-title {
             text-align: center;
@@ -140,7 +158,6 @@
             padding-left: 2px;
         }
 
-        /* Delete Button for each row */
         .del-btn {
             background: #ff4d4f;
             color: white;
@@ -157,11 +174,8 @@
             vertical-align: middle;
             font-weight: bold;
         }
-        .del-btn:hover {
-            background: #d9363e;
-        }
+        .del-btn:hover { background: #d9363e; }
 
-        /* Signatures */
         .footer-signs {
             margin-top: 30px;
             display: flex;
@@ -214,8 +228,12 @@
         <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display:none;" onchange="importExcelNames(event)">
         <button class="btn btn-excel" onclick="document.getElementById('excelFileInput').click()">📥 Excel ಇಂಪೋರ್ಟ್</button>
         <button class="btn" onclick="addNewStudent()">+ ಸಾಲು ಸೇರಿಸಿ</button>
-        <button class="btn btn-clear" onclick="clearTable()">🗑️ Clear</button>
+        <button class="btn btn-clear" onclick="clearTable()">🗑️ Clear All</button>
         <button class="btn btn-print" onclick="window.print()">🖨️ Print / Save PDF</button>
+
+        <div class="save-indicator" id="saveIndicator">
+            💾 ಡೇಟಾ ಆಟೋ ಸೇವ್ ಆಗಿದೆ (Auto-Saved)
+        </div>
     </div>
 
     <!-- Header Block -->
@@ -223,39 +241,55 @@
         <h3>ಕರ್ನಾಟಕ ಸರ್ಕಾರ</h3>
         <h3>ಆಯುಕ್ತರ ಕಾರ್ಯಾಲಯ ಧಾರವಾಡ ಆಯುಕ್ತಾಲಯ ಶಾಲಾ ಶಿಕ್ಷಣ ಇಲಾಖೆ ಧಾರವಾಡ</h3>
         <h2>FLN ಸಾಧಿಸದ ಮಕ್ಕಳಲ್ಲಿ ಸಾಧಿಸಬೇಕಾದ ಕಲಿಕಾ ಫಲಗಳ ಹಂತವಾರು ಮೌಲ್ಯಾಂಕನ ನಮೂನೆ - 2026-27</h2>
-        <h4 id="headerSubjectLine">Class 4th To 10 : Second Language - English &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Month: <input type="text" class="input-line" style="width: 110px;"></h4>
+        <h4 id="headerSubjectLine">Class 4th To 10 : Second Language - English &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Month: <input type="text" id="monthOrDistrictInput" class="input-line" style="width: 110px;" oninput="saveAppData()"></h4>
         <h4 id="headerOutcomeLine">ನಮೂನೆ-1 (Baseline Stage - ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome-1)</h4>
     </div>
 
     <!-- Meta Info Block -->
     <table class="meta-table">
         <tr>
-            <td style="width: 32%;">ಶಾಲೆಯ ಹೆಸರು: <input type="text" class="input-line" style="width: 70%;"></td>
-            <td style="width: 25%;">ಶಿಕ್ಷಕರ ಹೆಸರು: <input type="text" class="input-line" style="width: 65%;"></td>
-            <td style="width: 18%;">ಕ್ಲಸ್ಟರ್: <input type="text" class="input-line" style="width: 60%;"></td>
-            <td style="width: 15%;">ತಾಲೂಕು: <input type="text" class="input-line" style="width: 55%;"></td>
+            <td style="width: 32%;">ಶಾಲೆಯ ಹೆಸರು: <input type="text" id="schoolNameInput" class="input-line" style="width: 70%;" oninput="saveAppData()"></td>
+            <td style="width: 25%;">ಶಿಕ್ಷಕರ ಹೆಸರು: <input type="text" id="teacherNameInput" class="input-line" style="width: 65%;" oninput="saveAppData()"></td>
+            <td style="width: 18%;">ಕ್ಲಸ್ಟರ್: <input type="text" id="clusterInput" class="input-line" style="width: 60%;" oninput="saveAppData()"></td>
+            <td style="width: 15%;">ತಾಲೂಕು: <input type="text" id="talukInput" class="input-line" style="width: 55%;" oninput="saveAppData()"></td>
             <td style="width: 10%;">ತರಗತಿ: <span id="displayClass" style="font-weight:bold; color:blue;">4</span></td>
         </tr>
     </table>
 
-    <!-- Main Table Container -->
+    <!-- Table Container -->
     <div id="tableContainer"></div>
 
     <!-- Signatures -->
     <div class="footer-signs">
-        <div>ದಿನಾಂಕ: <input type="text" class="input-line" style="width: 100px;"></div>
+        <div>ದಿನಾಂಕ: <input type="text" id="dateInput" class="input-line" style="width: 100px;" oninput="saveAppData()"></div>
         <div>ಶಿಕ್ಷಕರ ಸಹಿ: ........................</div>
         <div>ಪರಿಶೀಲಕರ ಸಹಿ: ........................</div>
         <div>ಶಾಲಾ ಮುಖ್ಯಸ್ಥರು: ........................</div>
     </div>
 
-    <!-- Logic Script -->
+    <!-- Script Section -->
     <script>
-        let studentNamesList = ["", "", "", "", ""];
+        // Central Storage Object
+        let appData = {
+            school: "",
+            teacher: "",
+            cluster: "",
+            taluk: "",
+            class: "4",
+            subject: "english",
+            monthDistrict: "",
+            date: "",
+            students: ["", "", "", "", ""],
+            grades: {
+                english: {},
+                kannada: {},
+                maths: {}
+            }
+        };
 
         const SUBJECT_CONFIGS = {
             english: {
-                titleLine: `Class 4th To 10 : Second Language - English &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Month: <input type="text" class="input-line" style="width: 110px;">`,
+                titleLine: `Class 4th To 10 : Second Language - English &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Month: <input type="text" id="monthOrDistrictInput" class="input-line" style="width: 110px;" oninput="saveAppData()">`,
                 outcomeLine: `ನಮೂನೆ-1 (Baseline Stage - ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome-1)`,
                 totalCols: 26,
                 startCol: 3,
@@ -313,7 +347,7 @@
                 `
             },
             kannada: {
-                titleLine: `ತರಗತಿ 4 ರಿಂದ 10 : ಪ್ರಥಮ ಭಾಷೆ - ಕನ್ನಡ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ಜಿಲ್ಲೆ: <input type="text" class="input-line" style="width: 120px;">`,
+                titleLine: `ತರಗತಿ 4 ರಿಂದ 10 : ಪ್ರಥಮ ಭಾಷೆ - ಕನ್ನಡ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ಜಿಲ್ಲೆ: <input type="text" id="monthOrDistrictInput" class="input-line" style="width: 120px;" oninput="saveAppData()">`,
                 outcomeLine: `ನಮೂನೆ-1 (ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome - 1)`,
                 totalCols: 22,
                 startCol: 3,
@@ -370,7 +404,7 @@
                 `
             },
             maths: {
-                titleLine: `ತರಗತಿ 4 ರಿಂದ 5 ಮತ್ತು 6 ರಿಂದ 10 : ಗಣಿತ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ಜಿಲ್ಲೆ: <input type="text" class="input-line" style="width: 120px;">`,
+                titleLine: `ತರಗತಿ 4 ರಿಂದ 5 ಮತ್ತು 6 ರಿಂದ 10 : ಗಣಿತ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ಜಿಲ್ಲೆ: <input type="text" id="monthOrDistrictInput" class="input-line" style="width: 120px;" oninput="saveAppData()">`,
                 outcomeLine: `ನಮೂನೆ - 1 (ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome-1 and 2*)`,
                 totalCols: 25,
                 startCol: 3,
@@ -427,18 +461,83 @@
             }
         };
 
-        function saveCurrentNames() {
-            const inputs = document.querySelectorAll('.student-name');
-            studentNamesList = Array.from(inputs).map(inp => inp.value);
+        // Save State into LocalStorage
+        function saveAppData() {
+            appData.school = document.getElementById('schoolNameInput')?.value || "";
+            appData.teacher = document.getElementById('teacherNameInput')?.value || "";
+            appData.cluster = document.getElementById('clusterInput')?.value || "";
+            appData.taluk = document.getElementById('talukInput')?.value || "";
+            appData.monthDistrict = document.getElementById('monthOrDistrictInput')?.value || "";
+            appData.date = document.getElementById('dateInput')?.value || "";
+            appData.class = document.getElementById('classSelect').value;
+            appData.subject = document.getElementById('subjectSelect').value;
+
+            // Save student names
+            const names = [];
+            document.querySelectorAll('.student-name').forEach(inp => names.push(inp.value));
+            appData.students = names;
+
+            // Save grades for active subject
+            const sub = appData.subject;
+            if (!appData.grades[sub]) appData.grades[sub] = {};
+
+            const rows = document.querySelectorAll('#studentRows tr');
+            rows.forEach((r, idx) => {
+                const rId = r.id.split('_')[1];
+                if (!appData.grades[sub][idx]) appData.grades[sub][idx] = {};
+                r.querySelectorAll('select.grade-select').forEach(sel => {
+                    const col = sel.getAttribute('data-col');
+                    appData.grades[sub][idx][col] = sel.value;
+                });
+            });
+
+            try {
+                localStorage.setItem('FLN_ASSESSMENT_DATA_V2', JSON.stringify(appData));
+                const ind = document.getElementById('saveIndicator');
+                if (ind) {
+                    ind.style.opacity = '1';
+                    setTimeout(() => ind.style.opacity = '0.7', 1500);
+                }
+            } catch(e) {
+                console.error("Auto-Save error", e);
+            }
+        }
+
+        // Load State from LocalStorage
+        function loadAppData() {
+            try {
+                const saved = localStorage.getItem('FLN_ASSESSMENT_DATA_V2');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    appData = Object.assign(appData, parsed);
+                }
+            } catch(e) {
+                console.error("Load error", e);
+            }
+
+            // Restore inputs
+            document.getElementById('classSelect').value = appData.class || "4";
+            document.getElementById('subjectSelect').value = appData.subject || "english";
+            document.getElementById('displayClass').innerText = appData.class || "4";
+
+            renderTable();
+
+            if (document.getElementById('schoolNameInput')) document.getElementById('schoolNameInput').value = appData.school || "";
+            if (document.getElementById('teacherNameInput')) document.getElementById('teacherNameInput').value = appData.teacher || "";
+            if (document.getElementById('clusterInput')) document.getElementById('clusterInput').value = appData.cluster || "";
+            if (document.getElementById('talukInput')) document.getElementById('talukInput').value = appData.taluk || "";
+            if (document.getElementById('monthOrDistrictInput')) document.getElementById('monthOrDistrictInput').value = appData.monthDistrict || "";
+            if (document.getElementById('dateInput')) document.getElementById('dateInput').value = appData.date || "";
         }
 
         function changeClass() {
-            const cls = document.getElementById('classSelect').value;
-            document.getElementById('displayClass').innerText = cls;
+            appData.class = document.getElementById('classSelect').value;
+            document.getElementById('displayClass').innerText = appData.class;
+            saveAppData();
         }
 
         function changeSubject() {
-            saveCurrentNames();
+            saveAppData();
             renderTable();
         }
 
@@ -466,33 +565,46 @@
 
             document.getElementById('tableContainer').innerHTML = html;
 
-            if (studentNamesList.length === 0) studentNamesList = ["", "", "", "", ""];
-            studentNamesList.forEach((name, idx) => {
-                appendRowHtml(idx + 1, name, cfg);
+            if (!appData.students || appData.students.length === 0) {
+                appData.students = ["", "", "", "", ""];
+            }
+
+            appData.students.forEach((name, idx) => {
+                appendRowHtml(idx + 1, name, cfg, idx);
+            });
+
+            // Trigger calculations on all restored rows
+            document.querySelectorAll('#studentRows tr').forEach(r => {
+                const firstSel = r.querySelector('select.grade-select');
+                if (firstSel) calculateRow(firstSel, false);
             });
 
             calculateTotals();
         }
 
-        function appendRowHtml(rId, name, cfg) {
+        function appendRowHtml(rId, name, cfg, studentIdx) {
             const tbody = document.getElementById('studentRows');
             const tr = document.createElement('tr');
             tr.id = `row_${rId}`;
+
+            const sub = document.getElementById('subjectSelect').value;
+            const savedRowGrades = appData.grades?.[sub]?.[studentIdx] || {};
 
             let rowHtml = `
                 <td>
                     <span class="sl-num">${rId}</span>
                     <button type="button" class="del-btn no-print" onclick="deleteStudentRow(this)" title="ಈ ವಿದ್ಯಾರ್ಥಿಯನ್ನು ಅಳಿಸಿ">×</button>
                 </td>
-                <td><input type="text" class="student-name" value="${name}" placeholder="ಹೆಸರು"></td>
+                <td><input type="text" class="student-name" value="${name}" placeholder="ಹೆಸರು" oninput="saveAppData()"></td>
             `;
 
             for (let c = cfg.startCol; c <= cfg.endCol; c++) {
+                const val = savedRowGrades[c] || "";
                 rowHtml += `<td>
-                    <select class="grade-select" data-col="${c}" onchange="calculateRow(this)">
+                    <select class="grade-select" data-col="${c}" onchange="calculateRow(this, true)">
                         <option value=""></option>
-                        <option value="A">A</option>
-                        <option value="B">B</option>
+                        <option value="A" ${val === 'A' ? 'selected' : ''}>A</option>
+                        <option value="B" ${val === 'B' ? 'selected' : ''}>B</option>
                     </select>
                 </td>`;
             }
@@ -505,15 +617,14 @@
             tbody.appendChild(tr);
         }
 
-        // Delete Row Function
         function deleteStudentRow(btn) {
             const row = btn.closest('tr');
             row.remove();
             reorderRows();
+            saveAppData();
             calculateTotals();
         }
 
-        // Re-indexes rows after deletion
         function reorderRows() {
             const subKey = document.getElementById('subjectSelect').value;
             const cfg = SUBJECT_CONFIGS[subKey];
@@ -524,26 +635,26 @@
                 tr.id = `row_${newId}`;
                 tr.querySelector('.sl-num').innerText = newId;
 
-                // Re-ID the auto-cells
                 cfg.gradeCols.forEach(c => {
                     const cell = tr.querySelector(`.auto-cell:nth-last-child(${cfg.gradeCols.length - cfg.gradeCols.indexOf(c)})`);
                     if (cell) cell.id = `c${c}_${newId}`;
                 });
             });
-
-            saveCurrentNames();
         }
 
         function addNewStudent() {
-            saveCurrentNames();
-            studentNamesList.push("");
             const subKey = document.getElementById('subjectSelect').value;
-            appendRowHtml(studentNamesList.length, "", SUBJECT_CONFIGS[subKey]);
+            const cfg = SUBJECT_CONFIGS[subKey];
+            const newIndex = document.querySelectorAll('#studentRows tr').length + 1;
+            appendRowHtml(newIndex, "", cfg, newIndex - 1);
+            saveAppData();
         }
 
         function clearTable() {
-            if (confirm("ಎಲ್ಲಾ ವಿದ್ಯಾರ್ಥಿಗಳ ವಿವರಗಳನ್ನು ತೆರವುಗೊಳಿಸಬೇಕೆ?")) {
-                studentNamesList = ["", "", "", "", ""];
+            if (confirm("ಎಲ್ಲಾ ವಿದ್ಯಾರ್ಥಿಗಳ ಹೆಸರುಗಳು ಮತ್ತು ಗ್ರೇಡ್‌ಗಳನ್ನು ಖಚಿತವಾಗಿ ತೆರವುಗೊಳಿಸಬೇಕೆ?")) {
+                localStorage.removeItem('FLN_ASSESSMENT_DATA_V2');
+                appData.students = ["", "", "", "", ""];
+                appData.grades = { english: {}, kannada: {}, maths: {} };
                 renderTable();
             }
         }
@@ -564,7 +675,7 @@
             return "";
         }
 
-        function calculateRow(element) {
+        function calculateRow(element, triggerSave = true) {
             const row = element.closest('tr');
             const rId = row.id.split('_')[1];
             const subKey = document.getElementById('subjectSelect').value;
@@ -575,15 +686,18 @@
             cfg.stages.forEach(stg => {
                 const res = evaluateRange(row, stg.start, stg.end);
                 rowVals[stg.id] = res;
-                document.getElementById(`c${stg.id}_${rId}`).innerText = res;
+                const cell = document.getElementById(`c${stg.id}_${rId}`);
+                if (cell) cell.innerText = res;
             });
 
             const finalResults = cfg.evalFinally(rowVals);
             for (let c in finalResults) {
-                document.getElementById(`c${c}_${rId}`).innerText = finalResults[c];
+                const cell = document.getElementById(`c${c}_${rId}`);
+                if (cell) cell.innerText = finalResults[c];
             }
 
             calculateTotals();
+            if (triggerSave) saveAppData();
         }
 
         function calculateTotals() {
@@ -647,34 +761,3 @@
 
                     const newNames = [];
                     for (let r = startRow; r < json.length; r++) {
-                        const val = json[r]?.[nameCol];
-                        if (val !== undefined && val !== null) {
-                            const name = String(val).trim();
-                            if (name && isNaN(name) && !keys.some(k => name.toLowerCase().includes(k))) {
-                                newNames.push(name);
-                            }
-                        }
-                    }
-
-                    if (newNames.length > 0) {
-                        studentNamesList = newNames;
-                        renderTable();
-                        alert(`${newNames.length} ವಿದ್ಯಾರ್ಥಿಗಳ ಹೆಸರುಗಳು ಯಶಸ್ವಿಯಾಗಿ Import ಆಗಿವೆ!`);
-                    } else {
-                        alert("ಮಕ್ಕಳ ಹೆಸರುಗಳನ್ನು ಗುರುತಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ.");
-                    }
-                } catch (err) {
-                    alert("Excel ಫೈಲ್ ಓದಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ!");
-                }
-                e.target.value = '';
-            };
-            reader.readAsArrayBuffer(file);
-        }
-
-        window.onload = function() {
-            changeClass();
-            renderTable();
-        };
-    </script>
-</body>
-</html>
