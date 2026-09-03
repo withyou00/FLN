@@ -282,16 +282,16 @@
             <h3>ಕರ್ನಾಟಕ ಸರ್ಕಾರ</h3>
             <h3>ಆಯುಕ್ತರ ಕಾರ್ಯಾಲಯ ಧಾರವಾಡ ಆಯುಕ್ತಾಲಯ ಶಾಲಾ ಶಿಕ್ಷಣ ಇಲಾಖೆ ಧಾರವಾಡ</h3>
             <h2>FLN ಸಾಧಿಸದ ಮಕ್ಕಳಲ್ಲಿ ಪ್ರಾವೀಣ್ಯತೆ ಸಾಧಿಸಬೇಕಾದ ಕಲಿಕಾ ಫಲಗಳ ಹಂತವಾರು ಮೌಲ್ಯಾಂಕನ ನಮೂನೆ - 2026-27</h2>
-            <h4 id="headerSubjectLine">Class 4th To 10 : Second Language - English &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Month: <input type="text" id="monthInput" class="input-line" style="width: 110px;" oninput="saveAppData()"></h4>
+            <h4 id="headerSubjectLine">Class 4th To 10 : Second Language - English &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Month: <input type="text" id="monthInput" class="input-line" style="width: 110px;" oninput="saveCurrentHeaderData()"></h4>
             <h4 id="headerOutcomeLine">ನಮೂನೆ-1 (Baseline Stage - ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome-1)</h4>
         </div>
 
         <table class="meta-table">
             <tr>
-                <td style="width: 32%;">ಶಾಲೆಯ ಹೆಸರು: <input type="text" id="schoolNameInput" class="input-line" style="width: 70%;" oninput="saveAppData()"></td>
-                <td style="width: 25%;">ಶಿಕ್ಷಕರ ಹೆಸರು: <input type="text" id="teacherNameInput" class="input-line" style="width: 65%;" oninput="saveAppData()"></td>
-                <td style="width: 18%;">ಕ್ಲಸ್ಟರ್: <input type="text" id="clusterInput" class="input-line" style="width: 60%;" oninput="saveAppData()"></td>
-                <td style="width: 15%;">ತಾಲೂಕು: <input type="text" id="talukInput" class="input-line" style="width: 55%;" oninput="saveAppData()"></td>
+                <td style="width: 32%;">ಶಾಲೆಯ ಹೆಸರು: <input type="text" id="schoolNameInput" class="input-line" style="width: 70%;" oninput="saveCurrentHeaderData()"></td>
+                <td style="width: 25%;">ಶಿಕ್ಷಕರ ಹೆಸರು: <input type="text" id="teacherNameInput" class="input-line" style="width: 65%;" oninput="saveCurrentHeaderData()"></td>
+                <td style="width: 18%;">ಕ್ಲಸ್ಟರ್: <input type="text" id="clusterInput" class="input-line" style="width: 60%;" oninput="saveCurrentHeaderData()"></td>
+                <td style="width: 15%;">ತಾಲೂಕು: <input type="text" id="talukInput" class="input-line" style="width: 55%;" oninput="saveCurrentHeaderData()"></td>
                 <td style="width: 10%;">ತರಗತಿ: <span id="displayClass" style="font-weight:700; color:blue;">4 ನೆಯ ತರಗತಿ</span></td>
             </tr>
         </table>
@@ -299,7 +299,7 @@
         <div id="tableContainer"></div>
 
         <div class="footer-signs">
-            <div>ದಿನಾಂಕ: <input type="text" id="dateInput" class="input-line" style="width: 100px;" oninput="saveAppData()"></div>
+            <div>ದಿನಾಂಕ: <input type="text" id="dateInput" class="input-line" style="width: 100px;" oninput="saveCurrentHeaderData()"></div>
             <div>ಶಿಕ್ಷಕರ ಸಹಿ: ........................</div>
             <div>ಪರಿಶೀಲಕರ ಸಹಿ: ........................</div>
             <div>ಶಾಲಾ ಮುಖ್ಯಸ್ಥರು: ........................</div>
@@ -321,7 +321,7 @@
                 <td style="width: 30%;">ಶಾಲೆಯ ಹೆಸರು: <span id="conSchoolDisplay"></span></td>
                 <td style="width: 25%;">ಕ್ಲಸ್ಟರ್: <span id="conClusterDisplay"></span></td>
                 <td style="width: 25%;">ತಾಲೂಕು: <span id="conTalukDisplay"></span></td>
-                <td style="width: 20%;">ಸರ್ಕಾರಿ/ಅನುದಾನಿತ/ಅನುದಾನರಹಿತ: <input type="text" class="input-line" id="schoolTypeInput" style="width: 70px;" oninput="saveAppData()"></td>
+                <td style="width: 20%;">ಸರ್ಕಾರಿ/ಅನುದಾನಿತ/ಅನುದಾನರಹಿತ: <input type="text" class="input-line" id="schoolTypeInput" style="width: 70px;" oninput="saveCurrentHeaderData()"></td>
             </tr>
         </table>
 
@@ -339,6 +339,7 @@
     <script>
         var currentView = 'student';
 
+        // Master Central Data: Strictly per-class data separation
         var masterData = {
             school: "", teacher: "", cluster: "", taluk: "", schoolType: "", month: "", date: "",
             currentClass: "4",
@@ -356,7 +357,7 @@
 
         var SUBJECT_CONFIGS = {
             english: {
-                studentTitle: 'Class 4th To 10 : Second Language - English &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Month: <input type="text" id="monthInput" class="input-line" style="width: 110px;" oninput="saveAppData()">',
+                studentTitle: 'Class 4th To 10 : Second Language - English &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Month: <input type="text" id="monthInput" class="input-line" style="width: 110px;" oninput="saveCurrentHeaderData()">',
                 studentOutcome: 'ನಮೂನೆ-1 (Baseline Stage - ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome-1)',
                 conTitle: 'Class 4th To 10 : Second Language - English &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Month: <span id="conMonthDisplay"></span>',
                 conForm: 'ಶಾಲಾ ಹಂತದ ಕ್ರೋಢೀಕೃತ ನಮೂನೆ-1 (Baseline Stage - ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome-1)',
@@ -416,7 +417,7 @@
                     '<tr class="col-num"><td>1</td><td>2</td><td></td><td></td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td></td></tr>'
             },
             kannada: {
-                studentTitle: '4 ರಿಂದ 10 ನೇ ತರಗತಿ : ಪ್ರಥಮ ಭಾಷೆ - ಕನ್ನಡ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ತಿಂಗಳು: <input type="text" id="monthInput" class="input-line" style="width: 110px;" oninput="saveAppData()">',
+                studentTitle: '4 ರಿಂದ 10 ನೇ ತರಗತಿ : ಪ್ರಥಮ ಭಾಷೆ - ಕನ್ನಡ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ತಿಂಗಳು: <input type="text" id="monthInput" class="input-line" style="width: 110px;" oninput="saveCurrentHeaderData()">',
                 studentOutcome: 'ನಮೂನೆ-1 (ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome - 1)',
                 conTitle: '4 ರಿಂದ 10 ನೇ ತರಗತಿ : ಪ್ರಥಮ ಭಾಷೆ - ಕನ್ನಡ (ಉರ್ದು/ಇಂಗ್ಲಿಷ/ಹಿಂದಿ/ಸಂಸ್ಕೃತ/ಮರಾಠಿ/ತೆಲುಗು/ಇತರ) &nbsp;&nbsp;&nbsp;&nbsp; ತಿಂಗಳು: <span id="conMonthDisplay"></span>',
                 conForm: 'ಶಾಲಾ ಹಂತದ ಕ್ರೋಢೀಕೃತ ನಮೂನೆ-1 (ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome - 1)',
@@ -476,7 +477,7 @@
                     '<tr class="col-num"><td>1</td><td>2</td><td></td><td></td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td></td></tr>'
             },
             maths: {
-                studentTitle: '4 ರಿಂದ 5 ಮತ್ತು 6 ರಿಂದ 10 ನೇ ತರಗತಿ : ಗಣಿತ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ತಿಂಗಳು: <input type="text" id="monthInput" class="input-line" style="width: 110px;" oninput="saveAppData()">',
+                studentTitle: '4 ರಿಂದ 5 ಮತ್ತು 6 ರಿಂದ 10 ನೇ ತರಗತಿ : ಗಣಿತ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ತಿಂಗಳು: <input type="text" id="monthInput" class="input-line" style="width: 110px;" oninput="saveCurrentHeaderData()">',
                 studentOutcome: 'ನಮೂನೆ - 1 (ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome-1 and 2*)',
                 conTitle: '4 ರಿಂದ 5 ಮತ್ತು 6 ರಿಂದ 10 ನೇ ತರಗತಿ : ಗಣಿತ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ತಿಂಗಳು: <span id="conMonthDisplay"></span>',
                 conForm: 'ಶಾಲಾ ಹಂತದ ಕ್ರೋಢೀಕೃತ ನಮೂನೆ - 1 (ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome-1 and 2*)',
@@ -536,7 +537,9 @@
         };
 
         function switchView(viewName) {
-            saveAppData();
+            saveCurrentClassData(masterData.currentClass);
+            saveCurrentHeaderData();
+            persistMasterData();
             currentView = viewName;
             if (viewName === 'student') {
                 document.getElementById('studentView').style.display = 'block';
@@ -555,61 +558,72 @@
             }
         }
 
-        function saveAppData() {
+        // Saves current header inputs
+        function saveCurrentHeaderData() {
+            var elSchool = document.getElementById('schoolNameInput');
+            var elTeacher = document.getElementById('teacherNameInput');
+            var elCluster = document.getElementById('clusterInput');
+            var elTaluk = document.getElementById('talukInput');
+            var elSchoolType = document.getElementById('schoolTypeInput');
+            var elMonth = document.getElementById('monthInput');
+            var elDate = document.getElementById('dateInput');
+
+            if (elSchool) masterData.school = elSchool.value;
+            if (elTeacher) masterData.teacher = elTeacher.value;
+            if (elCluster) masterData.cluster = elCluster.value;
+            if (elTaluk) masterData.taluk = elTaluk.value;
+            if (elSchoolType) masterData.schoolType = elSchoolType.value;
+            if (elMonth) masterData.month = elMonth.value;
+            if (elDate) masterData.date = elDate.value;
+            persistMasterData();
+        }
+
+        // Strictly saves data of a SPECIFIC class without cross-class overwrite
+        function saveCurrentClassData(classId) {
+            if (!classId) classId = masterData.currentClass;
+            var sub = masterData.currentSubject;
+
+            if (!masterData.classes[classId]) {
+                masterData.classes[classId] = { students: [], grades: { english: {}, kannada: {}, maths: {} } };
+            }
+            if (!masterData.classes[classId].grades) {
+                masterData.classes[classId].grades = { english: {}, kannada: {}, maths: {} };
+            }
+            if (!masterData.classes[classId].grades[sub]) {
+                masterData.classes[classId].grades[sub] = {};
+            }
+
+            var nameInputs = document.querySelectorAll('#studentRows .student-name');
+            var names = [];
+            for (var i = 0; i < nameInputs.length; i++) {
+                names.push(nameInputs[i].value);
+            }
+            masterData.classes[classId].students = names;
+
+            var rows = document.querySelectorAll('#studentRows tr');
+            for (var r = 0; r < rows.length; r++) {
+                if (!masterData.classes[classId].grades[sub][r]) {
+                    masterData.classes[classId].grades[sub][r] = {};
+                }
+                var selects = rows[r].querySelectorAll('select.grade-select');
+                for (var s = 0; s < selects.length; s++) {
+                    var col = selects[s].getAttribute('data-col');
+                    masterData.classes[classId].grades[sub][r][col] = selects[s].value;
+                }
+            }
+        }
+
+        function persistMasterData() {
             try {
-                var elSchool = document.getElementById('schoolNameInput');
-                var elTeacher = document.getElementById('teacherNameInput');
-                var elCluster = document.getElementById('clusterInput');
-                var elTaluk = document.getElementById('talukInput');
-                var elSchoolType = document.getElementById('schoolTypeInput');
-                var elMonth = document.getElementById('monthInput');
-                var elDate = document.getElementById('dateInput');
-                var elClass = document.getElementById('classSelect');
-                var elSub = document.getElementById('subjectSelect');
-
-                if (elSchool) masterData.school = elSchool.value;
-                if (elTeacher) masterData.teacher = elTeacher.value;
-                if (elCluster) masterData.cluster = elCluster.value;
-                if (elTaluk) masterData.taluk = elTaluk.value;
-                if (elSchoolType) masterData.schoolType = elSchoolType.value;
-                if (elMonth) masterData.month = elMonth.value;
-                if (elDate) masterData.date = elDate.value;
-                if (elClass) masterData.currentClass = elClass.value;
-                if (elSub) masterData.currentSubject = elSub.value;
-
-                var c = masterData.currentClass;
-                var sub = masterData.currentSubject;
-
-                if (!masterData.classes[c]) masterData.classes[c] = { students: [], grades: {} };
-                if (!masterData.classes[c].grades) masterData.classes[c].grades = {};
-                if (!masterData.classes[c].grades[sub]) masterData.classes[c].grades[sub] = {};
-
-                var names = [];
-                var nameInputs = document.querySelectorAll('.student-name');
-                for (var i = 0; i < nameInputs.length; i++) {
-                    names.push(nameInputs[i].value);
-                }
-                masterData.classes[c].students = names;
-
-                var rows = document.querySelectorAll('#studentRows tr');
-                for (var r = 0; r < rows.length; r++) {
-                    if (!masterData.classes[c].grades[sub][r]) masterData.classes[c].grades[sub][r] = {};
-                    var selects = rows[r].querySelectorAll('select.grade-select');
-                    for (var s = 0; s < selects.length; s++) {
-                        var col = selects[s].getAttribute('data-col');
-                        masterData.classes[c].grades[sub][r][col] = selects[s].value;
-                    }
-                }
-
-                localStorage.setItem('FLN_MASTER_CONSOLIDATED_V6', JSON.stringify(masterData));
+                localStorage.setItem('FLN_MASTER_CONSOLIDATED_V8', JSON.stringify(masterData));
             } catch(e) {
-                console.log("Save error", e);
+                console.log("Storage error", e);
             }
         }
 
         function loadAppData() {
             try {
-                var saved = localStorage.getItem('FLN_MASTER_CONSOLIDATED_V6');
+                var saved = localStorage.getItem('FLN_MASTER_CONSOLIDATED_V8');
                 if (saved) {
                     var parsed = JSON.parse(saved);
                     if (parsed && typeof parsed === 'object') {
@@ -618,6 +632,15 @@
                 }
             } catch(e) {
                 console.log("Load error", e);
+            }
+
+            // Ensure class storage exists
+            var classList = ["4", "5", "6", "7", "8", "9", "10"];
+            for (var i = 0; i < classList.length; i++) {
+                var cl = classList[i];
+                if (!masterData.classes[cl]) {
+                    masterData.classes[cl] = { students: ["", "", "", "", ""], grades: { english: {}, kannada: {}, maths: {} } };
+                }
             }
 
             document.getElementById('classSelect').value = masterData.currentClass || "4";
@@ -635,21 +658,34 @@
             renderStudentTable();
         }
 
+        // Switch Class: Saves OLD class data first, then loads NEW class data!
         function changeClass() {
-            saveAppData();
-            masterData.currentClass = document.getElementById('classSelect').value;
-            document.getElementById('displayClass').innerText = masterData.currentClass + " ನೆಯ ತರಗತಿ";
+            // 1. Save data of old class before switching
+            saveCurrentClassData(masterData.currentClass);
+            saveCurrentHeaderData();
+
+            // 2. Set new class
+            var newClass = document.getElementById('classSelect').value;
+            masterData.currentClass = newClass;
+            document.getElementById('displayClass').innerText = newClass + " ನೆಯ ತರಗತಿ";
+
+            // 3. Render table for new class
             renderStudentTable();
+            persistMasterData();
         }
 
+        // Switch Subject
         function changeSubject() {
-            saveAppData();
+            saveCurrentClassData(masterData.currentClass);
+            saveCurrentHeaderData();
+
             masterData.currentSubject = document.getElementById('subjectSelect').value;
             if (currentView === 'student') {
                 renderStudentTable();
             } else {
                 generateConsolidatedReport();
             }
+            persistMasterData();
         }
 
         function renderStudentTable() {
@@ -722,7 +758,7 @@
                         '<button type="button" class="mini-btn mini-a no-print" onclick="quickFillRow(this, \'A\')" title="ಈ ಮಗುವಿಗೆ ಎಲ್ಲವೂ A ತುಂಬಿ">A</button>' +
                     '</div>' +
                 '</td>' +
-                '<td><input type="text" class="student-name" value="' + (name || "") + '" placeholder="ವಿದ್ಯಾರ್ಥಿ ಹೆಸರು" oninput="saveAppData()"></td>';
+                '<td><input type="text" class="student-name" value="' + (name || "") + '" placeholder="ವಿದ್ಯಾರ್ಥಿ ಹೆಸರು" oninput="saveCurrentClassData(); persistMasterData();"></td>';
 
             for (var col = cfg.startCol; col <= cfg.endCol; col++) {
                 var val = savedRowGrades[col] || "";
@@ -735,7 +771,6 @@
                 '</td>';
             }
 
-            // Bind explicitly via data-grade-col for guaranteed accuracy
             for (var g = 0; g < cfg.gradeCols.length; g++) {
                 rowHtml += '<td class="auto-cell" data-grade-col="' + cfg.gradeCols[g] + '"></td>';
             }
@@ -744,7 +779,7 @@
             tbody.appendChild(tr);
         }
 
-        // --- ACCURATE ROW-LEVEL CALCULATION ---
+        // Real-time calculation per row
         function calculateRow(element, triggerSave) {
             var row = element.closest('tr');
             if (!row) return;
@@ -766,7 +801,10 @@
             }
 
             calculateTotals();
-            if (triggerSave) saveAppData();
+            if (triggerSave) {
+                saveCurrentClassData();
+                persistMasterData();
+            }
         }
 
         function calculateTotals() {
@@ -790,7 +828,7 @@
             }
         }
 
-        // 1. Bulk Fill entire class
+        // 1. Bulk Fill entire active class
         function bulkFillAll(grade) {
             if (confirm("ಈ ತರಗತಿಯ ಎಲ್ಲಾ ವಿದ್ಯಾರ್ಥಿಗಳ ಎಲ್ಲಾ ಕಾಲಂಗಳಿಗೂ '" + grade + "' ತುಂಬಬೇಕೆ?")) {
                 var rows = document.querySelectorAll('#studentRows tr');
@@ -802,11 +840,12 @@
                     if (selects.length > 0) calculateRow(selects[0], false);
                 }
                 calculateTotals();
-                saveAppData();
+                saveCurrentClassData();
+                persistMasterData();
             }
         }
 
-        // 2. Fill single student row horizontally
+        // 2. Fill single student row
         function quickFillRow(btn, grade) {
             var row = btn.closest('tr');
             var selects = row.querySelectorAll('select.grade-select');
@@ -816,7 +855,7 @@
             if (selects.length > 0) calculateRow(selects[0], true);
         }
 
-        // 3. Fill single column vertically for all students
+        // 3. Fill column vertically
         function quickFillColumn(colNum) {
             var grade = prompt("ಕಾಲಂ " + colNum + " ರ ಎಲ್ಲಾ ವಿದ್ಯಾರ್ಥಿಗಳಿಗೆ ಯಾವ ಗ್ರೇಡ್ ತುಂಬಬೇಕು? (A ಅಥವಾ B ಟೈಪ್ ಮಾಡಿ):", "B");
             if (!grade) return;
@@ -835,13 +874,15 @@
                 }
             }
             calculateTotals();
-            saveAppData();
+            saveCurrentClassData();
+            persistMasterData();
         }
 
         function deleteStudentRow(btn) {
             btn.closest('tr').remove();
             reorderRows();
-            saveAppData();
+            saveCurrentClassData();
+            persistMasterData();
             calculateTotals();
         }
 
@@ -855,7 +896,7 @@
             }
         }
 
-        // Add New Student and immediately trigger auto-calculate & total update
+        // Add New Student
         function addNewStudent() {
             var cfg = SUBJECT_CONFIGS[masterData.currentSubject] || SUBJECT_CONFIGS.english;
             var tbody = document.getElementById('studentRows');
@@ -868,15 +909,18 @@
                 if (firstSel) calculateRow(firstSel, false);
             }
             calculateTotals();
-            saveAppData();
+            saveCurrentClassData();
+            persistMasterData();
         }
 
+        // Clear Current Class Only
         function clearCurrentClass() {
-            if (confirm("ಈ ತರಗತಿಯ ಮಕ್ಕಳ ವಿವರಗಳನ್ನು ತೆರವುಗೊಳಿಸಬೇಕೆ?")) {
-                var c = masterData.currentClass;
+            var c = masterData.currentClass;
+            if (confirm(c + " ನೆಯ ತರಗತಿಯ ಮಕ್ಕಳ ವಿವರಗಳನ್ನು ಮಾತ್ರ ತೆರವುಗೊಳಿಸಬೇಕೆ?")) {
                 masterData.classes[c] = { students: ["", "", "", "", ""], grades: { english: {}, kannada: {}, maths: {} } };
                 renderStudentTable();
-                saveAppData();
+                saveCurrentClassData();
+                persistMasterData();
             }
         }
 
@@ -1038,7 +1082,10 @@
 
         // --- EXPORT TO EXCEL (.XLSX) ---
         function exportToExcel() {
-            saveAppData();
+            saveCurrentClassData(masterData.currentClass);
+            saveCurrentHeaderData();
+            persistMasterData();
+
             var targetTable;
             var fileName = "";
             var sub = masterData.currentSubject;
@@ -1084,11 +1131,13 @@
 
         // --- EXPORT TO PDF / PRINT ---
         function exportToPDF() {
-            saveAppData();
+            saveCurrentClassData(masterData.currentClass);
+            saveCurrentHeaderData();
+            persistMasterData();
             window.print();
         }
 
-        // Excel Import
+        // Excel Import (Specific to active class only)
         function importExcelNames(e) {
             var file = e.target.files[0];
             if (!file) return;
@@ -1132,9 +1181,11 @@
                     if (newNames.length > 0) {
                         var c = masterData.currentClass;
                         masterData.classes[c].students = newNames;
+                        masterData.classes[c].grades[masterData.currentSubject] = {}; // fresh grades for imported class
                         renderStudentTable();
-                        saveAppData();
-                        alert(newNames.length + " ಮಕ್ಕಳ ಹೆಸರುಗಳು Import ಆಗಿವೆ!");
+                        saveCurrentClassData(c);
+                        persistMasterData();
+                        alert(newNames.length + " ಮಕ್ಕಳ ಹೆಸರುಗಳು " + c + " ನೆಯ ತರಗತಿಗೆ Import ಆಗಿವೆ!");
                     } else {
                         alert("ಮಕ್ಕಳ ಹೆಸರುಗಳನ್ನು ಗುರುತಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ.");
                     }
