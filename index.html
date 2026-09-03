@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FLN Baseline Stage Assessment & Consolidated Form</title>
+    <title>FLN Baseline Stage Assessment & Consolidated (Kannada, English, Maths)</title>
     
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     
@@ -18,7 +18,7 @@
         }
         body {
             margin: 0;
-            padding: 6px;
+            padding: 5px;
             font-size: 10px;
             color: #000;
             background: #fff;
@@ -75,9 +75,9 @@
             text-align: center;
             line-height: 1.2;
         }
-        .header-title h3 { margin: 1px 0; font-size: 12.5px; }
-        .header-title h2 { margin: 2px 0; font-size: 14px; font-weight: bold; }
-        .header-title h4 { margin: 1px 0; font-size: 12px; }
+        .header-title h3 { margin: 1px 0; font-size: 12px; }
+        .header-title h2 { margin: 2px 0; font-size: 13.5px; font-weight: bold; }
+        .header-title h4 { margin: 1px 0; font-size: 11.5px; }
 
         .meta-table {
             width: 100%;
@@ -102,7 +102,7 @@
             width: 100%;
             border-collapse: collapse;
             text-align: center;
-            font-size: 8.8px;
+            font-size: 8.5px;
         }
         table.fln-table th, table.fln-table td {
             border: 1px solid #000;
@@ -192,28 +192,28 @@
     <!-- Controls Panel with View Switcher -->
     <div class="no-print">
         <button class="tab-btn active" id="tabStudent" onclick="switchView('student')">📝 ವಿದ್ಯಾರ್ಥಿ ನಮೂನೆ (Student Form)</button>
-        <button class="tab-btn" id="tabConsolidated" onclick="switchView('consolidated')">📊 ಶಾಲಾ ಕ್ರೋಢೀಕೃತ ನಮೂನೆ (Consolidated Form)</button>
+        <button class="tab-btn" id="tabConsolidated" onclick="switchView('consolidated')">📊 ಕ್ರೋಢೀಕೃತ ನಮೂನೆ (Consolidated Form)</button>
 
         <span style="border-left: 2px solid #ccc; height: 25px; margin: 0 5px;"></span>
 
-        <span id="studentControls">
-            <label><strong>ವಿಷಯ:</strong> 
-                <select id="subjectSelect" class="select-control" onchange="changeSubject()">
-                    <option value="english" selected>ಇಂಗ್ಲಿಷ್ (English)</option>
-                    <option value="kannada">ಕನ್ನಡ (Kannada)</option>
-                    <option value="maths">ಗಣಿತ (Mathematics)</option>
-                </select>
-            </label>
+        <label><strong>ವಿಷಯ:</strong> 
+            <select id="subjectSelect" class="select-control" onchange="changeSubject()">
+                <option value="kannada">ಕನ್ನಡ (Kannada)</option>
+                <option value="english" selected>ಇಂಗ್ಲಿಷ್ (English)</option>
+                <option value="maths">ಗಣಿತ (Mathematics)</option>
+            </select>
+        </label>
 
+        <span id="studentControls">
             <label><strong>ತರಗತಿ:</strong> 
                 <select id="classSelect" class="select-control" onchange="changeClass()">
-                    <option value="4">4th Class</option>
-                    <option value="5">5th Class</option>
-                    <option value="6">6th Class</option>
-                    <option value="7">7th Class</option>
-                    <option value="8">8th Class</option>
-                    <option value="9">9th Class</option>
-                    <option value="10">10th Class</option>
+                    <option value="4">4 ನೆಯ ತರಗತಿ</option>
+                    <option value="5">5 ನೆಯ ತರಗತಿ</option>
+                    <option value="6">6 ನೆಯ ತರಗತಿ</option>
+                    <option value="7">7 ನೆಯ ತರಗತಿ</option>
+                    <option value="8">8 ನೆಯ ತರಗತಿ</option>
+                    <option value="9">9 ನೆಯ ತರಗತಿ</option>
+                    <option value="10">10 ನೆಯ ತರಗತಿ</option>
                 </select>
             </label>
 
@@ -238,11 +238,11 @@
 
         <table class="meta-table">
             <tr>
-                <td style="width: 32%;">School Name: <input type="text" id="schoolNameInput" class="input-line" style="width: 70%;" oninput="saveAppData()"></td>
-                <td style="width: 25%;">Teacher Name: <input type="text" id="teacherNameInput" class="input-line" style="width: 65%;" oninput="saveAppData()"></td>
-                <td style="width: 18%;">Cluster: <input type="text" id="clusterInput" class="input-line" style="width: 60%;" oninput="saveAppData()"></td>
-                <td style="width: 15%;">Taluka: <input type="text" id="talukInput" class="input-line" style="width: 55%;" oninput="saveAppData()"></td>
-                <td style="width: 10%;">Class: <span id="displayClass" style="font-weight:bold; color:blue;">4th Class</span></td>
+                <td style="width: 32%;">ಶಾಲೆಯ ಹೆಸರು: <input type="text" id="schoolNameInput" class="input-line" style="width: 70%;" oninput="saveAppData()"></td>
+                <td style="width: 25%;">ಶಿಕ್ಷಕರ ಹೆಸರು: <input type="text" id="teacherNameInput" class="input-line" style="width: 65%;" oninput="saveAppData()"></td>
+                <td style="width: 18%;">ಕ್ಲಸ್ಟರ್: <input type="text" id="clusterInput" class="input-line" style="width: 60%;" oninput="saveAppData()"></td>
+                <td style="width: 15%;">ತಾಲೂಕು: <input type="text" id="talukInput" class="input-line" style="width: 55%;" oninput="saveAppData()"></td>
+                <td style="width: 10%;">ತರಗತಿ: <span id="displayClass" style="font-weight:bold; color:blue;">4 ನೆಯ ತರಗತಿ</span></td>
             </tr>
         </table>
 
@@ -256,97 +256,26 @@
         </div>
     </div>
 
-    <!-- VIEW 2: SCHOOL LEVEL CONSOLIDATED FORM (Exact PDF Format) -->
+    <!-- VIEW 2: CONSOLIDATED FORM (KANNADA, ENGLISH, MATHS DYNAMIC) -->
     <div id="consolidatedView" style="display:none;">
         <div class="header-title">
             <h3>ಕರ್ನಾಟಕ ಸರ್ಕಾರ</h3>
             <h3>ಆಯುಕ್ತರ ಕಾರ್ಯಾಲಯ ಧಾರವಾಡ ಆಯುಕ್ತಾಲಯ ಶಾಲಾ ಶಿಕ್ಷಣ ಇಲಾಖೆ ಧಾರವಾಡ</h3>
             <h2>FLN ಸಾಧಿಸದ ಮಕ್ಕಳಲ್ಲಿ ಪ್ರಾವೀಣ್ಯತೆ ಸಾಧಿಸಬೇಕಾದ ಕಲಿಕಾ ಫಲಗಳ ಹಂತವಾರು ಮೌಲ್ಯಾಂಕನ ನಮೂನೆ - 2026-27</h2>
-            <h4>Class 4th To 10 : Second Language - English &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Month: <span id="conMonthDisplay"></span></h4>
-            <h2>ಶಾಲಾ ಹಂತದ ಕ್ರೋಢೀಕೃತ ನಮೂನೆ-1 (Baseline Stage - ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome-1)</h2>
+            <h4 id="conHeaderSubjectLine"></h4>
+            <h2 id="conHeaderFormTitle">ಶಾಲಾ ಹಂತದ ಕ್ರೋಢೀಕೃತ ನಮೂನೆ-1 (Baseline Stage - ಆರಂಭಿಕ ಹಂತ)</h2>
         </div>
 
         <table class="meta-table">
             <tr>
-                <td style="width: 30%;">School Name: <span id="conSchoolDisplay"></span></td>
-                <td style="width: 25%;">Cluster: <span id="conClusterDisplay"></span></td>
-                <td style="width: 25%;">Taluka: <span id="conTalukDisplay"></span></td>
-                <td style="width: 20%;">Govt/Aided/Unaided: <input type="text" class="input-line" id="schoolTypeInput" style="width: 80px;" oninput="saveAppData()"></td>
+                <td style="width: 30%;">ಶಾಲೆಯ ಹೆಸರು: <span id="conSchoolDisplay"></span></td>
+                <td style="width: 25%;">ಕ್ಲಸ್ಟರ್: <span id="conClusterDisplay"></span></td>
+                <td style="width: 25%;">ತಾಲೂಕು: <span id="conTalukDisplay"></span></td>
+                <td style="width: 20%;">ಸರ್ಕಾರಿ/ಅನುದಾನಿತ/ಅನುದಾನರಹಿತ: <input type="text" class="input-line" id="schoolTypeInput" style="width: 70px;" oninput="saveAppData()"></td>
             </tr>
         </table>
 
-        <table class="fln-table">
-            <thead>
-                <tr>
-                    <th rowspan="4" style="width:24px;">SL<br>No</th>
-                    <th rowspan="4" style="width:55px;">Class</th>
-                    <th rowspan="4" style="width:45px;">Enroll<br>ment</th>
-                    <th rowspan="4" style="width:35px;">CLASS</th>
-                    <th colspan="18">Alphabets, Words, Sentences and Short Para Stage</th>
-                    <th colspan="4" rowspan="2">Baseline Stage<br><span style="font-size:7px;font-weight:normal;">(English - FLN ನ 1ನೆ ಕಲಿಕಾ ಫಲಕೆ ಗ್ರೇಡ್‌ಗಳು A/B)</span></th>
-                    <th colspan="2" rowspan="2">Finally</th>
-                    <th rowspan="4" style="width:35px;">%</th>
-                </tr>
-                <tr>
-                    <th colspan="18">FLN LO-1. Reads simple sentences and a short paragraph with understanding.</th>
-                </tr>
-                <tr>
-                    <th colspan="4">Letter Stage<br><span style="font-weight:normal;font-size:7px;">(Alphabet/Vowels/consonants)</span></th>
-                    <th colspan="5">Word Stage<br><span style="font-weight:normal;font-size:7px;">(2/3/4/5 Letters Words)</span></th>
-                    <th colspan="5">Sentence Stage<br><span style="font-weight:normal;font-size:7px;">(3 to 5 Sentences)</span></th>
-                    <th colspan="4">Short Paragraph Stage<br><span style="font-weight:normal;font-size:7px;">(3 to 5 Sentences)</span></th>
-                    <th rowspan="2" style="width:24px;">Letter<br>(3-6)</th>
-                    <th rowspan="2" style="width:24px;">Word<br>(7-11)</th>
-                    <th rowspan="2" style="width:24px;">Sentence<br>(12-16)</th>
-                    <th rowspan="2" style="width:24px;">Para<br>(17-20)</th>
-                    <th rowspan="2" style="width:22px;">A/B</th>
-                    <th rowspan="2" style="width:22px;">B</th>
-                </tr>
-                <tr style="font-size:7.5px;">
-                    <th style="width:20px;">Alpha</th><th style="width:20px;">Vowel</th><th style="width:20px;">Conso</th><th style="width:20px;">Oral</th>
-                    <th style="width:20px;">2-Ltr</th><th style="width:20px;">3-Ltr</th><th style="width:20px;">4-Ltr</th><th style="width:20px;">5-Ltr</th><th style="width:20px;">Oral</th>
-                    <th style="width:20px;">2-Wrd</th><th style="width:20px;">3-Wrd</th><th style="width:20px;">4-Wrd</th><th style="width:20px;">5-Wrd</th><th style="width:20px;">Oral</th>
-                    <th style="width:20px;">3-Sen</th><th style="width:20px;">4-Sen</th><th style="width:20px;">5-Sen</th><th style="width:20px;">Oral</th>
-                </tr>
-                <tr class="col-num">
-                    <td>1</td><td>2</td><td></td><td></td>
-                    <td>3</td><td>4</td><td>5</td><td>6</td>
-                    <td>7</td><td>8</td><td>9</td><td>10</td><td>11</td>
-                    <td>12</td><td>13</td><td>14</td><td>15</td><td>16</td>
-                    <td>17</td><td>18</td><td>19</td><td>20</td>
-                    <td>21</td><td>22</td><td>23</td><td>24</td>
-                    <td>25</td><td>26</td><td></td>
-                </tr>
-            </thead>
-            <tbody id="consolidatedBody">
-                <!-- Auto-populated from student evaluations -->
-            </tbody>
-            <tfoot>
-                <tr class="total-row" style="background:#f9f9f9;">
-                    <td rowspan="2" colspan="2" style="font-weight:bold;">ಅಂತಿಮ ಶಾಲಾ ಒಟ್ಟು</td>
-                    <td rowspan="2" id="grandEnrollment" style="font-weight:bold; font-size:11px;">0</td>
-                    <td style="font-weight:bold;">ಒಟ್ಟು A</td>
-                    <!-- Columns 3 to 26 grand totals -->
-                    <td id="gtA_3">0</td><td id="gtA_4">0</td><td id="gtA_5">0</td><td id="gtA_6">0</td>
-                    <td id="gtA_7">0</td><td id="gtA_8">0</td><td id="gtA_9">0</td><td id="gtA_10">0</td><td id="gtA_11">0</td>
-                    <td id="gtA_12">0</td><td id="gtA_13">0</td><td id="gtA_14">0</td><td id="gtA_15">0</td><td id="gtA_16">0</td>
-                    <td id="gtA_17">0</td><td id="gtA_18">0</td><td id="gtA_19">0</td><td id="gtA_20">0</td>
-                    <td id="gtA_21">0</td><td id="gtA_22">0</td><td id="gtA_23">0</td><td id="gtA_24">0</td>
-                    <td id="gtA_25">0</td><td id="gtA_26">0</td>
-                    <td id="gtPercentA">0%</td>
-                </tr>
-                <tr class="total-row" style="background:#f9f9f9;">
-                    <td style="font-weight:bold;">ಒಟ್ಟು B</td>
-                    <td id="gtB_3">0</td><td id="gtB_4">0</td><td id="gtB_5">0</td><td id="gtB_6">0</td>
-                    <td id="gtB_7">0</td><td id="gtB_8">0</td><td id="gtB_9">0</td><td id="gtB_10">0</td><td id="gtB_11">0</td>
-                    <td id="gtB_12">0</td><td id="gtB_13">0</td><td id="gtB_14">0</td><td id="gtB_15">0</td><td id="gtB_16">0</td>
-                    <td id="gtB_17">0</td><td id="gtB_18">0</td><td id="gtB_19">0</td><td id="gtB_20">0</td>
-                    <td id="gtB_21">0</td><td id="gtB_22">0</td><td id="gtB_23">0</td><td id="gtB_24">0</td>
-                    <td id="gtB_25">0</td><td id="gtB_26">0</td>
-                    <td id="gtPercentB" style="font-weight:bold; color:red;">0%</td>
-                </tr>
-            </tfoot>
-        </table>
+        <div id="consolidatedTableContainer"></div>
 
         <div class="footer-signs">
             <div>ದಿನಾಂಕ: <span id="conDateDisplay"></span></div>
@@ -358,14 +287,10 @@
 
     <!-- SCRIPT SECTION -->
     <script>
+        var currentView = 'student';
+
         var masterData = {
-            school: "",
-            teacher: "",
-            cluster: "",
-            taluk: "",
-            schoolType: "",
-            month: "",
-            date: "",
+            school: "", teacher: "", cluster: "", taluk: "", schoolType: "", month: "", date: "",
             currentClass: "4",
             currentSubject: "english",
             classes: {
@@ -381,8 +306,10 @@
 
         var SUBJECT_CONFIGS = {
             english: {
-                titleLine: 'Class 4th To 10 : Second Language - English &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Month: <input type="text" id="monthInput" class="input-line" style="width: 110px;" oninput="saveAppData()">',
-                outcomeLine: 'ನಮೂನೆ-1 (Baseline Stage - ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome-1)',
+                studentTitle: 'Class 4th To 10 : Second Language - English &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Month: <input type="text" id="monthInput" class="input-line" style="width: 110px;" oninput="saveAppData()">',
+                studentOutcome: 'ನಮೂನೆ-1 (Baseline Stage - ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome-1)',
+                conTitle: 'Class 4th To 10 : Second Language - English &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Month: <span id="conMonthDisplay"></span>',
+                conForm: 'ಶಾಲಾ ಹಂತದ ಕ್ರೋಢೀಕೃತ ನಮೂನೆ-1 (Baseline Stage - ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome-1)',
                 totalCols: 26, startCol: 3, endCol: 20,
                 stages: [
                     { id: 21, start: 3, end: 6 },
@@ -397,47 +324,155 @@
                     return { 25: '', 26: '' };
                 },
                 gradeCols: [21, 22, 23, 24, 25, 26],
-                thead: '<tr>' +
-                        '<th rowspan="4" style="width:24px;">SL<br>No</th>' +
-                        '<th rowspan="4" style="width:190px; min-width:180px;">Student Names</th>' +
+                studentThead: '<tr>' +
+                        '<th rowspan="4" style="width:24px;">SL<br>No</th><th rowspan="4" style="width:190px; min-width:180px;">Student Names</th>' +
                         '<th colspan="18">Alphabets, Words, Sentences and Short Para Stage</th>' +
                         '<th colspan="4" rowspan="2">Baseline Stage<br><span style="font-size:7px;font-weight:normal;">(English - FLN ನ 1ನೆ ಕಲಿಕಾ ಫಲಕೆ ಗ್ರೇಡ್‌ಗಳು A/B)</span></th>' +
                         '<th colspan="2" rowspan="2">Finally</th>' +
                     '</tr>' +
-                    '<tr>' +
-                        '<th colspan="18">FLN LO-1. Reads simple sentences and a short paragraph with understanding.</th>' +
-                    '</tr>' +
+                    '<tr><th colspan="18">FLN LO-1. Reads simple sentences and a short paragraph with understanding.</th></tr>' +
                     '<tr>' +
                         '<th colspan="4">Letter Stage<br><span style="font-weight:normal;font-size:7px;">(Alphabet/Vowels/consonants)</span></th>' +
                         '<th colspan="5">Word Stage<br><span style="font-weight:normal;font-size:7px;">(2/3/4/5 Letters Words)</span></th>' +
                         '<th colspan="5">Sentence Stage<br><span style="font-weight:normal;font-size:7px;">(3 to 5 Sentences)</span></th>' +
                         '<th colspan="4">Short Paragraph Stage<br><span style="font-weight:normal;font-size:7px;">(3 to 5 Sentences)</span></th>' +
-                        '<th rowspan="2" style="width:25px;">Letter<br>(3-6)</th>' +
-                        '<th rowspan="2" style="width:25px;">Word<br>(7-11)</th>' +
-                        '<th rowspan="2" style="width:25px;">Sentence<br>(12-16)</th>' +
-                        '<th rowspan="2" style="width:25px;">Para<br>(17-20)</th>' +
+                        '<th rowspan="2" style="width:24px;">Letter<br>(3-6)</th><th rowspan="2" style="width:24px;">Word<br>(7-11)</th><th rowspan="2" style="width:24px;">Sentence<br>(12-16)</th><th rowspan="2" style="width:24px;">Para<br>(17-20)</th>' +
                         '<th colspan="2" style="font-size:7px;">To col 21-24</th>' +
                     '</tr>' +
                     '<tr style="font-size:7.5px;">' +
-                        '<th style="width:22px;">Alpha</th><th style="width:22px;">Vowel</th><th style="width:22px;">Conso</th><th style="width:22px;">Oral</th>' +
-                        '<th style="width:22px;">2-Ltr</th><th style="width:22px;">3-Ltr</th><th style="width:22px;">4-Ltr</th><th style="width:22px;">5-Ltr</th><th style="width:22px;">Oral</th>' +
-                        '<th style="width:22px;">2-Wrd</th><th style="width:22px;">3-Wrd</th><th style="width:22px;">4-Wrd</th><th style="width:22px;">5-Wrd</th><th style="width:22px;">Oral</th>' +
-                        '<th style="width:22px;">3-Sen</th><th style="width:22px;">4-Sen</th><th style="width:22px;">5-Sen</th><th style="width:22px;">Oral</th>' +
+                        '<th>Alpha</th><th>Vowel</th><th>Conso</th><th>Oral</th><th>2-Ltr</th><th>3-Ltr</th><th>4-Ltr</th><th>5-Ltr</th><th>Oral</th><th>2-Wrd</th><th>3-Wrd</th><th>4-Wrd</th><th>5-Wrd</th><th>Oral</th><th>3-Sen</th><th>4-Sen</th><th>5-Sen</th><th>Oral</th>' +
                         '<th style="width:20px;">A</th><th style="width:20px;">B</th>' +
                     '</tr>' +
-                    '<tr class="col-num">' +
-                        '<td>1</td><td>2</td>' +
-                        '<td>3</td><td>4</td><td>5</td><td>6</td>' +
-                        '<td>7</td><td>8</td><td>9</td><td>10</td><td>11</td>' +
-                        '<td>12</td><td>13</td><td>14</td><td>15</td><td>16</td>' +
-                        '<td>17</td><td>18</td><td>19</td><td>20</td>' +
-                        '<td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td>' +
-                    '</tr>'
+                    '<tr class="col-num"><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td></tr>',
+                conThead: '<tr>' +
+                        '<th rowspan="4" style="width:22px;">SL<br>No</th><th rowspan="4" style="width:60px;">Class</th><th rowspan="4" style="width:40px;">Enroll<br>ment</th><th rowspan="4" style="width:35px;">CLASS</th>' +
+                        '<th colspan="18">Alphabets, Words, Sentences and Short Para Stage</th>' +
+                        '<th colspan="4" rowspan="2">Baseline Stage<br><span style="font-size:7px;font-weight:normal;">(English - FLN ನ 1ನೆ ಕಲಿಕಾ ಫಲಕೆ ಗ್ರೇಡ್‌ಗಳು A/B)</span></th>' +
+                        '<th colspan="2" rowspan="2">Finally</th><th rowspan="4" style="width:35px;">%</th>' +
+                    '</tr>' +
+                    '<tr><th colspan="18">FLN LO-1. Reads simple sentences and a short paragraph with understanding.</th></tr>' +
+                    '<tr>' +
+                        '<th colspan="4">Letter Stage</th><th colspan="5">Word Stage</th><th colspan="5">Sentence Stage</th><th colspan="4">Short Paragraph Stage</th>' +
+                        '<th rowspan="2">Letter<br>(3-6)</th><th rowspan="2">Word<br>(7-11)</th><th rowspan="2">Sentence<br>(12-16)</th><th rowspan="2">Para<br>(17-20)</th>' +
+                        '<th rowspan="2">A/B</th><th rowspan="2">B</th>' +
+                    '</tr>' +
+                    '<tr style="font-size:7px;">' +
+                        '<th>Alpha</th><th>Vowel</th><th>Conso</th><th>Oral</th><th>2-Ltr</th><th>3-Ltr</th><th>4-Ltr</th><th>5-Ltr</th><th>Oral</th><th>2-Wrd</th><th>3-Wrd</th><th>4-Wrd</th><th>5-Wrd</th><th>Oral</th><th>3-Sen</th><th>4-Sen</th><th>5-Sen</th><th>Oral</th>' +
+                    '</tr>' +
+                    '<tr class="col-num"><td>1</td><td>2</td><td></td><td></td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td></td></tr>'
+            },
+            kannada: {
+                studentTitle: '4 ರಿಂದ 10 ನೇ ತರಗತಿ : ಪ್ರಥಮ ಭಾಷೆ - ಕನ್ನಡ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ತಿಂಗಳು: <input type="text" id="monthInput" class="input-line" style="width: 110px;" oninput="saveAppData()">',
+                studentOutcome: 'ನಮೂನೆ-1 (ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome - 1)',
+                conTitle: '4 ರಿಂದ 10 ನೇ ತರಗತಿ : ಪ್ರಥಮ ಭಾಷೆ - ಕನ್ನಡ (ಉರ್ದು/ಇಂಗ್ಲಿಷ/ಹಿಂದಿ/ಸಂಸ್ಕೃತ/ಮರಾಠಿ/ತೆಲುಗು/ಇತರ) &nbsp;&nbsp;&nbsp;&nbsp; ತಿಂಗಳು: <span id="conMonthDisplay"></span>',
+                conForm: 'ಶಾಲಾ ಹಂತದ ಕ್ರೋಢೀಕೃತ ನಮೂನೆ-1 (ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome - 1)',
+                totalCols: 23, startCol: 3, endCol: 17,
+                stages: [
+                    { id: 18, start: 3, end: 7 },
+                    { id: 19, start: 8, end: 11 },
+                    { id: 20, start: 12, end: 14 },
+                    { id: 21, start: 15, end: 17 }
+                ],
+                evalFinally: function(rowVals) {
+                    var stg = [rowVals[18], rowVals[19], rowVals[20], rowVals[21]];
+                    if (stg[0] === 'A' && stg[1] === 'A' && stg[2] === 'A' && stg[3] === 'A') return { 22: 'A', 23: '' };
+                    if (stg[0] === 'B' || stg[1] === 'B' || stg[2] === 'B' || stg[3] === 'B') return { 22: '', 23: 'B' };
+                    return { 22: '', 23: '' };
+                },
+                gradeCols: [18, 19, 20, 21, 22, 23],
+                studentThead: '<tr>' +
+                        '<th rowspan="4" style="width:24px;">ಕ್ರ.<br>ಸಂ</th><th rowspan="4" style="width:190px; min-width:180px;">ವಿದ್ಯಾರ್ಥಿಯ ಹೆಸರು</th>' +
+                        '<th colspan="15">ಸ್ವರ, ವ್ಯಂಜನ, ಕಾಗುಣಿತ, ಸಜಾತಿ &amp; ವಿಜಾತಿ ಒತ್ತಕ್ಷರ, ವಾಕ್ಯ ಮತ್ತು ಪ್ಯಾರಾ ಹಂತ</th>' +
+                        '<th colspan="4" rowspan="2">ಆರಂಭಿಕ ಹಂತ<br><span style="font-size:7px;font-weight:normal;">(FL-1 ಕಲಿಕಾ ಫಲಕ್ಕೆ ಗ್ರೇಡ್‌ಗಳು A/B)</span></th>' +
+                        '<th colspan="2" rowspan="2" style="width:40px;">ಅಂತಿಮ<br>(FLN-1)</th>' +
+                    '</tr>' +
+                    '<tr><th colspan="15">FLN LO-1. ವಾಕ್ಯ/ಪ್ಯಾರಾವನ್ನು ಸರಾಗವಾಗಿ ಅರ್ಥಸಹಿತ ಓದಿ, ಅರ್ಥವನ್ನು ಹೇಳುವರು.</th></tr>' +
+                    '<tr>' +
+                        '<th colspan="5">ಅಕ್ಷರ ಹಂತ<br><span style="font-weight:normal;font-size:7px;">(ಸ್ವರಗಳು/ವ್ಯಂಜನ/ಕಾಗುಣಿತ)</span></th>' +
+                        '<th colspan="4">ಪದ ಹಂತ<br><span style="font-weight:normal;font-size:7px;">(2/3/4 ಅಕ್ಷರಗಳ ಪದಗಳು)</span></th>' +
+                        '<th colspan="3">ವಾಕ್ಯ ಹಂತ<br><span style="font-weight:normal;font-size:7px;">(3 ರಿಂದ 5 ಪದಗಳು)</span></th>' +
+                        '<th colspan="3">ಪ್ಯಾರಾ ಹಂತ<br><span style="font-weight:normal;font-size:7px;">(3 ರಿಂದ 5 ವಾಕ್ಯಗಳು)</span></th>' +
+                        '<th rowspan="2" style="width:24px;">ಅಕ್ಷರ<br>(3-7)</th><th rowspan="2" style="width:24px;">ಪದ<br>(8-11)</th><th rowspan="2" style="width:24px;">ವಾಕ್ಯ<br>(12-14)</th><th rowspan="2" style="width:24px;">ಪ್ಯಾರಾ<br>(15-17)</th>' +
+                        '<th colspan="2" style="font-size:7px;">ಕಾಲಂ 18-21</th>' +
+                    '</tr>' +
+                    '<tr style="font-size:7.5px;">' +
+                        '<th>ಸ್ವರ</th><th>ವ್ಯಂಜನ</th><th>ಕಾಗುಣಿತ</th><th>ಒತ್ತಕ್ಷರ</th><th>ಮೌಖಿಕ</th><th>ಒತ್ತಕ್ಷರ-</th><th>ಸಜಾತಿ</th><th>ವಿಜಾತಿ</th><th>ಮೌಖಿಕ</th><th>ಒತ್ತಕ್ಷರ-</th><th>ಒತ್ತಕ್ಷರ+</th><th>ಮೌಖಿಕ</th><th>ಒತ್ತಕ್ಷರ-</th><th>ಒತ್ತಕ್ಷರ+</th><th>ಮೌಖಿಕ</th>' +
+                        '<th style="width:20px;">A/B</th><th style="width:20px;">B</th>' +
+                    '</tr>' +
+                    '<tr class="col-num"><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td></tr>',
+                conThead: '<tr>' +
+                        '<th rowspan="4" style="width:22px;">ಕ್ರ.<br>ಸಂ</th><th rowspan="4" style="width:65px;">ತರಗತಿ</th><th rowspan="4" style="width:45px;">ಒಟ್ಟು<br>ದಾಖಲಾತಿ</th><th rowspan="4" style="width:35px;">ತರಗತಿ<br>ವಾರು ಗ್ರೇಡ್</th>' +
+                        '<th colspan="15">ಸ್ವರ, ವ್ಯಂಜನ, ಕಾಗುಣಿತ, ಸಜಾತಿ &amp; ವಿಜಾತಿ ಒತ್ತಕ್ಷರ, ವಾಕ್ಯ ಮತ್ತು ಪ್ಯಾರಾ ಹಂತ</th>' +
+                        '<th colspan="4" rowspan="2">ಆರಂಭಿಕ ಹಂತ<br><span style="font-size:7px;font-weight:normal;">(FL-1 ಕಲಿಕಾ ಫಲಕ್ಕೆ ಗ್ರೇಡ್‌ಗಳು A/B)</span></th>' +
+                        '<th colspan="2" rowspan="2" style="width:40px;">ಅಂತಿಮ<br>(FLN-1)</th><th rowspan="4" style="width:35px;">%</th>' +
+                    '</tr>' +
+                    '<tr><th colspan="15">FLN LO-1. ವಾಕ್ಯ/ಪ್ಯಾರಾವನ್ನು ಸರಾಗವಾಗಿ ಅರ್ಥಸಹಿತ ಓದಿ, ಅರ್ಥವನ್ನು ಹೇಳುವರು.</th></tr>' +
+                    '<tr>' +
+                        '<th colspan="5">ಅಕ್ಷರ ಹಂತ</th><th colspan="4">ಪದ ಹಂತ</th><th colspan="3">ವಾಕ್ಯ ಹಂತ</th><th colspan="3">ಪ್ಯಾರಾ ಹಂತ</th>' +
+                        '<th rowspan="2">ಅಕ್ಷರ<br>(3-7)</th><th rowspan="2">ಪದ<br>(8-11)</th><th rowspan="2">ವಾಕ್ಯ<br>(12-14)</th><th rowspan="2">ಪ್ಯಾರಾ<br>(15-17)</th>' +
+                        '<th rowspan="2">A/B</th><th rowspan="2">B</th>' +
+                    '</tr>' +
+                    '<tr style="font-size:7px;">' +
+                        '<th>ಸ್ವರ</th><th>ವ್ಯಂಜನ</th><th>ಕಾಗುಣಿತ</th><th>ಒತ್ತಕ್ಷರ</th><th>ಮೌಖಿಕ</th><th>ಒತ್ತಕ್ಷರ-</th><th>ಸಜಾತಿ</th><th>ವಿಜಾತಿ</th><th>ಮೌಖಿಕ</th><th>ಒತ್ತಕ್ಷರ-</th><th>ಒತ್ತಕ್ಷರ+</th><th>ಮೌಖಿಕ</th><th>ಒತ್ತಕ್ಷರ-</th><th>ಒತ್ತಕ್ಷರ+</th><th>ಮೌಖಿಕ</th>' +
+                    '</tr>' +
+                    '<tr class="col-num"><td>1</td><td>2</td><td></td><td></td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td></td></tr>'
+            },
+            maths: {
+                studentTitle: '4 ರಿಂದ 5 ಮತ್ತು 6 ರಿಂದ 10 ನೇ ತರಗತಿ : ಗಣಿತ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ತಿಂಗಳು: <input type="text" id="monthInput" class="input-line" style="width: 110px;" oninput="saveAppData()">',
+                studentOutcome: 'ನಮೂನೆ - 1 (ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome-1 and 2*)',
+                conTitle: '4 ರಿಂದ 5 ಮತ್ತು 6 ರಿಂದ 10 ನೇ ತರಗತಿ : ಗಣಿತ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ತಿಂಗಳು: <span id="conMonthDisplay"></span>',
+                conForm: 'ಶಾಲಾ ಹಂತದ ಕ್ರೋಢೀಕೃತ ನಮೂನೆ - 1 (ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome-1 and 2*)',
+                totalCols: 26, startCol: 3, endCol: 20,
+                stages: [
+                    { id: 21, start: 3, end: 6 },
+                    { id: 22, start: 7, end: 10 },
+                    { id: 23, start: 11, end: 15 },
+                    { id: 24, start: 16, end: 20 }
+                ],
+                evalFinally: function(rowVals) {
+                    var stg = [rowVals[21], rowVals[22], rowVals[23], rowVals[24]];
+                    if (stg[0] === 'A' && stg[1] === 'A' && stg[2] === 'A' && stg[3] === 'A') return { 25: 'A', 26: '' };
+                    if (stg[0] === 'B' || stg[1] === 'B' || stg[2] === 'B' || stg[3] === 'B') return { 25: '', 26: 'B' };
+                    return { 25: '', 26: '' };
+                },
+                gradeCols: [21, 22, 23, 24, 25, 26],
+                studentThead: '<tr>' +
+                        '<th rowspan="4" style="width:24px;">ಕ್ರ.<br>ಸಂ</th><th rowspan="4" style="width:190px; min-width:180px;">ವಿದ್ಯಾರ್ಥಿಯ ಹೆಸರು</th>' +
+                        '<th colspan="8">ಅಂಕಿ / ಸಂಖ್ಯೆಗಳ ಹಂತ (FLN LO-1)</th>' +
+                        '<th colspan="10">ಸಂಕಲನ ಮತ್ತು ವ್ಯವಕಲನ ಹಂತ (FLN LO-2)</th>' +
+                        '<th colspan="4" rowspan="2">ಆರಂಭಿಕ ಹಂತ<br><span style="font-size:7px;font-weight:normal;">(FLN ಫಲಕ್ಕೆ ಗ್ರೇಡ್‌ಗಳು A/B)</span></th>' +
+                        '<th colspan="2" rowspan="2" style="width:40px;">ಅಂತಿಮ</th>' +
+                    '</tr>' +
+                    '<tr><th colspan="4">1 ರಿಂದ 99 / 999</th><th colspan="4">100 ರಿಂದ 999 / 9999</th><th colspan="5">ಸಂಕಲನ (Addition)</th><th colspan="5">ವ್ಯವಕಲನ (Subtraction)</th></tr>' +
+                    '<tr style="font-size:7.5px;">' +
+                        '<th>ಗುರುತು</th><th>ಬರೆ</th><th>ಅರ್ಥ</th><th>ಮೌಖಿಕ</th><th>ಗುರುತು</th><th>ಬರೆ</th><th>ಅರ್ಥ</th><th>ಮೌಖಿಕ</th><th>1 ಅಂಕಿ</th><th>2 ಅಂಕಿ</th><th>3 ಅಂಕಿ</th><th>4 ಅಂಕಿ</th><th>ಮೌಖಿಕ</th><th>1 ಅಂಕಿ</th><th>2 ಅಂಕಿ</th><th>3 ಅಂಕಿ</th><th>4 ಅಂಕಿ</th><th>ಮೌಖಿಕ</th>' +
+                        '<th rowspan="2" style="width:24px;">ಹಂತ-1<br>(3-6)</th><th rowspan="2" style="width:24px;">ಹಂತ-2<br>(7-10)</th><th rowspan="2" style="width:24px;">ಸಂಕಲನ<br>(11-15)</th><th rowspan="2" style="width:24px;">ವ್ಯವಕಲನ<br>(16-20)</th>' +
+                        '<th colspan="2" style="font-size:7px;">ಕಾಲಂ 21-24</th>' +
+                    '</tr>' +
+                    '<tr style="font-size:7.5px;"><th colspan="18"></th><th style="width:20px;">A</th><th style="width:20px;">B</th></tr>' +
+                    '<tr class="col-num"><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td></tr>',
+                conThead: '<tr>' +
+                        '<th rowspan="4" style="width:22px;">ಕ್ರ.<br>ಸಂ</th><th rowspan="4" style="width:65px;">ತರಗತಿ</th><th rowspan="4" style="width:45px;">ದಾಖ<br>ಲಾತಿ</th><th rowspan="4" style="width:35px;">ತರಗತಿ<br>ವಾರು ಗ್ರೇಡ್</th>' +
+                        '<th colspan="8">ಅಂಕಿ/ಸಂಖ್ಯೆಗಳ ಹಂತ</th>' +
+                        '<th colspan="10">ಸಂಕಲನ ಮತ್ತು ವ್ಯವಕಲನ ಹಂತ</th>' +
+                        '<th colspan="4" rowspan="2">ಆರಂಭಿಕ ಹಂತ<br><span style="font-size:7px;font-weight:normal;">(FLN ಫಲಕ್ಕೆ ಗ್ರೇಡ್‌ಗಳು A/B)</span></th>' +
+                        '<th colspan="2" rowspan="2">ಅಂತಿಮ</th><th rowspan="4" style="width:35px;">%</th>' +
+                    '</tr>' +
+                    '<tr>' +
+                        '<th colspan="4">1 ರಿಂದ 99 / 999</th><th colspan="4">100 ರಿಂದ 999 / 9999</th><th colspan="5">ಸಂಕಲನ</th><th colspan="5">ವ್ಯವಕಲನ</th>' +
+                    '</tr>' +
+                    '<tr>' +
+                        '<th>ಗುರುತು</th><th>ಬರೆ</th><th>ಅರ್ಥ</th><th>ಮೌಖಿಕ</th><th>ಗುರುತು</th><th>ಬರೆ</th><th>ಅರ್ಥ</th><th>ಮೌಖಿಕ</th><th>1 ಅಂಕಿ</th><th>2 ಅಂಕಿ</th><th>3 ಅಂಕಿ</th><th>4 ಅಂಕಿ</th><th>ಮೌಖಿಕ</th><th>1 ಅಂಕಿ</th><th>2 ಅಂಕಿ</th><th>3 ಅಂಕಿ</th><th>4 ಅಂಕಿ</th><th>ಮೌಖಿಕ</th>' +
+                        '<th rowspan="2">1-99/999<br>(21)</th><th rowspan="2">100-999<br>(22)</th><th rowspan="2">ಸಂಕಲನ<br>(23)</th><th rowspan="2">ವ್ಯವಕಲನ<br>(24)</th>' +
+                        '<th rowspan="2">A</th><th rowspan="2">B</th>' +
+                    '</tr>' +
+                    '<tr class="col-num"><td>1</td><td>2</td><td></td><td></td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td></td></tr>'
             }
         };
 
         function switchView(viewName) {
             saveAppData();
+            currentView = viewName;
             if (viewName === 'student') {
                 document.getElementById('studentView').style.display = 'block';
                 document.getElementById('consolidatedView').style.display = 'none';
@@ -465,20 +500,23 @@
                 var elMonth = document.getElementById('monthInput');
                 var elDate = document.getElementById('dateInput');
                 var elClass = document.getElementById('classSelect');
+                var elSub = document.getElementById('subjectSelect');
 
-                masterData.school = elSchool ? elSchool.value : masterData.school;
-                masterData.teacher = elTeacher ? elTeacher.value : masterData.teacher;
-                masterData.cluster = elCluster ? elCluster.value : masterData.cluster;
-                masterData.taluk = elTaluk ? elTaluk.value : masterData.taluk;
-                masterData.schoolType = elSchoolType ? elSchoolType.value : masterData.schoolType;
-                masterData.month = elMonth ? elMonth.value : masterData.month;
-                masterData.date = elDate ? elDate.value : masterData.date;
-                masterData.currentClass = elClass ? elClass.value : masterData.currentClass;
+                if (elSchool) masterData.school = elSchool.value;
+                if (elTeacher) masterData.teacher = elTeacher.value;
+                if (elCluster) masterData.cluster = elCluster.value;
+                if (elTaluk) masterData.taluk = elTaluk.value;
+                if (elSchoolType) masterData.schoolType = elSchoolType.value;
+                if (elMonth) masterData.month = elMonth.value;
+                if (elDate) masterData.date = elDate.value;
+                if (elClass) masterData.currentClass = elClass.value;
+                if (elSub) masterData.currentSubject = elSub.value;
 
                 var c = masterData.currentClass;
                 var sub = masterData.currentSubject;
 
                 if (!masterData.classes[c]) masterData.classes[c] = { students: [], grades: {} };
+                if (!masterData.classes[c].grades) masterData.classes[c].grades = {};
                 if (!masterData.classes[c].grades[sub]) masterData.classes[c].grades[sub] = {};
 
                 var names = [];
@@ -486,7 +524,7 @@
                 for (var i = 0; i < nameInputs.length; i++) {
                     names.push(nameInputs[i].value);
                 }
-                masterData.classes[c].students = names;
+                if (names.length > 0) masterData.classes[c].students = names;
 
                 var rows = document.querySelectorAll('#studentRows tr');
                 for (var r = 0; r < rows.length; r++) {
@@ -498,7 +536,7 @@
                     }
                 }
 
-                localStorage.setItem('FLN_MASTER_CONSOLIDATED_V1', JSON.stringify(masterData));
+                localStorage.setItem('FLN_MASTER_CONSOLIDATED_V2', JSON.stringify(masterData));
             } catch(e) {
                 console.log("Save error", e);
             }
@@ -506,7 +544,7 @@
 
         function loadAppData() {
             try {
-                var saved = localStorage.getItem('FLN_MASTER_CONSOLIDATED_V1');
+                var saved = localStorage.getItem('FLN_MASTER_CONSOLIDATED_V2');
                 if (saved) {
                     var parsed = JSON.parse(saved);
                     if (parsed && typeof parsed === 'object') {
@@ -518,7 +556,8 @@
             }
 
             document.getElementById('classSelect').value = masterData.currentClass || "4";
-            document.getElementById('displayClass').innerText = (masterData.currentClass || "4") + "th Class";
+            document.getElementById('subjectSelect').value = masterData.currentSubject || "english";
+            document.getElementById('displayClass').innerText = (masterData.currentClass || "4") + " ನೆಯ ತರಗತಿ";
 
             if (document.getElementById('schoolNameInput')) document.getElementById('schoolNameInput').value = masterData.school || "";
             if (document.getElementById('teacherNameInput')) document.getElementById('teacherNameInput').value = masterData.teacher || "";
@@ -534,19 +573,27 @@
         function changeClass() {
             saveAppData();
             masterData.currentClass = document.getElementById('classSelect').value;
-            document.getElementById('displayClass').innerText = masterData.currentClass + "th Class";
+            document.getElementById('displayClass').innerText = masterData.currentClass + " ನೆಯ ತರಗತಿ";
             renderStudentTable();
         }
 
         function changeSubject() {
             saveAppData();
-            renderStudentTable();
+            masterData.currentSubject = document.getElementById('subjectSelect').value;
+            if (currentView === 'student') {
+                renderStudentTable();
+            } else {
+                generateConsolidatedReport();
+            }
         }
 
         function renderStudentTable() {
             var c = masterData.currentClass;
             var sub = masterData.currentSubject;
             var cfg = SUBJECT_CONFIGS[sub] || SUBJECT_CONFIGS.english;
+
+            document.getElementById('headerSubjectLine').innerHTML = cfg.studentTitle;
+            document.getElementById('headerOutcomeLine').innerHTML = cfg.studentOutcome;
 
             var classData = masterData.classes[c] || { students: ["", "", "", "", ""], grades: {} };
             var students = classData.students;
@@ -561,7 +608,7 @@
             var colspanLeft = (cfg.startCol - 1) + (cfg.endCol - cfg.startCol + 1);
 
             var html = '<table class="fln-table" id="mainTable">' +
-                            '<thead>' + cfg.thead + '</thead>' +
+                            '<thead>' + cfg.studentThead + '</thead>' +
                             '<tbody id="studentRows"></tbody>' +
                             '<tfoot>' +
                                 '<tr class="total-row">' +
@@ -727,39 +774,44 @@
             }
         }
 
-        // --- GENERATE CONSOLIDATED SCHOOL REPORT (PDF EXACT MATCH) ---
+        // --- DYNAMIC CONSOLIDATED REPORT (KANNADA, ENGLISH, MATHS) ---
         function generateConsolidatedReport() {
+            var subKey = masterData.currentSubject || "english";
+            var cfg = SUBJECT_CONFIGS[subKey] || SUBJECT_CONFIGS.english;
+
             document.getElementById('conSchoolDisplay').innerText = masterData.school || "-";
             document.getElementById('conClusterDisplay').innerText = masterData.cluster || "-";
             document.getElementById('conTalukDisplay').innerText = masterData.taluk || "-";
-            document.getElementById('conMonthDisplay').innerText = masterData.month || "-";
             document.getElementById('conDateDisplay').innerText = masterData.date || "-";
 
-            var classList = ["4", "5", "6", "7", "8", "9", "10"];
-            var tbody = document.getElementById('consolidatedBody');
-            tbody.innerHTML = "";
+            document.getElementById('conHeaderSubjectLine').innerHTML = cfg.conTitle;
+            document.getElementById('conHeaderFormTitle').innerText = cfg.conForm;
+            if (document.getElementById('conMonthDisplay')) {
+                document.getElementById('conMonthDisplay').innerText = masterData.month || "-";
+            }
 
+            var classList = ["4", "5", "6", "7", "8", "9", "10"];
             var grandTotalEnrollment = 0;
             var grandA = {};
             var grandB = {};
-            for (var col = 3; col <= 26; col++) {
+
+            for (var col = cfg.startCol; col <= cfg.totalCols; col++) {
                 grandA[col] = 0;
                 grandB[col] = 0;
             }
+
+            var rowsHtml = "";
 
             for (var i = 0; i < classList.length; i++) {
                 var c = classList[i];
                 var cData = masterData.classes[c] || { students: [], grades: {} };
                 var students = cData.students || [];
-                var gradesMap = (cData.grades && cData.grades.english) ? cData.grades.english : {};
+                var gradesMap = (cData.grades && cData.grades[subKey]) ? cData.grades[subKey] : {};
 
-                // Count valid students (enrollment)
                 var validCount = 0;
                 for (var s = 0; s < students.length; s++) {
                     if (students[s] && students[s].trim() !== "") validCount++;
                 }
-
-                // If empty rows exist but no names typed, take row count if grades filled
                 if (validCount === 0 && Object.keys(gradesMap).length > 0) {
                     for (var k in gradesMap) {
                         if (Object.keys(gradesMap[k]).length > 0) validCount++;
@@ -768,10 +820,9 @@
 
                 grandTotalEnrollment += validCount;
 
-                // Tally A and B for columns 3 to 26 for this class
                 var classA = {};
                 var classB = {};
-                for (var col = 3; col <= 26; col++) {
+                for (var col = cfg.startCol; col <= cfg.totalCols; col++) {
                     classA[col] = 0;
                     classB[col] = 0;
                 }
@@ -779,74 +830,81 @@
                 for (var s = 0; s < validCount; s++) {
                     var rowG = gradesMap[s] || {};
 
-                    // Cols 3 to 20
-                    for (var col = 3; col <= 20; col++) {
+                    // Sub-skills tally
+                    for (var col = cfg.startCol; col <= cfg.endCol; col++) {
                         if (rowG[col] === 'A') classA[col]++;
                         if (rowG[col] === 'B') classB[col]++;
                     }
 
-                    // Stage grades (21 to 24)
-                    var stg21 = evaluateRangeManual(rowG, 3, 6);
-                    var stg22 = evaluateRangeManual(rowG, 7, 11);
-                    var stg23 = evaluateRangeManual(rowG, 12, 16);
-                    var stg24 = evaluateRangeManual(rowG, 17, 20);
+                    // Stage grades calculation
+                    var rowVals = {};
+                    for (var st = 0; st < cfg.stages.length; st++) {
+                        var stg = cfg.stages[st];
+                        var res = evaluateRangeManual(rowG, stg.start, stg.end);
+                        rowVals[stg.id] = res;
+                        if (res === 'A') classA[stg.id]++;
+                        if (res === 'B') classB[stg.id]++;
+                    }
 
-                    if (stg21 === 'A') classA[21]++; if (stg21 === 'B') classB[21]++;
-                    if (stg22 === 'A') classA[22]++; if (stg22 === 'B') classB[22]++;
-                    if (stg23 === 'A') classA[23]++; if (stg23 === 'B') classB[23]++;
-                    if (stg24 === 'A') classA[24]++; if (stg24 === 'B') classB[24]++;
-
-                    // Finally 25 (A) & 26 (B)
-                    if (stg21 === 'A' && stg22 === 'A' && stg23 === 'A' && stg24 === 'A') {
-                        classA[25]++;
-                    } else if (stg21 === 'B' || stg22 === 'B' || stg23 === 'B' || stg24 === 'B') {
-                        classB[26]++;
+                    // Finally evaluation
+                    var fin = cfg.evalFinally(rowVals);
+                    for (var fCol in fin) {
+                        if (fin[fCol] === 'A') classA[fCol]++;
+                        if (fin[fCol] === 'B') classB[fCol]++;
                     }
                 }
 
-                // Add to Grand Total
-                for (var col = 3; col <= 26; col++) {
+                for (var col = cfg.startCol; col <= cfg.totalCols; col++) {
                     grandA[col] += classA[col];
                     grandB[col] += classB[col];
                 }
 
-                // Calculate Percent for B (FLN not achieved %)
-                var percentB = validCount > 0 ? Math.round((classB[26] / validCount) * 100) + "%" : "0%";
+                // Percent B calculation
+                var lastColIndex = cfg.totalCols;
+                var classBCount = classB[lastColIndex] || 0;
+                var percentB = validCount > 0 ? Math.round((classBCount / validCount) * 100) + "%" : "0%";
 
-                // Create Row A
-                var trA = document.createElement('tr');
-                var cellsA = '<td rowspan="2">' + (i + 1) + '</td>' +
-                             '<td rowspan="2" style="font-weight:bold;">' + c + 'th Class</td>' +
-                             '<td rowspan="2" style="font-weight:bold; color:blue;">' + validCount + '</td>' +
-                             '<td style="font-weight:bold;">A</td>';
-                for (var col = 3; col <= 26; col++) {
-                    cellsA += '<td>' + classA[col] + '</td>';
+                rowsHtml += '<tr>' +
+                                '<td rowspan="2">' + (i + 1) + '</td>' +
+                                '<td rowspan="2" style="font-weight:bold;">' + c + ' ನೆಯ ತರಗತಿ</td>' +
+                                '<td rowspan="2" style="font-weight:bold; color:blue;">' + validCount + '</td>' +
+                                '<td style="font-weight:bold;">A</td>';
+                for (var col = cfg.startCol; col <= cfg.totalCols; col++) {
+                    rowsHtml += '<td>' + classA[col] + '</td>';
                 }
-                cellsA += '<td rowspan="2" style="font-weight:bold;">' + percentB + '</td>';
-                trA.innerHTML = cellsA;
-                tbody.appendChild(trA);
-
-                // Create Row B
-                var trB = document.createElement('tr');
-                var cellsB = '<td style="font-weight:bold;">B</td>';
-                for (var col = 3; col <= 26; col++) {
-                    cellsB += '<td>' + classB[col] + '</td>';
+                rowsHtml += '<td rowspan="2" style="font-weight:bold;">' + percentB + '</td>' +
+                            '</tr>' +
+                            '<tr><td style="font-weight:bold;">B</td>';
+                for (var col = cfg.startCol; col <= cfg.totalCols; col++) {
+                    rowsHtml += '<td>' + classB[col] + '</td>';
                 }
-                trB.innerHTML = cellsB;
-                tbody.appendChild(trB);
+                rowsHtml += '</tr>';
             }
 
-            // Populate Grand Totals
-            document.getElementById('grandEnrollment').innerText = grandTotalEnrollment;
-            for (var col = 3; col <= 26; col++) {
-                var elA = document.getElementById('gtA_' + col);
-                var elB = document.getElementById('gtB_' + col);
-                if (elA) elA.innerText = grandA[col];
-                if (elB) elB.innerText = grandB[col];
-            }
+            var grandPercentB = grandTotalEnrollment > 0 ? Math.round((grandB[cfg.totalCols] / grandTotalEnrollment) * 100) + "%" : "0%";
 
-            var grandPercentB = grandTotalEnrollment > 0 ? Math.round((grandB[26] / grandTotalEnrollment) * 100) + "%" : "0%";
-            document.getElementById('gtPercentB').innerText = grandPercentB;
+            var footHtml = '<tr class="total-row" style="background:#f9f9f9;">' +
+                                '<td rowspan="2" colspan="2" style="font-weight:bold;">ಅಂತಿಮ ಶಾಲಾ ಒಟ್ಟು</td>' +
+                                '<td rowspan="2" style="font-weight:bold; font-size:11px;">' + grandTotalEnrollment + '</td>' +
+                                '<td style="font-weight:bold;">ಒಟ್ಟು A</td>';
+            for (var col = cfg.startCol; col <= cfg.totalCols; col++) {
+                footHtml += '<td>' + grandA[col] + '</td>';
+            }
+            footHtml += '<td>0%</td></tr>' +
+                        '<tr class="total-row" style="background:#f9f9f9;">' +
+                            '<td style="font-weight:bold;">ಒಟ್ಟು B</td>';
+            for (var col = cfg.startCol; col <= cfg.totalCols; col++) {
+                footHtml += '<td>' + grandB[col] + '</td>';
+            }
+            footHtml += '<td style="font-weight:bold; color:red;">' + grandPercentB + '</td></tr>';
+
+            var finalTableHtml = '<table class="fln-table">' +
+                                    '<thead>' + cfg.conThead + '</thead>' +
+                                    '<tbody>' + rowsHtml + '</tbody>' +
+                                    '<tfoot>' + footHtml + '</tfoot>' +
+                                 '</table>';
+
+            document.getElementById('consolidatedTableContainer').innerHTML = finalTableHtml;
         }
 
         function evaluateRangeManual(rowG, start, end) {
