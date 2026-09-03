@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="kn">
+<head>
+    <meta charset="UTF-8">
+    <title>FLN Baseline Stage Assessment - Form 1</title>
+    <style>
+        @page {
+            size: A4 landscape;
+            margin: 6mm 6mm 6mm 6mm;
+        }
+        * {
+            box-sizing: border-box;
+            font-family: 'Nudi', 'Tunga', 'Segoe UI', Tahoma, sans-serif;
+        }
+        body {
+            margin: 0;
+            padding: 10px;
+            font-size: 11px;
+            color: #000;
+            background: #fff;
+        }
+        .no-print {
+            margin-bottom: 12px;
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            font-size: 13px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .btn-print {
+            background-color: #198754;
+        }
+        .header-title {
+            text-align: center;
+            line-height: 1.35;
+        }
+        .header-title h3 {
+            margin: 1px 0;
+            font-size: 14px;
+        }
+        .header-title h2 {
+            margin: 2px 0;
+            font-size: 15px;
+            font-weight: bold;
+        }
+        .header-title h4 {
+            margin: 2px 0;
+            font-size: 13px;
+        }
+        .meta-table {
+            width: 100%;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            border-collapse: collapse;
+        }
+        .meta-table td {
+            font-size: 11px;
+            font-weight: bold;
+            padding: 2px 4px;
+        }
+        .input-line {
+            border: none;
+            border-bottom: 1px dotted #000;
+            outline: none;
+            font-weight: normal;
+            font-size: 11px;
+            padding: 1px 3px;
+        }
+
+        /* Main Table */
+        table.fln-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            font-size: 9.5px;
+        }
+        table.fln-table th, table.fln-table td {
+            border: 1px solid #000;
+            padding: 2px 1px;
+            vertical-align: middle;
+        }
+        table.fln-table th {
+            background-color: #ffffff;
+            font-weight: bold;
+        }
+        .col-num {
+            font-size: 9px;
+            font-weight: bold;
+            background-color: #f7f7f7;
+        }
+        select.grade-select {
+            width: 95%;
+            font-size: 10px;
+            font-weight: bold;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 2px;
+            background-color: #fff;
+            padding: 1px 0;
+            cursor: pointer;
+        }
+        .auto-cell {
+            font-weight: bold;
+            font-size: 10px;
+            background-color: #fcfcfc;
+        }
+        .total-row td {
+            font-weight: bold;
+            font-size: 10.5px;
+        }
+        .student-name {
+            width: 96%;
+            border: none;
+            outline: none;
+            font-size: 10.5px;
+            background: transparent;
+        }
+
+        /* Instructions */
+        .instructions {
+            margin-top: 6px;
+            border: 1px solid #000;
+            font-size: 9.5px;
+            line-height: 1.35;
+            padding: 3px 5px;
+        }
+        .instructions-header {
+            font-weight: bold;
+            color: #b00000;
+            margin-bottom: 2px;
+        }
+        .inst-item {
+            display: flex;
+            margin-bottom: 2px;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 1px;
+        }
+        .inst-item:last-child {
+            border-bottom: none;
+        }
+        .inst-num {
+            width: 20px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        /* Footer Signatures */
+        .footer-signs {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 0 10px;
+        }
+
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            body {
+                padding: 0;
+            }
+            select {
+                appearance: none;
+                -webkit-appearance: none;
+                border: none !important;
+                background: transparent !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="no-print">
+        <button class="btn" onclick="addStudentRow()">+ ವಿದ್ಯಾರ್ಥಿ ಸಾಲು ಸೇರಿಸಿ (Add Row)</button>
+        <button class="btn btn-print" onclick="window.print()">🖨️ ಪ್ರಿಂಟ್ ಮಾಡಿ / Save as PDF</button>
+    </div>
+
+    <!-- Header Section -->
+    <div class="header-title">
+        <h3>ಕರ್ನಾಟಕ ಸರ್ಕಾರ</h3>
+        <h3>ಆಯುಕ್ತರ ಕಾರ್ಯಾಲಯ ಧಾರವಾಡ ಆಯುಕ್ತಾಲಯ ಶಾಲಾ ಶಿಕ್ಷಣ ಇಲಾಖೆ ಧಾರವಾಡ</h3>
+        <h2>FLN ಸಾಧಿಸದ ಮಕ್ಕಳಲ್ಲಿ ಸಾಧಿಸಬೇಕಾದ ಕಲಿಕಾ ಫಲಗಳ ಹಂತವಾರು ಮೌಲ್ಯಾಂಕನ ನಮೂನೆ - 2026-27</h2>
+        <h4>Class 4th To 10 : Second Language - English &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; District: <input type="text" class="input-line" style="width: 140px;"></h4>
+        <h4>ನಮೂನೆ-1 (Baseline Stage - ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome-1)</h4>
+    </div>
+
+    <!-- Metadata Section -->
+    <table class="meta-table">
+        <tr>
+            <td>School Name: <input type="text" class="input-line" style="width: 170px;"></td>
+            <td>Teacher Name: <input type="text" class="input-line" style="width: 130px;"></td>
+            <td>Cluster: <input type="text" class="input-line" style="width: 100px;"></td>
+            <td>Taluka: <input type="text" class="input-line" style="width: 90px;"></td>
+            <td>Class: <input type="text" class="input-line" style="width: 45px;"></td>
+            <td>Enrolment: <input type="text" class="input-line" style="width: 45px;"></td>
+        </tr>
+    </table>
+
+    <!-- Main Table -->
+    <table class="fln-table" id="mainTable">
+        <thead>
+            <tr>
+                <th rowspan="4" style="width: 22px;">SL<br>No</th>
+                <th rowspan="4" style="width: 125px;">Name of the<br>Students</th>
+                <th colspan="18">Alphabets, Words, Sentences and Short Para Stage</th>
+                <th colspan="4" rowspan="2">Baseline Stage<br><span style="font-size: 8.5px; font-weight: normal;">( English - FLN ನ 1ನೆ ಕಲಿಕಾ ಫಲಕ್ಕೆ ಹಂತವಾರು ಪಡೆದ ಗ್ರೇಡ್‌ಗಳು A / B )</span></th>
+                <th colspan="2" rowspan="2">Finally</th>
+            </tr>
+            <tr>
+                <th colspan="18">FLN LO-1. Reads simple sentences and a short paragraph with understanding.</th>
+            </tr>
+            <tr>
+                <th colspan="4">Letter Stage<br><span style="font-size: 8.5px; font-weight: normal;">(Alphabet / Vowels / consonants)</span></th>
+                <th colspan="5">Word Stage<br><span style="font-size: 8.5px; font-weight: normal;">(2/3/4/5 Letters' Words)</span></th>
+                <th colspan="5">Sentence Stage<br><span style="font-size: 8.5px; font-weight: normal;">(3 to 5 Sentences)</span></th>
+                <th colspan="4">Short Paragraph Stage<br><span style="font-size: 8.5px; font-weight: normal;">(3 to 5 Sentences)</span></th>
+                <th rowspan="2" style="width: 25px;">Letter<br>Stage<br>(3-6)</th>
+                <th rowspan="2" style="width: 25px;">Word<br>Stage<br>(7-11)</th>
+                <th rowspan="2" style="width: 25px;">Sentence<br>Stage<br>(12-16)</th>
+                <th rowspan="2" style="width: 25px;">Short<br>Paragraph<br>(17-20)</th>
+                <th rowspan="2" style="width: 23px;">A</th>
+                <th rowspan="2" style="width: 23px;">B</th>
+            </tr>
+            <tr style="font-size: 8.5px;">
+                <!-- Letter Stage (3-6) -->
+                <th style="width: 27px;">Alphabet-<br>Capital<br>&amp; Small</th>
+                <th style="width: 25px;">Vowels<br>&amp;<br>Sounds</th>
+                <th style="width: 28px;">Consonants<br>&amp;<br>Sounds</th>
+                <th style="width: 25px;">Orally<br>(3 to 5)</th>
+                
+                <!-- Word Stage (7-11) -->
+                <th style="width: 25px;">2<br>Letters<br>Words</th>
+                <th style="width: 25px;">3<br>Letters<br>Words</th>
+                <th style="width: 25px;">4<br>Letters<br>Words</th>
+                <th style="width: 25px;">5<br>Letters<br>Words</th>
+                <th style="width: 25px;">Orally<br>(7 to 10)</th>
+
+                <!-- Sentence Stage (12-16) -->
+                <th style="width: 27px;">2<br>Words'<br>Sentence</th>
+                <th style="width: 27px;">3<br>Words'<br>Sentence</th>
+                <th style="width: 27px;">4<br>Words'<br>Sentence</th>
+                <th style="width: 27px;">5<br>Words'<br>Sentence</th>
+                <th style="width: 27px;">Orally<br>(12 to 15)</th>
+
+                <!-- Short Paragraph Stage (17-20) -->
+                <th style="width: 26px;">3<br>Sentences<br>Paragraph</th>
+                <th style="width: 26px;">4<br>Sentences<br>Paragraph</th>
+                <th style="width: 26px;">5<br>Sentences<br>Paragraph</th>
+                <th style="width: 26px;">Orally<br>(17 to 20)</th>
+            </tr>
+            <!-- Column Numbers (1 to 26) -->
+            <tr class="col-num">
+                <td>1</td>
+                <td>2</td>
+                <td>3</td><td>4</td><td>5</td><td>6</td>
+                <td>7</td><td>8</td><td>9</td><td>10</td><td>11</td>
+                <td>12</td><td>13</td><td>14</td><td>15</td><td>16</td>
+                <td>17</td><td>18</td><td>19</td><td>20</td>
+                <td>21</td><td>22</td><td>23</td><td>24</td>
+                <td>25</td><td>26</td>
+            </tr>
+        </thead>
+        <tbody id="studentRows">
+            <!-- 5 rows by default -->
+        </tbody>
+        <tfoot>
+            <tr class="total-row">
+                <td colspan="2" style="text-align: right; padding-right: 8px;">ಒಟ್ಟು A</td>
+                <!-- Columns 3 to 26 totals -->
+                <td id="totA_3">0</td><td id="totA_4">0</td><td id="totA_5">0</td><td id="totA_6">0</td>
+                <td id="totA_7">0</td><td id="totA_8">0</td><td id="totA_9">0</td><td id="totA_10">0</td><td id="totA_11">0</td>
+                <td id="totA_12">0</td><td id="totA_13">0</td><td id="totA_14">0</td><td id="totA_15">0</td><td id="totA_16">0</td>
+                <td id="totA_17">0</td><td id="totA_18">0</td><td id="totA_19">0</td><td id="totA_20">0</td>
+                <td id="totA_21">0</td><td id="totA_22">0</td><td id="totA_23">0</td><td id="totA_24">0</td>
+                <td id="totA_25">0</td><td id="totA_26">-</td>
+            </tr>
+            <tr class="total-row">
+                <td colspan="2" style="text-align: right; padding-right: 8px;">ಒಟ್ಟು B</td>
+                <!-- Columns 3 to 26 totals -->
+                <td id="totB_3">0</td><td id="totB_4">0</td><td id="totB_5">0</td><td id="totB_6">0</td>
+                <td id="totB_7">0</td><td id="totB_8">0</td><td id="totB_9">0</td><td id="totB_10">0</td><td id="totB_11">0</td>
+                <td id="totB_12">0</td><td id="totB_13">0</td><td id="totB_14">0</td><td id="totB_15">0</td><td id="totB_16">0</td>
+                <td id="totB_17">0</td><td id="totB_18">0</td><td id="totB_19">0</td><td id="totB_20">0</td>
+                <td id="totB_21">0</td><td id="totB_22">0</td><td id="totB_23">0</td><td id="totB_24">0</td>
+                <td id="totB_25">-</td><td id="totB_26">0</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <!-- Instructions Table -->
+    <div class="instructions">
+        <div class="instructions-header">ವಿಶೇಷ ಸೂಚನೆ: ಆರಂಭಿಕ ಹಂತದ ನಮೂನೆಯಲ್ಲಿ FLN ಕಲಿಕಾ ಪ್ರಗತಿಯನ್ನು ನಮೂದಿಸುವಾಗ ಅನುಸರಿಸಬೇಕಾದ ಕ್ರಮಗಳು:</div>
+        <div class="inst-item">
+            <div class="inst-num">1</div>
+            <div>ಸದರಿ ನಮೂನೆಯನ್ನು ದ್ವಿತೀಯ ಭಾಷೆ - ಇಂಗ್ಲಿಷ್ ನ FLN ಕಲಿಕಾ ಫಲ ಸಂಖ್ಯೆ 1 ಕ್ಕೆ ಮಾತ್ರ ಉಪಯೋಗಿಸುವುದು.</div>
+        </div>
+        <div class="inst-item">
+            <div class="inst-num">2</div>
+            <div><strong>ಕಾಲಂ ನಂಬರ್ 21 ನ್ನು ಭರ್ತಿ ಮಾಡುವಾಗ:</strong> ಮಕ್ಕಳ ನೈಜ ಕಲಿಕಾ ಪ್ರಗತಿಯನ್ನು ಪರಿಶೀಲಿಸಿ 3 ರಿಂದ 6 ರವರೆಗಿನ ಎಲ್ಲ ಕಾಲಂಗಳಲ್ಲಿ A ಪಡೆದಿದ್ದರೆ ಮಾತ್ರ A ಎಂದು ಹಾಗೂ ಯಾವುದಾದರೂ ಒಂದಕ್ಕೆ B ಶ್ರೇಣಿ ಪಡೆದಿದ್ದರೆ B ಎಂದು ನಮೂದಿಸುವುದು.</div>
+        </div>
+        <div class="inst-item">
+            <div class="inst-num">3</div>
+            <div><strong>ಕಾಲಂ ನಂಬರ್ 22 ನ್ನು ಭರ್ತಿ ಮಾಡುವಾಗ:</strong> ಮಕ್ಕಳ ನೈಜ ಕಲಿಕಾ ಪ್ರಗತಿಯನ್ನು ಪರಿಶೀಲಿಸಿ 7 ರಿಂದ 11 ರವರೆಗಿನ ಎಲ್ಲ ಕಾಲಂಗಳಲ್ಲಿ A ಪಡೆದಿದ್ದರೆ ಮಾತ್ರ A ಎಂದು ಹಾಗೂ ಯಾವುದಾದರೂ ಒಂದಕ್ಕೆ B ಶ್ರೇಣಿ ಪಡೆದಿದ್ದರೆ B ಎಂದು ನಮೂದಿಸುವುದು.</div>
+        </div>
+        <div class="inst-item">
+            <div class="inst-num">4</div>
+            <div><strong>ಕಾಲಂ ನಂಬರ್ 23 ನ್ನು ಭರ್ತಿ ಮಾಡುವಾಗ:</strong> ಮಕ್ಕಳ ನೈಜ ಕಲಿಕಾ ಪ್ರಗತಿಯನ್ನು ಪರಿಶೀಲಿಸಿ 12 ರಿಂದ 16 ರವರೆಗಿನ ಎಲ್ಲ ಕಾಲಂಗಳಲ್ಲಿ A ಪಡೆದಿದ್ದರೆ ಮಾತ್ರ A ಎಂದು ಹಾಗೂ ಯಾವುದಾದರೂ ಒಂದಕ್ಕೆ B ಶ್ರೇಣಿ ಪಡೆದಿದ್ದರೆ B ಎಂದು ನಮೂದಿಸುವುದು.</div>
+        </div>
+        <div class="inst-item">
+            <div class="inst-num">5</div>
+            <div><strong>ಕಾಲಂ ನಂಬರ್ 24 ನ್ನು ಭರ್ತಿ ಮಾಡುವಾಗ:</strong> ಮಕ್ಕಳ ನೈಜ ಕಲಿಕಾ ಪ್ರಗತಿಯನ್ನು ಪರಿಶೀಲಿಸಿ 17 ರಿಂದ 20 ರವರೆಗಿನ ಎಲ್ಲ ಕಾಲಂಗಳಲ್ಲಿ A ಪಡೆದಿದ್ದರೆ ಮಾತ್ರ A ಎಂದು ಹಾಗೂ ಯಾವುದಾದರೂ ಒಂದಕ್ಕೆ B ಶ್ರೇಣಿ ಪಡೆದಿದ್ದರೆ B ಎಂದು ನಮೂದಿಸುವುದು.</div>
+        </div>
+        <div class="inst-item">
+            <div class="inst-num">6</div>
+            <div><strong>ಕಾಲಂ ನಂಬರ್ 25/26 ನ್ನು ಭರ್ತಿ ಮಾಡುವಾಗ:</strong> ಮಕ್ಕಳ ಒಟ್ಟಾರೆ ಕಲಿಕಾ ಪ್ರಗತಿಯನ್ನು ಪರಿಶೀಲಿಸಿ 21 ರಿಂದ 24 ರವರೆಗಿನ ಎಲ್ಲ ಕಾಲಂಗಳಲ್ಲಿ A ಪಡೆದಿದ್ದರೆ A (Col 25) ಎಂದು ಹಾಗೂ ಯಾವುದಾದರೂ ಒಂದಕ್ಕೆ B ಶ್ರೇಣಿ ಪಡೆದಿದ್ದರೆ B (Col 26) ನಲ್ಲಿ ನಮೂದಿಸುವುದು. ಅಂತಿಮವಾಗಿ ಆಯಾ ತರಗತಿ ಮಕ್ಕಳ ದಾಖಲಾತಿ ಸಂಖ್ಯೆಗೆ ಒಟ್ಟು ತಾಳೆಯಾಗುವುದು.</div>
+        </div>
+    </div>
+
+    <!-- Signatures -->
+    <div class="footer-signs">
+        <div>ದಿನಾಂಕ: <input type="text" class="input-line" style="width: 100px;"></div>
+        <div>ಶಿಕ್ಷಕರ ಸಹಿ: .......................................</div>
+        <div>ಪರಿಶೀಲಕರ ಸಹಿ: .......................................</div>
+        <div>ಶಾಲಾ ಮುಖ್ಯಸ್ಥರು: .......................................</div>
+    </div>
+
+    <!-- Calculations Script -->
+    <script>
+        let rowCount = 0;
+
+        function createDropdown(colIndex) {
+            return `<select class="grade-select" data-col="${colIndex}" onchange="calculateRow(this)">
+                        <option value=""></option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                    </select>`;
+        }
+
+        function addStudentRow() {
+            rowCount++;
+            const tbody = document.getElementById('studentRows');
+            const tr = document.createElement('tr');
+            tr.id = `row_${rowCount}`;
+
+            let cells = `
+                <td>${rowCount}</td>
+                <td><input type="text" class="student-name" placeholder="ವಿದ್ಯಾರ್ಥಿ ಹೆಸರು"></td>
+            `;
+
+            // Dropdown Columns 3 to 20
+            for (let c = 3; c <= 20; c++) {
+                cells += `<td>${createDropdown(c)}</td>`;
+            }
+
+            // Auto Columns 21, 22, 23, 24
+            cells += `<td class="auto-cell" id="c21_${rowCount}"></td>`;
+            cells += `<td class="auto-cell" id="c22_${rowCount}"></td>`;
+            cells += `<td class="auto-cell" id="c23_${rowCount}"></td>`;
+            cells += `<td class="auto-cell" id="c24_${rowCount}"></td>`;
+
+            // Finally Columns 25 (A), 26 (B)
+            cells += `<td class="auto-cell" id="c25_${rowCount}"></td>`;
+            cells += `<td class="auto-cell" id="c26_${rowCount}"></td>`;
+
+            tr.innerHTML = cells;
+            tbody.appendChild(tr);
+        }
+
+        // Logic: All 'A' -> 'A'; Any 'B' -> 'B'
+        function evaluateStage(row, startCol, endCol) {
+            let hasB = false;
+            let hasEmpty = false;
+            let filledCount = 0;
+
+            for (let c = startCol; c <= endCol; c++) {
+                const sel = row.querySelector(`select[data-col="${c}"]`);
+                const val = sel ? sel.value : "";
+                if (val === "B") hasB = true;
+                if (val === "") hasEmpty = true;
+                if (val !== "") filledCount++;
+            }
+
+            if (filledCount === 0) return "";
+            if (hasB) return "B";
+            if (!hasEmpty && !hasB) return "A";
+            return ""; // Incomplete
+        }
+
+        function calculateRow(element) {
+            const row = element.closest('tr');
+            const rId = row.id.split('_')[1];
+
+            // 1. Column 21: Letter Stage (3 to 6)
+            const g21 = evaluateStage(row, 3, 6);
+            document.getElementById(`c21_${rId}`).innerText = g21;
+
+            // 2. Column 22: Word Stage (7 to 11)
+            const g22 = evaluateStage(row, 7, 11);
+            document.getElementById(`c22_${rId}`).innerText = g22;
+
+            // 3. Column 23: Sentence Stage (12 to 16)
+            const g23 = evaluateStage(row, 12, 16);
+            document.getElementById(`c23_${rId}`).innerText = g23;
+
+            // 4. Column 24: Paragraph Stage (17 to 20)
+            const g24 = evaluateStage(row, 17, 20);
+            document.getElementById(`c24_${rId}`).innerText = g24;
+
+            // 5. Finally Columns 25 (A) & 26 (B): Check 21 to 24
+            const stages = [g21, g22, g23, g24];
+            const c25 = document.getElementById(`c25_${rId}`);
+            const c26 = document.getElementById(`c26_${rId}`);
+
+            c25.innerText = "";
+            c26.innerText = "";
+
+            if (stages.every(g => g === "A")) {
+                c25.innerText = "A";
+                c26.innerText = "";
+            } else if (stages.some(g => g === "B")) {
+                c25.innerText = "";
+                c26.innerText = "B";
+            }
+
+            calculateTotals();
+        }
+
+        function calculateTotals() {
+            // Calculate column totals for 3 to 20
+            for (let c = 3; c <= 20; c++) {
+                let countA = 0;
+                let countB = 0;
+                document.querySelectorAll(`select[data-col="${c}"]`).forEach(sel => {
+                    if (sel.value === "A") countA++;
+                    if (sel.value === "B") countB++;
+                });
+                document.getElementById(`totA_${c}`).innerText = countA;
+                document.getElementById(`totB_${c}`).innerText = countB;
+            }
+
+            // Calculate totals for Auto Columns 21, 22, 23, 24
+            for (let c = 21; c <= 24; c++) {
+                let countA = 0;
+                let countB = 0;
+                for (let r = 1; r <= rowCount; r++) {
+                    const val = document.getElementById(`c${c}_${r}`)?.innerText;
+                    if (val === "A") countA++;
+                    if (val === "B") countB++;
+                }
+                document.getElementById(`totA_${c}`).innerText = countA;
+                document.getElementById(`totB_${c}`).innerText = countB;
+            }
+
+            // Finally Column 25 (A count) and Column 26 (B count)
+            let finalCountA = 0;
+            let finalCountB = 0;
+            for (let r = 1; r <= rowCount; r++) {
+                if (document.getElementById(`c25_${r}`)?.innerText === "A") finalCountA++;
+                if (document.getElementById(`c26_${r}`)?.innerText === "B") finalCountB++;
+            }
+            document.getElementById(`totA_25`).innerText = finalCountA;
+            document.getElementById(`totB_26`).innerText = finalCountB;
+        }
+
+        // Initialize 5 rows on load
+        window.onload = function() {
+            for (let i = 0; i < 5; i++) {
+                addStudentRow();
+            }
+        };
+    </script>
+</body>
+</html>
