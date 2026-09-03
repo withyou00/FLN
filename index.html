@@ -3,16 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FLN Baseline Stage Assessment (ಕನ್ನಡ, ಇಂಗ್ಲಿಷ್, ಗಣಿತ)</title>
+    <title>FLN Baseline Stage Assessment & Consolidated Form</title>
     
-    <!-- WhatsApp Preview Meta Tags -->
-    <meta property="og:title" content="FLN ಹಂತವಾರು ಮೌಲ್ಯಾಂಕನ ಡಿಜಿಟಲ್ ನಮೂನೆ (2026-27)">
-    <meta property="og:description" content="ಕನ್ನಡ, ಇಂಗ್ಲಿಷ್ ಮತ್ತು ಗಣಿತ ವಿಷಯಗಳ ಆಟೋ ಗ್ರೇಡಿಂಗ್, ಆಟೋ ಕೌಂಟ್, Excel Import ಮತ್ತು Auto-Save ಸೌಲಭ್ಯವಿರುವ ಡಿಜಿಟಲ್ ಟೂಲ್.">
-    <meta property="og:image" content="https://withyou00.github.io/FLN/preview.jpg">
-    <meta property="og:url" content="https://withyou00.github.io/FLN/">
-    <meta property="og:type" content="website">
-
-    <!-- SheetJS for Excel Import -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     
     <style>
@@ -42,6 +34,20 @@
             border: 1px solid #ddd;
             flex-wrap: wrap;
         }
+        .tab-btn {
+            font-size: 12.5px;
+            font-weight: bold;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 1px solid #0d6efd;
+            background: #fff;
+            color: #0d6efd;
+        }
+        .tab-btn.active {
+            background: #0d6efd;
+            color: #fff;
+        }
         .select-control {
             font-size: 12px;
             font-weight: bold;
@@ -55,7 +61,7 @@
             background-color: #0d6efd;
             color: white;
             border: none;
-            padding: 6px 13px;
+            padding: 6px 12px;
             font-size: 12px;
             cursor: pointer;
             border-radius: 4px;
@@ -64,31 +70,15 @@
         .btn-excel { background-color: #198754; }
         .btn-print { background-color: #212529; }
         .btn-clear { background-color: #dc3545; }
-        
-        .save-indicator {
-            font-size: 11px;
-            color: #198754;
-            font-weight: bold;
-            margin-left: auto;
-        }
 
         .header-title {
             text-align: center;
             line-height: 1.2;
         }
-        .header-title h3 {
-            margin: 1px 0;
-            font-size: 12.5px;
-        }
-        .header-title h2 {
-            margin: 2px 0;
-            font-size: 14px;
-            font-weight: bold;
-        }
-        .header-title h4 {
-            margin: 1px 0;
-            font-size: 12px;
-        }
+        .header-title h3 { margin: 1px 0; font-size: 12.5px; }
+        .header-title h2 { margin: 2px 0; font-size: 14px; font-weight: bold; }
+        .header-title h4 { margin: 1px 0; font-size: 12px; }
+
         .meta-table {
             width: 100%;
             margin: 4px 0 2px 0;
@@ -107,13 +97,12 @@
             padding: 1px 3px;
         }
 
-        /* Main Table with Wider Student Name Column */
+        /* Tables */
         table.fln-table {
             width: 100%;
             border-collapse: collapse;
             text-align: center;
             font-size: 8.8px;
-            table-layout: auto;
         }
         table.fln-table th, table.fln-table td {
             border: 1px solid #000;
@@ -149,8 +138,6 @@
             font-weight: bold;
             font-size: 9.5px;
         }
-        
-        /* Enlarged Student Name Input */
         .student-name {
             width: 96%;
             border: none;
@@ -161,7 +148,6 @@
             padding: 2px 4px;
             text-align: left;
         }
-
         .del-btn {
             background: #ff4d4f;
             color: white;
@@ -176,9 +162,7 @@
             margin-left: 1px;
             display: inline-block;
             vertical-align: middle;
-            font-weight: bold;
         }
-        .del-btn:hover { background: #d9363e; }
 
         .footer-signs {
             margin-top: 25px;
@@ -193,9 +177,7 @@
             .no-print, .del-btn {
                 display: none !important;
             }
-            body {
-                padding: 0;
-            }
+            body { padding: 0; }
             select {
                 appearance: none;
                 -webkit-appearance: none;
@@ -207,96 +189,201 @@
 </head>
 <body>
 
-    <!-- Controls Panel -->
+    <!-- Controls Panel with View Switcher -->
     <div class="no-print">
-        <label><strong>ವಿಷಯ:</strong> 
-            <select id="subjectSelect" class="select-control" onchange="changeSubject()">
-                <option value="kannada">ಕನ್ನಡ (Kannada)</option>
-                <option value="english" selected>ಇಂಗ್ಲಿಷ್ (English)</option>
-                <option value="maths">ಗಣಿತ (Mathematics)</option>
-            </select>
-        </label>
+        <button class="tab-btn active" id="tabStudent" onclick="switchView('student')">📝 ವಿದ್ಯಾರ್ಥಿ ನಮೂನೆ (Student Form)</button>
+        <button class="tab-btn" id="tabConsolidated" onclick="switchView('consolidated')">📊 ಶಾಲಾ ಕ್ರೋಢೀಕೃತ ನಮೂನೆ (Consolidated Form)</button>
 
-        <label><strong>ತರಗತಿ:</strong> 
-            <select id="classSelect" class="select-control" onchange="changeClass()">
-                <option value="4">ತರಗತಿ 4</option>
-                <option value="5">ತರಗತಿ 5</option>
-                <option value="6">ತರಗತಿ 6</option>
-                <option value="7">ತರಗತಿ 7</option>
-                <option value="8">ತರಗತಿ 8</option>
-                <option value="9">ತರಗತಿ 9</option>
-                <option value="10">ತರಗತಿ 10</option>
-            </select>
-        </label>
+        <span style="border-left: 2px solid #ccc; height: 25px; margin: 0 5px;"></span>
 
-        <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display:none;" onchange="importExcelNames(event)">
-        <button class="btn btn-excel" onclick="document.getElementById('excelFileInput').click()">📥 Excel ಇಂಪೋರ್ಟ್</button>
-        <button class="btn" onclick="addNewStudent()">+ ಸಾಲು ಸೇರಿಸಿ</button>
-        <button class="btn btn-clear" onclick="clearTable()">🗑️ Clear All</button>
+        <span id="studentControls">
+            <label><strong>ವಿಷಯ:</strong> 
+                <select id="subjectSelect" class="select-control" onchange="changeSubject()">
+                    <option value="english" selected>ಇಂಗ್ಲಿಷ್ (English)</option>
+                    <option value="kannada">ಕನ್ನಡ (Kannada)</option>
+                    <option value="maths">ಗಣಿತ (Mathematics)</option>
+                </select>
+            </label>
+
+            <label><strong>ತರಗತಿ:</strong> 
+                <select id="classSelect" class="select-control" onchange="changeClass()">
+                    <option value="4">4th Class</option>
+                    <option value="5">5th Class</option>
+                    <option value="6">6th Class</option>
+                    <option value="7">7th Class</option>
+                    <option value="8">8th Class</option>
+                    <option value="9">9th Class</option>
+                    <option value="10">10th Class</option>
+                </select>
+            </label>
+
+            <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display:none;" onchange="importExcelNames(event)">
+            <button class="btn btn-excel" onclick="document.getElementById('excelFileInput').click()">📥 Excel ಇಂಪೋರ್ಟ್</button>
+            <button class="btn" onclick="addNewStudent()">+ ಸಾಲು ಸೇರಿಸಿ</button>
+            <button class="btn btn-clear" onclick="clearCurrentClass()">🗑️ Clear</button>
+        </span>
+
         <button class="btn btn-print" onclick="window.print()">🖨️ Print / Save PDF</button>
+    </div>
 
-        <div class="save-indicator" id="saveIndicator">
-            💾 ಆಟೋ ಸೇವ್ ಆಗಿದೆ
+    <!-- VIEW 1: STUDENT LEVEL FORM -->
+    <div id="studentView">
+        <div class="header-title">
+            <h3>ಕರ್ನಾಟಕ ಸರ್ಕಾರ</h3>
+            <h3>ಆಯುಕ್ತರ ಕಾರ್ಯಾಲಯ ಧಾರವಾಡ ಆಯುಕ್ತಾಲಯ ಶಾಲಾ ಶಿಕ್ಷಣ ಇಲಾಖೆ ಧಾರವಾಡ</h3>
+            <h2>FLN ಸಾಧಿಸದ ಮಕ್ಕಳಲ್ಲಿ ಪ್ರಾವೀಣ್ಯತೆ ಸಾಧಿಸಬೇಕಾದ ಕಲಿಕಾ ಫಲಗಳ ಹಂತವಾರು ಮೌಲ್ಯಾಂಕನ ನಮೂನೆ - 2026-27</h2>
+            <h4 id="headerSubjectLine">Class 4th To 10 : Second Language - English &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Month: <input type="text" id="monthInput" class="input-line" style="width: 110px;" oninput="saveAppData()"></h4>
+            <h4 id="headerOutcomeLine">ನಮೂನೆ-1 (Baseline Stage - ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome-1)</h4>
+        </div>
+
+        <table class="meta-table">
+            <tr>
+                <td style="width: 32%;">School Name: <input type="text" id="schoolNameInput" class="input-line" style="width: 70%;" oninput="saveAppData()"></td>
+                <td style="width: 25%;">Teacher Name: <input type="text" id="teacherNameInput" class="input-line" style="width: 65%;" oninput="saveAppData()"></td>
+                <td style="width: 18%;">Cluster: <input type="text" id="clusterInput" class="input-line" style="width: 60%;" oninput="saveAppData()"></td>
+                <td style="width: 15%;">Taluka: <input type="text" id="talukInput" class="input-line" style="width: 55%;" oninput="saveAppData()"></td>
+                <td style="width: 10%;">Class: <span id="displayClass" style="font-weight:bold; color:blue;">4th Class</span></td>
+            </tr>
+        </table>
+
+        <div id="tableContainer"></div>
+
+        <div class="footer-signs">
+            <div>ದಿನಾಂಕ: <input type="text" id="dateInput" class="input-line" style="width: 100px;" oninput="saveAppData()"></div>
+            <div>ಶಿಕ್ಷಕರ ಸಹಿ: ........................</div>
+            <div>ಪರಿಶೀಲಕರ ಸಹಿ: ........................</div>
+            <div>ಶಾಲಾ ಮುಖ್ಯಸ್ಥರು: ........................</div>
         </div>
     </div>
 
-    <!-- Header Block -->
-    <div class="header-title">
-        <h3>ಕರ್ನಾಟಕ ಸರ್ಕಾರ</h3>
-        <h3>ಆಯುಕ್ತರ ಕಾರ್ಯಾಲಯ ಧಾರವಾಡ ಆಯುಕ್ತಾಲಯ ಶಾಲಾ ಶಿಕ್ಷಣ ಇಲಾಖೆ ಧಾರವಾಡ</h3>
-        <h2>FLN ಸಾಧಿಸದ ಮಕ್ಕಳಲ್ಲಿ ಸಾಧಿಸಬೇಕಾದ ಕಲಿಕಾ ಫಲಗಳ ಹಂತವಾರು ಮೌಲ್ಯಾಂಕನ ನಮೂನೆ - 2026-27</h2>
-        <h4 id="headerSubjectLine">Class 4th To 10 : Second Language - English &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Month: <input type="text" id="monthOrDistrictInput" class="input-line" style="width: 110px;" oninput="saveAppData()"></h4>
-        <h4 id="headerOutcomeLine">ನಮೂನೆ-1 (Baseline Stage - ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome-1)</h4>
+    <!-- VIEW 2: SCHOOL LEVEL CONSOLIDATED FORM (Exact PDF Format) -->
+    <div id="consolidatedView" style="display:none;">
+        <div class="header-title">
+            <h3>ಕರ್ನಾಟಕ ಸರ್ಕಾರ</h3>
+            <h3>ಆಯುಕ್ತರ ಕಾರ್ಯಾಲಯ ಧಾರವಾಡ ಆಯುಕ್ತಾಲಯ ಶಾಲಾ ಶಿಕ್ಷಣ ಇಲಾಖೆ ಧಾರವಾಡ</h3>
+            <h2>FLN ಸಾಧಿಸದ ಮಕ್ಕಳಲ್ಲಿ ಪ್ರಾವೀಣ್ಯತೆ ಸಾಧಿಸಬೇಕಾದ ಕಲಿಕಾ ಫಲಗಳ ಹಂತವಾರು ಮೌಲ್ಯಾಂಕನ ನಮೂನೆ - 2026-27</h2>
+            <h4>Class 4th To 10 : Second Language - English &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Month: <span id="conMonthDisplay"></span></h4>
+            <h2>ಶಾಲಾ ಹಂತದ ಕ್ರೋಢೀಕೃತ ನಮೂನೆ-1 (Baseline Stage - ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome-1)</h2>
+        </div>
+
+        <table class="meta-table">
+            <tr>
+                <td style="width: 30%;">School Name: <span id="conSchoolDisplay"></span></td>
+                <td style="width: 25%;">Cluster: <span id="conClusterDisplay"></span></td>
+                <td style="width: 25%;">Taluka: <span id="conTalukDisplay"></span></td>
+                <td style="width: 20%;">Govt/Aided/Unaided: <input type="text" class="input-line" id="schoolTypeInput" style="width: 80px;" oninput="saveAppData()"></td>
+            </tr>
+        </table>
+
+        <table class="fln-table">
+            <thead>
+                <tr>
+                    <th rowspan="4" style="width:24px;">SL<br>No</th>
+                    <th rowspan="4" style="width:55px;">Class</th>
+                    <th rowspan="4" style="width:45px;">Enroll<br>ment</th>
+                    <th rowspan="4" style="width:35px;">CLASS</th>
+                    <th colspan="18">Alphabets, Words, Sentences and Short Para Stage</th>
+                    <th colspan="4" rowspan="2">Baseline Stage<br><span style="font-size:7px;font-weight:normal;">(English - FLN ನ 1ನೆ ಕಲಿಕಾ ಫಲಕೆ ಗ್ರೇಡ್‌ಗಳು A/B)</span></th>
+                    <th colspan="2" rowspan="2">Finally</th>
+                    <th rowspan="4" style="width:35px;">%</th>
+                </tr>
+                <tr>
+                    <th colspan="18">FLN LO-1. Reads simple sentences and a short paragraph with understanding.</th>
+                </tr>
+                <tr>
+                    <th colspan="4">Letter Stage<br><span style="font-weight:normal;font-size:7px;">(Alphabet/Vowels/consonants)</span></th>
+                    <th colspan="5">Word Stage<br><span style="font-weight:normal;font-size:7px;">(2/3/4/5 Letters Words)</span></th>
+                    <th colspan="5">Sentence Stage<br><span style="font-weight:normal;font-size:7px;">(3 to 5 Sentences)</span></th>
+                    <th colspan="4">Short Paragraph Stage<br><span style="font-weight:normal;font-size:7px;">(3 to 5 Sentences)</span></th>
+                    <th rowspan="2" style="width:24px;">Letter<br>(3-6)</th>
+                    <th rowspan="2" style="width:24px;">Word<br>(7-11)</th>
+                    <th rowspan="2" style="width:24px;">Sentence<br>(12-16)</th>
+                    <th rowspan="2" style="width:24px;">Para<br>(17-20)</th>
+                    <th rowspan="2" style="width:22px;">A/B</th>
+                    <th rowspan="2" style="width:22px;">B</th>
+                </tr>
+                <tr style="font-size:7.5px;">
+                    <th style="width:20px;">Alpha</th><th style="width:20px;">Vowel</th><th style="width:20px;">Conso</th><th style="width:20px;">Oral</th>
+                    <th style="width:20px;">2-Ltr</th><th style="width:20px;">3-Ltr</th><th style="width:20px;">4-Ltr</th><th style="width:20px;">5-Ltr</th><th style="width:20px;">Oral</th>
+                    <th style="width:20px;">2-Wrd</th><th style="width:20px;">3-Wrd</th><th style="width:20px;">4-Wrd</th><th style="width:20px;">5-Wrd</th><th style="width:20px;">Oral</th>
+                    <th style="width:20px;">3-Sen</th><th style="width:20px;">4-Sen</th><th style="width:20px;">5-Sen</th><th style="width:20px;">Oral</th>
+                </tr>
+                <tr class="col-num">
+                    <td>1</td><td>2</td><td></td><td></td>
+                    <td>3</td><td>4</td><td>5</td><td>6</td>
+                    <td>7</td><td>8</td><td>9</td><td>10</td><td>11</td>
+                    <td>12</td><td>13</td><td>14</td><td>15</td><td>16</td>
+                    <td>17</td><td>18</td><td>19</td><td>20</td>
+                    <td>21</td><td>22</td><td>23</td><td>24</td>
+                    <td>25</td><td>26</td><td></td>
+                </tr>
+            </thead>
+            <tbody id="consolidatedBody">
+                <!-- Auto-populated from student evaluations -->
+            </tbody>
+            <tfoot>
+                <tr class="total-row" style="background:#f9f9f9;">
+                    <td rowspan="2" colspan="2" style="font-weight:bold;">ಅಂತಿಮ ಶಾಲಾ ಒಟ್ಟು</td>
+                    <td rowspan="2" id="grandEnrollment" style="font-weight:bold; font-size:11px;">0</td>
+                    <td style="font-weight:bold;">ಒಟ್ಟು A</td>
+                    <!-- Columns 3 to 26 grand totals -->
+                    <td id="gtA_3">0</td><td id="gtA_4">0</td><td id="gtA_5">0</td><td id="gtA_6">0</td>
+                    <td id="gtA_7">0</td><td id="gtA_8">0</td><td id="gtA_9">0</td><td id="gtA_10">0</td><td id="gtA_11">0</td>
+                    <td id="gtA_12">0</td><td id="gtA_13">0</td><td id="gtA_14">0</td><td id="gtA_15">0</td><td id="gtA_16">0</td>
+                    <td id="gtA_17">0</td><td id="gtA_18">0</td><td id="gtA_19">0</td><td id="gtA_20">0</td>
+                    <td id="gtA_21">0</td><td id="gtA_22">0</td><td id="gtA_23">0</td><td id="gtA_24">0</td>
+                    <td id="gtA_25">0</td><td id="gtA_26">0</td>
+                    <td id="gtPercentA">0%</td>
+                </tr>
+                <tr class="total-row" style="background:#f9f9f9;">
+                    <td style="font-weight:bold;">ಒಟ್ಟು B</td>
+                    <td id="gtB_3">0</td><td id="gtB_4">0</td><td id="gtB_5">0</td><td id="gtB_6">0</td>
+                    <td id="gtB_7">0</td><td id="gtB_8">0</td><td id="gtB_9">0</td><td id="gtB_10">0</td><td id="gtB_11">0</td>
+                    <td id="gtB_12">0</td><td id="gtB_13">0</td><td id="gtB_14">0</td><td id="gtB_15">0</td><td id="gtB_16">0</td>
+                    <td id="gtB_17">0</td><td id="gtB_18">0</td><td id="gtB_19">0</td><td id="gtB_20">0</td>
+                    <td id="gtB_21">0</td><td id="gtB_22">0</td><td id="gtB_23">0</td><td id="gtB_24">0</td>
+                    <td id="gtB_25">0</td><td id="gtB_26">0</td>
+                    <td id="gtPercentB" style="font-weight:bold; color:red;">0%</td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div class="footer-signs">
+            <div>ದಿನಾಂಕ: <span id="conDateDisplay"></span></div>
+            <div>ಶಿಕ್ಷಕರ ಸಹಿ: ........................</div>
+            <div>ಪರಿಶೀಲಕರ ಸಹಿ: ........................</div>
+            <div>ಶಾಲಾ ಮುಖ್ಯಸ್ಥರು: ........................</div>
+        </div>
     </div>
 
-    <!-- Meta Info Block -->
-    <table class="meta-table">
-        <tr>
-            <td style="width: 32%;">ಶಾಲೆಯ ಹೆಸರು: <input type="text" id="schoolNameInput" class="input-line" style="width: 70%;" oninput="saveAppData()"></td>
-            <td style="width: 25%;">ಶಿಕ್ಷಕರ ಹೆಸರು: <input type="text" id="teacherNameInput" class="input-line" style="width: 65%;" oninput="saveAppData()"></td>
-            <td style="width: 18%;">ಕ್ಲಸ್ಟರ್: <input type="text" id="clusterInput" class="input-line" style="width: 60%;" oninput="saveAppData()"></td>
-            <td style="width: 15%;">ತಾಲೂಕು: <input type="text" id="talukInput" class="input-line" style="width: 55%;" oninput="saveAppData()"></td>
-            <td style="width: 10%;">ತರಗತಿ: <span id="displayClass" style="font-weight:bold; color:blue;">4</span></td>
-        </tr>
-    </table>
-
-    <!-- Table Container -->
-    <div id="tableContainer"></div>
-
-    <!-- Signatures -->
-    <div class="footer-signs">
-        <div>ದಿನಾಂಕ: <input type="text" id="dateInput" class="input-line" style="width: 100px;" oninput="saveAppData()"></div>
-        <div>ಶಿಕ್ಷಕರ ಸಹಿ: ........................</div>
-        <div>ಪರಿಶೀಲಕರ ಸಹಿ: ........................</div>
-        <div>ಶಾಲಾ ಮುಖ್ಯಸ್ಥರು: ........................</div>
-    </div>
-
-    <!-- Script Section -->
+    <!-- SCRIPT SECTION -->
     <script>
-        var appData = {
+        var masterData = {
             school: "",
             teacher: "",
             cluster: "",
             taluk: "",
-            class: "4",
-            subject: "english",
-            monthDistrict: "",
+            schoolType: "",
+            month: "",
             date: "",
-            students: ["", "", "", "", ""],
-            grades: {
-                english: {},
-                kannada: {},
-                maths: {}
+            currentClass: "4",
+            currentSubject: "english",
+            classes: {
+                "4": { students: ["", "", "", "", ""], grades: { english: {}, kannada: {}, maths: {} } },
+                "5": { students: ["", "", "", "", ""], grades: { english: {}, kannada: {}, maths: {} } },
+                "6": { students: ["", "", "", "", ""], grades: { english: {}, kannada: {}, maths: {} } },
+                "7": { students: ["", "", "", "", ""], grades: { english: {}, kannada: {}, maths: {} } },
+                "8": { students: ["", "", "", "", ""], grades: { english: {}, kannada: {}, maths: {} } },
+                "9": { students: ["", "", "", "", ""], grades: { english: {}, kannada: {}, maths: {} } },
+                "10": { students: ["", "", "", "", ""], grades: { english: {}, kannada: {}, maths: {} } }
             }
         };
 
         var SUBJECT_CONFIGS = {
             english: {
-                titleLine: 'Class 4th To 10 : Second Language - English &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Month: <input type="text" id="monthOrDistrictInput" class="input-line" style="width: 110px;" oninput="saveAppData()">',
+                titleLine: 'Class 4th To 10 : Second Language - English &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Month: <input type="text" id="monthInput" class="input-line" style="width: 110px;" oninput="saveAppData()">',
                 outcomeLine: 'ನಮೂನೆ-1 (Baseline Stage - ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome-1)',
-                totalCols: 26,
-                startCol: 3,
-                endCol: 20,
+                totalCols: 26, startCol: 3, endCol: 20,
                 stages: [
                     { id: 21, start: 3, end: 6 },
                     { id: 22, start: 7, end: 11 },
@@ -305,12 +392,8 @@
                 ],
                 evalFinally: function(rowVals) {
                     var stg = [rowVals[21], rowVals[22], rowVals[23], rowVals[24]];
-                    if (stg[0] === 'A' && stg[1] === 'A' && stg[2] === 'A' && stg[3] === 'A') {
-                        return { 25: 'A', 26: '' };
-                    }
-                    if (stg[0] === 'B' || stg[1] === 'B' || stg[2] === 'B' || stg[3] === 'B') {
-                        return { 25: '', 26: 'B' };
-                    }
+                    if (stg[0] === 'A' && stg[1] === 'A' && stg[2] === 'A' && stg[3] === 'A') return { 25: 'A', 26: '' };
+                    if (stg[0] === 'B' || stg[1] === 'B' || stg[2] === 'B' || stg[3] === 'B') return { 25: '', 26: 'B' };
                     return { 25: '', 26: '' };
                 },
                 gradeCols: [21, 22, 23, 24, 25, 26],
@@ -350,116 +433,27 @@
                         '<td>17</td><td>18</td><td>19</td><td>20</td>' +
                         '<td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td>' +
                     '</tr>'
-            },
-            kannada: {
-                titleLine: 'ತರಗತಿ 4 ರಿಂದ 10 : ಪ್ರಥಮ ಭಾಷೆ - ಕನ್ನಡ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ಜಿಲ್ಲೆ: <input type="text" id="monthOrDistrictInput" class="input-line" style="width: 120px;" oninput="saveAppData()">',
-                outcomeLine: 'ನಮೂನೆ-1 (ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome - 1)',
-                totalCols: 22,
-                startCol: 3,
-                endCol: 17,
-                stages: [
-                    { id: 18, start: 3, end: 7 },
-                    { id: 19, start: 8, end: 11 },
-                    { id: 20, start: 12, end: 14 },
-                    { id: 21, start: 15, end: 17 }
-                ],
-                evalFinally: function(rowVals) {
-                    var stg = [rowVals[18], rowVals[19], rowVals[20], rowVals[21]];
-                    if (stg[0] === 'A' && stg[1] === 'A' && stg[2] === 'A' && stg[3] === 'A') return { 22: 'A' };
-                    if (stg[0] === 'B' || stg[1] === 'B' || stg[2] === 'B' || stg[3] === 'B') return { 22: 'B' };
-                    return { 22: '' };
-                },
-                gradeCols: [18, 19, 20, 21, 22],
-                thead: '<tr>' +
-                        '<th rowspan="4" style="width:24px;">ಕ್ರ.<br>ಸಂ</th>' +
-                        '<th rowspan="4" style="width:190px; min-width:180px;">ವಿದ್ಯಾರ್ಥಿಯ ಹೆಸರು</th>' +
-                        '<th colspan="15">ಸ್ವರ, ವ್ಯಂಜನ, ಕಾಗುಣಿತ, ಸಜಾತಿ &amp; ವಿಜಾತಿ ಒತ್ತಕ್ಷರ, ವಾಕ್ಯ ಮತ್ತು ಪ್ಯಾರಾ ಹಂತ</th>' +
-                        '<th colspan="4" rowspan="2">ಆರಂಭಿಕ ಹಂತ<br><span style="font-size:7px;font-weight:normal;">(FL-1 ಕಲಿಕಾ ಫಲಕ್ಕೆ ಹಂತವಾರು ಗ್ರೇಡ್‌ಗಳು A/B)</span></th>' +
-                        '<th rowspan="2" style="width:28px;">ಅಂತಿಮ<br>(FLN-1)</th>' +
-                    '</tr>' +
-                    '<tr>' +
-                        '<th colspan="15">FLN LO-1. ವಾಕ್ಯ/ಪ್ಯಾರಾವನ್ನು ಸರಾಗವಾಗಿ ಅರ್ಥಸಹಿತ ಓದಿ, ಅರ್ಥವನ್ನು ಹೇಳುವರು.</th>' +
-                    '</tr>' +
-                    '<tr>' +
-                        '<th colspan="5">ಅಕ್ಷರ ಹಂತ<br><span style="font-weight:normal;font-size:7px;">(ಸ್ವರಗಳು/ ವ್ಯಂಜನಗಳು/ ಕಾಗುಣಿತ)</span></th>' +
-                        '<th colspan="4">ಪದ ಹಂತ<br><span style="font-weight:normal;font-size:7px;">(2/3/4 ಅಕ್ಷರಗಳ ಪದಗಳು)</span></th>' +
-                        '<th colspan="3">ವಾಕ್ಯ ಹಂತ<br><span style="font-weight:normal;font-size:7px;">(3 ರಿಂದ 5 ಪದಗಳು)</span></th>' +
-                        '<th colspan="3">ಪ್ಯಾರಾ ಹಂತ<br><span style="font-weight:normal;font-size:7px;">(3 ರಿಂದ 5 ವಾಕ್ಯಗಳು)</span></th>' +
-                        '<th rowspan="2" style="width:26px;">ಅಕ್ಷರ<br>(3-7)</th>' +
-                        '<th rowspan="2" style="width:26px;">ಪದ<br>(8-11)</th>' +
-                        '<th rowspan="2" style="width:26px;">ವಾಕ್ಯ<br>(12-14)</th>' +
-                        '<th rowspan="2" style="width:26px;">ಪ್ಯಾರಾ<br>(15-17)</th>' +
-                        '<th rowspan="2" style="width:28px;">A / B<br><span style="font-size:6.5px;font-weight:normal;">(18-21 ಕ್ಕೆ)</span></th>' +
-                    '</tr>' +
-                    '<tr style="font-size:7.5px;">' +
-                        '<th style="width:24px;">ಸ್ವರಗಳು</th><th style="width:24px;">ವ್ಯಂಜನ</th><th style="width:24px;">ಕಾಗುಣಿತ</th><th style="width:24px;">ಒತ್ತಕ್ಷರ</th><th style="width:24px;">ಮೌಖಿಕ</th>' +
-                        '<th style="width:24px;">ಒತ್ತಕ್ಷರ-</th><th style="width:24px;">ಸಜಾತಿ</th><th style="width:24px;">ವಿಜಾತಿ</th><th style="width:24px;">ಮೌಖಿಕ</th>' +
-                        '<th style="width:24px;">ಒತ್ತಕ್ಷರ-</th><th style="width:24px;">ಒತ್ತಕ್ಷರ+</th><th style="width:24px;">ಮೌಖಿಕ</th>' +
-                        '<th style="width:24px;">ಒತ್ತಕ್ಷರ-</th><th style="width:24px;">ಒತ್ತಕ್ಷರ+</th><th style="width:24px;">ಮೌಖಿಕ</th>' +
-                    '</tr>' +
-                    '<tr class="col-num">' +
-                        '<td>1</td><td>2</td>' +
-                        '<td>3</td><td>4</td><td>5</td><td>6</td><td>7</td>' +
-                        '<td>8</td><td>9</td><td>10</td><td>11</td>' +
-                        '<td>12</td><td>13</td><td>14</td>' +
-                        '<td>15</td><td>16</td><td>17</td>' +
-                        '<td>18</td><td>19</td><td>20</td><td>21</td><td>22</td>' +
-                    '</tr>'
-            },
-            maths: {
-                titleLine: 'ತರಗತಿ 4 ರಿಂದ 5 ಮತ್ತು 6 ರಿಂದ 10 : ಗಣಿತ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ಜಿಲ್ಲೆ: <input type="text" id="monthOrDistrictInput" class="input-line" style="width: 120px;" oninput="saveAppData()">',
-                outcomeLine: 'ನಮೂನೆ - 1 (ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome-1 and 2*)',
-                totalCols: 25,
-                startCol: 3,
-                endCol: 20,
-                stages: [
-                    { id: 21, start: 3, end: 6 },
-                    { id: 22, start: 7, end: 10 },
-                    { id: 23, start: 11, end: 15 },
-                    { id: 24, start: 16, end: 20 }
-                ],
-                evalFinally: function(rowVals) {
-                    var stg = [rowVals[21], rowVals[22], rowVals[23], rowVals[24]];
-                    if (stg[0] === 'A' && stg[1] === 'A' && stg[2] === 'A' && stg[3] === 'A') return { 25: 'A' };
-                    if (stg[0] === 'B' || stg[1] === 'B' || stg[2] === 'B' || stg[3] === 'B') return { 25: 'B' };
-                    return { 25: '' };
-                },
-                gradeCols: [21, 22, 23, 24, 25],
-                thead: '<tr>' +
-                        '<th rowspan="4" style="width:24px;">ಕ್ರ.<br>ಸಂ</th>' +
-                        '<th rowspan="4" style="width:190px; min-width:180px;">ವಿದ್ಯಾರ್ಥಿಯ ಹೆಸರು</th>' +
-                        '<th colspan="8">ಅಂಕಿ / ಸಂಖ್ಯೆಗಳ ಹಂತ (FLN LO-1)</th>' +
-                        '<th colspan="10">ಸಂಕಲನ ಮತ್ತು ವ್ಯವಕಲನ ಹಂತ (FLN LO-2)</th>' +
-                        '<th colspan="4" rowspan="2">ಆರಂಭಿಕ ಹಂತ<br><span style="font-size:7px;font-weight:normal;">(FLN ಫಲಕ್ಕೆ ಗ್ರೇಡ್‌ಗಳು A/B)</span></th>' +
-                        '<th rowspan="2" style="width:28px;">ಅಂತಿಮ<br>(FLN-1)</th>' +
-                    '</tr>' +
-                    '<tr>' +
-                        '<th colspan="4">1 ರಿಂದ 99 / 999</th>' +
-                        '<th colspan="4">100 ರಿಂದ 999 / 9999</th>' +
-                        '<th colspan="5">ಸಂಕಲನ (Addition)</th>' +
-                        '<th colspan="5">ವ್ಯವಕಲನ (Subtraction)</th>' +
-                    '</tr>' +
-                    '<tr style="font-size:7.5px;">' +
-                        '<th>ಗುರುತು</th><th>ಬರೆ</th><th>ಅರ್ಥ</th><th>ಮೌಖಿಕ</th>' +
-                        '<th>ಗುರುತು</th><th>ಬರೆ</th><th>ಅರ್ಥ</th><th>ಮೌಖಿಕ</th>' +
-                        '<th>1 ಅಂಕಿ</th><th>2 ಅಂಕಿ</th><th>3 ಅಂಕಿ</th><th>4 ಅಂಕಿ</th><th>ಮೌಖಿಕ</th>' +
-                        '<th>1 ಅಂಕಿ</th><th>2 ಅಂಕಿ</th><th>3 ಅಂಕಿ</th><th>4 ಅಂಕಿ</th><th>ಮೌಖಿಕ</th>' +
-                        '<th rowspan="2" style="width:25px;">ಹಂತ-1<br>(3-6)</th>' +
-                        '<th rowspan="2" style="width:25px;">ಹಂತ-2<br>(7-10)</th>' +
-                        '<th rowspan="2" style="width:25px;">ಸಂಕಲನ<br>(11-15)</th>' +
-                        '<th rowspan="2" style="width:25px;">ವ್ಯವಕಲನ<br>(16-20)</th>' +
-                        '<th rowspan="2" style="width:28px;">A / B<br><span style="font-size:6.5px;font-weight:normal;">(21-24 ಕ್ಕೆ)</span></th>' +
-                    '</tr>' +
-                    '<tr class="col-num">' +
-                        '<td>1</td><td>2</td>' +
-                        '<td>3</td><td>4</td><td>5</td><td>6</td>' +
-                        '<td>7</td><td>8</td><td>9</td><td>10</td>' +
-                        '<td>11</td><td>12</td><td>13</td><td>14</td><td>15</td>' +
-                        '<td>16</td><td>17</td><td>18</td><td>19</td><td>20</td>' +
-                        '<td>21</td><td>22</td><td>23</td><td>24</td><td>25</td>' +
-                    '</tr>'
             }
         };
+
+        function switchView(viewName) {
+            saveAppData();
+            if (viewName === 'student') {
+                document.getElementById('studentView').style.display = 'block';
+                document.getElementById('consolidatedView').style.display = 'none';
+                document.getElementById('tabStudent').className = 'tab-btn active';
+                document.getElementById('tabConsolidated').className = 'tab-btn';
+                document.getElementById('studentControls').style.display = 'inline';
+                renderStudentTable();
+            } else {
+                document.getElementById('studentView').style.display = 'none';
+                document.getElementById('consolidatedView').style.display = 'block';
+                document.getElementById('tabStudent').className = 'tab-btn';
+                document.getElementById('tabConsolidated').className = 'tab-btn active';
+                document.getElementById('studentControls').style.display = 'none';
+                generateConsolidatedReport();
+            }
+        }
 
         function saveAppData() {
             try {
@@ -467,42 +461,44 @@
                 var elTeacher = document.getElementById('teacherNameInput');
                 var elCluster = document.getElementById('clusterInput');
                 var elTaluk = document.getElementById('talukInput');
-                var elMonth = document.getElementById('monthOrDistrictInput');
+                var elSchoolType = document.getElementById('schoolTypeInput');
+                var elMonth = document.getElementById('monthInput');
                 var elDate = document.getElementById('dateInput');
                 var elClass = document.getElementById('classSelect');
-                var elSub = document.getElementById('subjectSelect');
 
-                appData.school = elSchool ? elSchool.value : "";
-                appData.teacher = elTeacher ? elTeacher.value : "";
-                appData.cluster = elCluster ? elCluster.value : "";
-                appData.taluk = elTaluk ? elTaluk.value : "";
-                appData.monthDistrict = elMonth ? elMonth.value : "";
-                appData.date = elDate ? elDate.value : "";
-                appData.class = elClass ? elClass.value : "4";
-                appData.subject = elSub ? elSub.value : "english";
+                masterData.school = elSchool ? elSchool.value : masterData.school;
+                masterData.teacher = elTeacher ? elTeacher.value : masterData.teacher;
+                masterData.cluster = elCluster ? elCluster.value : masterData.cluster;
+                masterData.taluk = elTaluk ? elTaluk.value : masterData.taluk;
+                masterData.schoolType = elSchoolType ? elSchoolType.value : masterData.schoolType;
+                masterData.month = elMonth ? elMonth.value : masterData.month;
+                masterData.date = elDate ? elDate.value : masterData.date;
+                masterData.currentClass = elClass ? elClass.value : masterData.currentClass;
+
+                var c = masterData.currentClass;
+                var sub = masterData.currentSubject;
+
+                if (!masterData.classes[c]) masterData.classes[c] = { students: [], grades: {} };
+                if (!masterData.classes[c].grades[sub]) masterData.classes[c].grades[sub] = {};
 
                 var names = [];
                 var nameInputs = document.querySelectorAll('.student-name');
                 for (var i = 0; i < nameInputs.length; i++) {
                     names.push(nameInputs[i].value);
                 }
-                appData.students = names;
-
-                var sub = appData.subject;
-                if (!appData.grades) appData.grades = {};
-                if (!appData.grades[sub]) appData.grades[sub] = {};
+                masterData.classes[c].students = names;
 
                 var rows = document.querySelectorAll('#studentRows tr');
                 for (var r = 0; r < rows.length; r++) {
-                    if (!appData.grades[sub][r]) appData.grades[sub][r] = {};
+                    if (!masterData.classes[c].grades[sub][r]) masterData.classes[c].grades[sub][r] = {};
                     var selects = rows[r].querySelectorAll('select.grade-select');
                     for (var s = 0; s < selects.length; s++) {
                         var col = selects[s].getAttribute('data-col');
-                        appData.grades[sub][r][col] = selects[s].value;
+                        masterData.classes[c].grades[sub][r][col] = selects[s].value;
                     }
                 }
 
-                localStorage.setItem('FLN_DATA_APP_V3', JSON.stringify(appData));
+                localStorage.setItem('FLN_MASTER_CONSOLIDATED_V1', JSON.stringify(masterData));
             } catch(e) {
                 console.log("Save error", e);
             }
@@ -510,55 +506,51 @@
 
         function loadAppData() {
             try {
-                var saved = localStorage.getItem('FLN_DATA_APP_V3');
+                var saved = localStorage.getItem('FLN_MASTER_CONSOLIDATED_V1');
                 if (saved) {
                     var parsed = JSON.parse(saved);
                     if (parsed && typeof parsed === 'object') {
-                        appData = parsed;
+                        masterData = parsed;
                     }
                 }
             } catch(e) {
                 console.log("Load error", e);
             }
 
-            if (!Array.isArray(appData.students) || appData.students.length === 0) {
-                appData.students = ["", "", "", "", ""];
-            }
-            if (!appData.grades) {
-                appData.grades = { english: {}, kannada: {}, maths: {} };
-            }
+            document.getElementById('classSelect').value = masterData.currentClass || "4";
+            document.getElementById('displayClass').innerText = (masterData.currentClass || "4") + "th Class";
 
-            document.getElementById('classSelect').value = appData.class || "4";
-            document.getElementById('subjectSelect').value = appData.subject || "english";
-            document.getElementById('displayClass').innerText = appData.class || "4";
+            if (document.getElementById('schoolNameInput')) document.getElementById('schoolNameInput').value = masterData.school || "";
+            if (document.getElementById('teacherNameInput')) document.getElementById('teacherNameInput').value = masterData.teacher || "";
+            if (document.getElementById('clusterInput')) document.getElementById('clusterInput').value = masterData.cluster || "";
+            if (document.getElementById('talukInput')) document.getElementById('talukInput').value = masterData.taluk || "";
+            if (document.getElementById('schoolTypeInput')) document.getElementById('schoolTypeInput').value = masterData.schoolType || "";
+            if (document.getElementById('monthInput')) document.getElementById('monthInput').value = masterData.month || "";
+            if (document.getElementById('dateInput')) document.getElementById('dateInput').value = masterData.date || "";
 
-            renderTable();
-
-            if (document.getElementById('schoolNameInput')) document.getElementById('schoolNameInput').value = appData.school || "";
-            if (document.getElementById('teacherNameInput')) document.getElementById('teacherNameInput').value = appData.teacher || "";
-            if (document.getElementById('clusterInput')) document.getElementById('clusterInput').value = appData.cluster || "";
-            if (document.getElementById('talukInput')) document.getElementById('talukInput').value = appData.taluk || "";
-            if (document.getElementById('monthOrDistrictInput')) document.getElementById('monthOrDistrictInput').value = appData.monthDistrict || "";
-            if (document.getElementById('dateInput')) document.getElementById('dateInput').value = appData.date || "";
+            renderStudentTable();
         }
 
         function changeClass() {
-            appData.class = document.getElementById('classSelect').value;
-            document.getElementById('displayClass').innerText = appData.class;
             saveAppData();
+            masterData.currentClass = document.getElementById('classSelect').value;
+            document.getElementById('displayClass').innerText = masterData.currentClass + "th Class";
+            renderStudentTable();
         }
 
         function changeSubject() {
             saveAppData();
-            renderTable();
+            renderStudentTable();
         }
 
-        function renderTable() {
-            var subKey = document.getElementById('subjectSelect').value;
-            var cfg = SUBJECT_CONFIGS[subKey] || SUBJECT_CONFIGS.english;
+        function renderStudentTable() {
+            var c = masterData.currentClass;
+            var sub = masterData.currentSubject;
+            var cfg = SUBJECT_CONFIGS[sub] || SUBJECT_CONFIGS.english;
 
-            document.getElementById('headerSubjectLine').innerHTML = cfg.titleLine;
-            document.getElementById('headerOutcomeLine').innerHTML = cfg.outcomeLine;
+            var classData = masterData.classes[c] || { students: ["", "", "", "", ""], grades: {} };
+            var students = classData.students;
+            if (!students || students.length === 0) students = ["", "", "", "", ""];
 
             var gradeColsThA = "";
             var gradeColsThB = "";
@@ -566,7 +558,6 @@
                 gradeColsThA += '<td id="totA_' + cfg.gradeCols[g] + '">0</td>';
                 gradeColsThB += '<td id="totB_' + cfg.gradeCols[g] + '">0</td>';
             }
-
             var colspanLeft = (cfg.startCol - 1) + (cfg.endCol - cfg.startCol + 1);
 
             var html = '<table class="fln-table" id="mainTable">' +
@@ -586,8 +577,8 @@
 
             document.getElementById('tableContainer').innerHTML = html;
 
-            for (var i = 0; i < appData.students.length; i++) {
-                appendRowHtml(i + 1, appData.students[i], cfg, i);
+            for (var i = 0; i < students.length; i++) {
+                appendStudentRow(i + 1, students[i], cfg, i);
             }
 
             var rows = document.querySelectorAll('#studentRows tr');
@@ -599,27 +590,28 @@
             calculateTotals();
         }
 
-        function appendRowHtml(rId, name, cfg, studentIdx) {
+        function appendStudentRow(rId, name, cfg, studentIdx) {
             var tbody = document.getElementById('studentRows');
             var tr = document.createElement('tr');
             tr.id = 'row_' + rId;
 
-            var sub = document.getElementById('subjectSelect').value;
+            var c = masterData.currentClass;
+            var sub = masterData.currentSubject;
             var savedRowGrades = {};
-            if (appData.grades && appData.grades[sub] && appData.grades[sub][studentIdx]) {
-                savedRowGrades = appData.grades[sub][studentIdx];
+            if (masterData.classes[c] && masterData.classes[c].grades[sub] && masterData.classes[c].grades[sub][studentIdx]) {
+                savedRowGrades = masterData.classes[c].grades[sub][studentIdx];
             }
 
             var rowHtml = '<td>' +
                     '<span class="sl-num">' + rId + '</span>' +
-                    '<button type="button" class="del-btn no-print" onclick="deleteStudentRow(this)" title="Delete">×</button>' +
+                    '<button type="button" class="del-btn no-print" onclick="deleteStudentRow(this)">×</button>' +
                 '</td>' +
                 '<td><input type="text" class="student-name" value="' + (name || "") + '" placeholder="ವಿದ್ಯಾರ್ಥಿ ಹೆಸರು" oninput="saveAppData()"></td>';
 
-            for (var c = cfg.startCol; c <= cfg.endCol; c++) {
-                var val = savedRowGrades[c] || "";
+            for (var col = cfg.startCol; col <= cfg.endCol; col++) {
+                var val = savedRowGrades[col] || "";
                 rowHtml += '<td>' +
-                    '<select class="grade-select" data-col="' + c + '" onchange="calculateRow(this, true)">' +
+                    '<select class="grade-select" data-col="' + col + '" onchange="calculateRow(this, true)">' +
                         '<option value=""></option>' +
                         '<option value="A"' + (val === 'A' ? ' selected' : '') + '>A</option>' +
                         '<option value="B"' + (val === 'B' ? ' selected' : '') + '>B</option>' +
@@ -636,18 +628,15 @@
         }
 
         function deleteStudentRow(btn) {
-            var row = btn.closest('tr');
-            row.remove();
+            btn.closest('tr').remove();
             reorderRows();
             saveAppData();
             calculateTotals();
         }
 
         function reorderRows() {
-            var subKey = document.getElementById('subjectSelect').value;
-            var cfg = SUBJECT_CONFIGS[subKey] || SUBJECT_CONFIGS.english;
+            var cfg = SUBJECT_CONFIGS[masterData.currentSubject] || SUBJECT_CONFIGS.english;
             var rows = document.querySelectorAll('#studentRows tr');
-
             for (var i = 0; i < rows.length; i++) {
                 var newId = i + 1;
                 rows[i].id = 'row_' + newId;
@@ -655,55 +644,49 @@
                 if (slSpan) slSpan.innerText = newId;
 
                 for (var g = 0; g < cfg.gradeCols.length; g++) {
-                    var c = cfg.gradeCols[g];
+                    var colNum = cfg.gradeCols[g];
                     var cell = rows[i].querySelector('.auto-cell:nth-last-child(' + (cfg.gradeCols.length - g) + ')');
-                    if (cell) cell.id = 'c' + c + '_' + newId;
+                    if (cell) cell.id = 'c' + colNum + '_' + newId;
                 }
             }
         }
 
         function addNewStudent() {
-            var subKey = document.getElementById('subjectSelect').value;
-            var cfg = SUBJECT_CONFIGS[subKey] || SUBJECT_CONFIGS.english;
+            var cfg = SUBJECT_CONFIGS[masterData.currentSubject] || SUBJECT_CONFIGS.english;
             var newIndex = document.querySelectorAll('#studentRows tr').length + 1;
-            appendRowHtml(newIndex, "", cfg, newIndex - 1);
+            appendStudentRow(newIndex, "", cfg, newIndex - 1);
             saveAppData();
         }
 
-        function clearTable() {
-            if (confirm("ಎಲ್ಲಾ ವಿದ್ಯಾರ್ಥಿಗಳ ವಿವರಗಳನ್ನು ತೆರವುಗೊಳಿಸಬೇಕೆ?")) {
-                localStorage.removeItem('FLN_DATA_APP_V3');
-                appData.students = ["", "", "", "", ""];
-                appData.grades = { english: {}, kannada: {}, maths: {} };
-                renderTable();
+        function clearCurrentClass() {
+            if (confirm("ಈ ತರಗತಿಯ ಮಕ್ಕಳ ವಿವರಗಳನ್ನು ತೆರವುಗೊಳಿಸಬೇಕೆ?")) {
+                var c = masterData.currentClass;
+                masterData.classes[c] = { students: ["", "", "", "", ""], grades: { english: {}, kannada: {}, maths: {} } };
+                renderStudentTable();
+                saveAppData();
             }
         }
 
         function evaluateRange(row, startCol, endCol) {
             var hasB = false;
-            var hasEmpty = false;
             var count = 0;
             for (var c = startCol; c <= endCol; c++) {
                 var sel = row.querySelector('select[data-col="' + c + '"]');
                 var val = sel ? sel.value : "";
                 if (val === 'B') hasB = true;
-                if (val === '') hasEmpty = true;
                 if (val !== '') count++;
             }
             if (count === 0) return "";
             if (hasB) return "B";
-            if (!hasEmpty && !hasB) return "A";
-            return "";
+            return "A";
         }
 
         function calculateRow(element, triggerSave) {
             var row = element.closest('tr');
             var rId = row.id.split('_')[1];
-            var subKey = document.getElementById('subjectSelect').value;
-            var cfg = SUBJECT_CONFIGS[subKey] || SUBJECT_CONFIGS.english;
+            var cfg = SUBJECT_CONFIGS[masterData.currentSubject] || SUBJECT_CONFIGS.english;
 
             var rowVals = {};
-
             for (var i = 0; i < cfg.stages.length; i++) {
                 var stg = cfg.stages[i];
                 var res = evaluateRange(row, stg.start, stg.end);
@@ -723,8 +706,7 @@
         }
 
         function calculateTotals() {
-            var subKey = document.getElementById('subjectSelect').value;
-            var cfg = SUBJECT_CONFIGS[subKey] || SUBJECT_CONFIGS.english;
+            var cfg = SUBJECT_CONFIGS[masterData.currentSubject] || SUBJECT_CONFIGS.english;
             var rows = document.querySelectorAll('#studentRows tr');
 
             for (var g = 0; g < cfg.gradeCols.length; g++) {
@@ -745,6 +727,142 @@
             }
         }
 
+        // --- GENERATE CONSOLIDATED SCHOOL REPORT (PDF EXACT MATCH) ---
+        function generateConsolidatedReport() {
+            document.getElementById('conSchoolDisplay').innerText = masterData.school || "-";
+            document.getElementById('conClusterDisplay').innerText = masterData.cluster || "-";
+            document.getElementById('conTalukDisplay').innerText = masterData.taluk || "-";
+            document.getElementById('conMonthDisplay').innerText = masterData.month || "-";
+            document.getElementById('conDateDisplay').innerText = masterData.date || "-";
+
+            var classList = ["4", "5", "6", "7", "8", "9", "10"];
+            var tbody = document.getElementById('consolidatedBody');
+            tbody.innerHTML = "";
+
+            var grandTotalEnrollment = 0;
+            var grandA = {};
+            var grandB = {};
+            for (var col = 3; col <= 26; col++) {
+                grandA[col] = 0;
+                grandB[col] = 0;
+            }
+
+            for (var i = 0; i < classList.length; i++) {
+                var c = classList[i];
+                var cData = masterData.classes[c] || { students: [], grades: {} };
+                var students = cData.students || [];
+                var gradesMap = (cData.grades && cData.grades.english) ? cData.grades.english : {};
+
+                // Count valid students (enrollment)
+                var validCount = 0;
+                for (var s = 0; s < students.length; s++) {
+                    if (students[s] && students[s].trim() !== "") validCount++;
+                }
+
+                // If empty rows exist but no names typed, take row count if grades filled
+                if (validCount === 0 && Object.keys(gradesMap).length > 0) {
+                    for (var k in gradesMap) {
+                        if (Object.keys(gradesMap[k]).length > 0) validCount++;
+                    }
+                }
+
+                grandTotalEnrollment += validCount;
+
+                // Tally A and B for columns 3 to 26 for this class
+                var classA = {};
+                var classB = {};
+                for (var col = 3; col <= 26; col++) {
+                    classA[col] = 0;
+                    classB[col] = 0;
+                }
+
+                for (var s = 0; s < validCount; s++) {
+                    var rowG = gradesMap[s] || {};
+
+                    // Cols 3 to 20
+                    for (var col = 3; col <= 20; col++) {
+                        if (rowG[col] === 'A') classA[col]++;
+                        if (rowG[col] === 'B') classB[col]++;
+                    }
+
+                    // Stage grades (21 to 24)
+                    var stg21 = evaluateRangeManual(rowG, 3, 6);
+                    var stg22 = evaluateRangeManual(rowG, 7, 11);
+                    var stg23 = evaluateRangeManual(rowG, 12, 16);
+                    var stg24 = evaluateRangeManual(rowG, 17, 20);
+
+                    if (stg21 === 'A') classA[21]++; if (stg21 === 'B') classB[21]++;
+                    if (stg22 === 'A') classA[22]++; if (stg22 === 'B') classB[22]++;
+                    if (stg23 === 'A') classA[23]++; if (stg23 === 'B') classB[23]++;
+                    if (stg24 === 'A') classA[24]++; if (stg24 === 'B') classB[24]++;
+
+                    // Finally 25 (A) & 26 (B)
+                    if (stg21 === 'A' && stg22 === 'A' && stg23 === 'A' && stg24 === 'A') {
+                        classA[25]++;
+                    } else if (stg21 === 'B' || stg22 === 'B' || stg23 === 'B' || stg24 === 'B') {
+                        classB[26]++;
+                    }
+                }
+
+                // Add to Grand Total
+                for (var col = 3; col <= 26; col++) {
+                    grandA[col] += classA[col];
+                    grandB[col] += classB[col];
+                }
+
+                // Calculate Percent for B (FLN not achieved %)
+                var percentB = validCount > 0 ? Math.round((classB[26] / validCount) * 100) + "%" : "0%";
+
+                // Create Row A
+                var trA = document.createElement('tr');
+                var cellsA = '<td rowspan="2">' + (i + 1) + '</td>' +
+                             '<td rowspan="2" style="font-weight:bold;">' + c + 'th Class</td>' +
+                             '<td rowspan="2" style="font-weight:bold; color:blue;">' + validCount + '</td>' +
+                             '<td style="font-weight:bold;">A</td>';
+                for (var col = 3; col <= 26; col++) {
+                    cellsA += '<td>' + classA[col] + '</td>';
+                }
+                cellsA += '<td rowspan="2" style="font-weight:bold;">' + percentB + '</td>';
+                trA.innerHTML = cellsA;
+                tbody.appendChild(trA);
+
+                // Create Row B
+                var trB = document.createElement('tr');
+                var cellsB = '<td style="font-weight:bold;">B</td>';
+                for (var col = 3; col <= 26; col++) {
+                    cellsB += '<td>' + classB[col] + '</td>';
+                }
+                trB.innerHTML = cellsB;
+                tbody.appendChild(trB);
+            }
+
+            // Populate Grand Totals
+            document.getElementById('grandEnrollment').innerText = grandTotalEnrollment;
+            for (var col = 3; col <= 26; col++) {
+                var elA = document.getElementById('gtA_' + col);
+                var elB = document.getElementById('gtB_' + col);
+                if (elA) elA.innerText = grandA[col];
+                if (elB) elB.innerText = grandB[col];
+            }
+
+            var grandPercentB = grandTotalEnrollment > 0 ? Math.round((grandB[26] / grandTotalEnrollment) * 100) + "%" : "0%";
+            document.getElementById('gtPercentB').innerText = grandPercentB;
+        }
+
+        function evaluateRangeManual(rowG, start, end) {
+            var hasB = false;
+            var count = 0;
+            for (var col = start; col <= end; col++) {
+                var val = rowG[col] || "";
+                if (val === 'B') hasB = true;
+                if (val !== '') count++;
+            }
+            if (count === 0) return "";
+            if (hasB) return "B";
+            return "A";
+        }
+
+        // Excel Import
         function importExcelNames(e) {
             var file = e.target.files[0];
             if (!file) return;
@@ -757,11 +875,6 @@
                     var sheet = workbook.Sheets[workbook.SheetNames[0]];
                     var json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
-                    if (!json || json.length === 0) {
-                        alert("Excel ನಲ್ಲಿ ಯಾವುದೇ ಡೇಟಾ ಇಲ್ಲ!");
-                        return;
-                    }
-
                     var nameCol = -1;
                     var startRow = 0;
                     var keys = ['name', 'student', 'candidate', 'ಹೆಸರು', 'ವಿದ್ಯಾರ್ಥಿ'];
@@ -772,16 +885,13 @@
                             var val = String(json[r][c] || '').toLowerCase().trim();
                             for (var k = 0; k < keys.length; k++) {
                                 if (val.indexOf(keys[k]) !== -1) {
-                                    nameCol = c;
-                                    startRow = r + 1;
-                                    break;
+                                    nameCol = c; startRow = r + 1; break;
                                 }
                             }
                             if (nameCol !== -1) break;
                         }
                         if (nameCol !== -1) break;
                     }
-
                     if (nameCol === -1) nameCol = json[0].length > 1 ? 1 : 0;
 
                     var newNames = [];
@@ -789,19 +899,14 @@
                         var val = json[r] ? json[r][nameCol] : null;
                         if (val !== undefined && val !== null) {
                             var name = String(val).trim();
-                            if (name && isNaN(name)) {
-                                var isHeader = false;
-                                for (var k = 0; k < keys.length; k++) {
-                                    if (name.toLowerCase().indexOf(keys[k]) !== -1) isHeader = true;
-                                }
-                                if (!isHeader) newNames.push(name);
-                            }
+                            if (name && isNaN(name)) newNames.push(name);
                         }
                     }
 
                     if (newNames.length > 0) {
-                        appData.students = newNames;
-                        renderTable();
+                        var c = masterData.currentClass;
+                        masterData.classes[c].students = newNames;
+                        renderStudentTable();
                         saveAppData();
                         alert(newNames.length + " ಮಕ್ಕಳ ಹೆಸರುಗಳು Import ಆಗಿವೆ!");
                     } else {
