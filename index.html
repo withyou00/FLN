@@ -27,7 +27,7 @@
         .no-print {
             margin-bottom: 8px;
             display: flex;
-            gap: 8px;
+            gap: 6px;
             align-items: center;
             background: #f8f9fa;
             padding: 8px;
@@ -38,7 +38,7 @@
         .tab-btn {
             font-size: 12px;
             font-weight: bold;
-            padding: 6px 12px;
+            padding: 5px 12px;
             border-radius: 4px;
             cursor: pointer;
             border: 1px solid #0d6efd;
@@ -62,19 +62,21 @@
             background-color: #0d6efd;
             color: white;
             border: none;
-            padding: 6px 12px;
-            font-size: 12px;
+            padding: 5px 10px;
+            font-size: 11.5px;
             cursor: pointer;
             border-radius: 4px;
             font-weight: bold;
             display: inline-flex;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
         }
         .btn-excel { background-color: #198754; }
         .btn-export-excel { background-color: #0f5132; }
         .btn-pdf { background-color: #dc3545; }
         .btn-clear { background-color: #6c757d; }
+        .btn-fill-b { background-color: #6f42c1; }
+        .btn-fill-a { background-color: #0dcaf0; color: #000; }
 
         .header-title {
             text-align: center;
@@ -123,6 +125,15 @@
             font-weight: bold;
             background-color: #f2f2f2;
         }
+        .col-btn {
+            cursor: pointer;
+            color: #0d6efd;
+            text-decoration: underline;
+            padding: 1px 2px;
+        }
+        .col-btn:hover {
+            background-color: #e2e6ea;
+        }
         select.grade-select {
             width: 90%;
             font-size: 9.5px;
@@ -153,6 +164,27 @@
             padding: 2px 4px;
             text-align: left;
         }
+        
+        /* Action buttons in row */
+        .row-actions {
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+        }
+        .mini-btn {
+            font-size: 8px;
+            padding: 1px 3px;
+            border: 1px solid #999;
+            background: #fff;
+            border-radius: 2px;
+            cursor: pointer;
+            font-weight: bold;
+            line-height: 10px;
+        }
+        .mini-btn:hover { background: #e9ecef; }
+        .mini-b { color: #6f42c1; border-color: #6f42c1; }
+        .mini-a { color: #0d6efd; border-color: #0d6efd; }
+
         .del-btn {
             background: #ff4d4f;
             color: white;
@@ -164,7 +196,6 @@
             line-height: 9px;
             cursor: pointer;
             padding: 0;
-            margin-left: 1px;
             display: inline-block;
             vertical-align: middle;
         }
@@ -179,7 +210,7 @@
         }
 
         @media print {
-            .no-print, .del-btn {
+            .no-print, .del-btn, .mini-btn {
                 display: none !important;
             }
             body { padding: 0; }
@@ -194,12 +225,12 @@
 </head>
 <body>
 
-    <!-- Controls Panel with Export Buttons -->
+    <!-- Controls Panel -->
     <div class="no-print">
         <button class="tab-btn active" id="tabStudent" onclick="switchView('student')">📝 ವಿದ್ಯಾರ್ಥಿ ನಮೂನೆ</button>
         <button class="tab-btn" id="tabConsolidated" onclick="switchView('consolidated')">📊 ಕ್ರೋಢೀಕೃತ ನಮೂನೆ</button>
 
-        <span style="border-left: 2px solid #ccc; height: 25px; margin: 0 4px;"></span>
+        <span style="border-left: 2px solid #ccc; height: 22px; margin: 0 4px;"></span>
 
         <label><strong>ವಿಷಯ:</strong> 
             <select id="subjectSelect" class="select-control" onchange="changeSubject()">
@@ -221,6 +252,10 @@
                     <option value="10">10 ನೆಯ ತರಗತಿ</option>
                 </select>
             </label>
+
+            <!-- Bulk Fill Shortcuts -->
+            <button class="btn btn-fill-b" onclick="bulkFillAll('B')" title="ಈ ತರಗತಿಯ ಎಲ್ಲಾ ಮಕ್ಕಳಿಗೂ B ತುಂಬಿ">⚡ ಎಲ್ಲರಿಗೂ 'B'</button>
+            <button class="btn btn-fill-a" onclick="bulkFillAll('A')" title="ಈ ತರಗತಿಯ ಎಲ್ಲಾ ಮಕ್ಕಳಿಗೂ A ತುಂಬಿ">⚡ ಎಲ್ಲರಿಗೂ 'A'</button>
 
             <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display:none;" onchange="importExcelNames(event)">
             <button class="btn btn-excel" onclick="document.getElementById('excelFileInput').click()">📥 Import</button>
@@ -262,7 +297,7 @@
         </div>
     </div>
 
-    <!-- VIEW 2: CONSOLIDATED FORM (EXACT PDF STRUCTURES - NO OVERFLOW) -->
+    <!-- VIEW 2: CONSOLIDATED FORM -->
     <div id="consolidatedView" style="display:none;">
         <div class="header-title">
             <h3>ಕರ್ನಾಟಕ ಸರ್ಕಾರ</h3>
@@ -349,7 +384,14 @@
                         '<th>Alpha</th><th>Vowel</th><th>Conso</th><th>Oral</th><th>2-Ltr</th><th>3-Ltr</th><th>4-Ltr</th><th>5-Ltr</th><th>Oral</th><th>2-Wrd</th><th>3-Wrd</th><th>4-Wrd</th><th>5-Wrd</th><th>Oral</th><th>3-Sen</th><th>4-Sen</th><th>5-Sen</th><th>Oral</th>' +
                         '<th style="width:20px;">A</th><th style="width:20px;">B</th>' +
                     '</tr>' +
-                    '<tr class="col-num"><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td></tr>',
+                    '<tr class="col-num">' +
+                        '<td>1</td><td>2</td>' +
+                        '<td><span class="col-btn" onclick="quickFillColumn(3)">3 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(4)">4 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(5)">5 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(6)">6 ▾</span></td>' +
+                        '<td><span class="col-btn" onclick="quickFillColumn(7)">7 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(8)">8 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(9)">9 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(10)">10 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(11)">11 ▾</span></td>' +
+                        '<td><span class="col-btn" onclick="quickFillColumn(12)">12 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(13)">13 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(14)">14 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(15)">15 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(16)">16 ▾</span></td>' +
+                        '<td><span class="col-btn" onclick="quickFillColumn(17)">17 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(18)">18 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(19)">19 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(20)">20 ▾</span></td>' +
+                        '<td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td>' +
+                    '</tr>',
                 conThead: '<tr>' +
                         '<th rowspan="3" style="width:22px;">SL<br>No</th><th rowspan="3" style="width:60px;">Class</th><th rowspan="3" style="width:40px;">Enroll<br>ment</th><th rowspan="3" style="width:35px;">CLASS</th>' +
                         '<th colspan="18">Alphabets, Words, Sentences and Short Para Stage</th>' +
@@ -402,7 +444,14 @@
                         '<th>ಸ್ವರ</th><th>ವ್ಯಂಜನ</th><th>ಕಾಗುಣಿತ</th><th>ಒತ್ತಕ್ಷರ</th><th>ಮೌಖಿಕ</th><th>ಒತ್ತಕ್ಷರ-</th><th>ಸಜಾತಿ</th><th>ವಿಜಾತಿ</th><th>ಮೌಖಿಕ</th><th>ಒತ್ತಕ್ಷರ-</th><th>ಒತ್ತಕ್ಷರ+</th><th>ಮೌಖಿಕ</th><th>ಒತ್ತಕ್ಷರ-</th><th>ಒತ್ತಕ್ಷರ+</th><th>ಮೌಖಿಕ</th>' +
                         '<th style="width:20px;">A/B</th><th style="width:20px;">B</th>' +
                     '</tr>' +
-                    '<tr class="col-num"><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td></tr>',
+                    '<tr class="col-num">' +
+                        '<td>1</td><td>2</td>' +
+                        '<td><span class="col-btn" onclick="quickFillColumn(3)">3 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(4)">4 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(5)">5 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(6)">6 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(7)">7 ▾</span></td>' +
+                        '<td><span class="col-btn" onclick="quickFillColumn(8)">8 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(9)">9 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(10)">10 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(11)">11 ▾</span></td>' +
+                        '<td><span class="col-btn" onclick="quickFillColumn(12)">12 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(13)">13 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(14)">14 ▾</span></td>' +
+                        '<td><span class="col-btn" onclick="quickFillColumn(15)">15 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(16)">16 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(17)">17 ▾</span></td>' +
+                        '<td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td>' +
+                    '</tr>',
                 conThead: '<tr>' +
                         '<th rowspan="3" style="width:22px;">ಕ್ರ.<br>ಸಂ</th><th rowspan="3" style="width:65px;">ತರಗತಿ</th><th rowspan="3" style="width:45px;">ಒಟ್ಟು<br>ದಾಖಲಾತಿ</th><th rowspan="3" style="width:35px;">ತರಗತಿ<br>ವಾರು ಗ್ರೇಡ್</th>' +
                         '<th colspan="15">ಸ್ವರ, ವ್ಯಂಜನ, ಕಾಗುಣಿತ, ಸಜಾತಿ &amp; ವಿಜಾತಿ ಒತ್ತಕ್ಷರ, ವಾಕ್ಯ ಮತ್ತು ಪ್ಯಾರಾ ಹಂತ</th>' +
@@ -450,7 +499,14 @@
                         '<th colspan="2" style="font-size:7px;">ಕಾಲಂ 21-24</th>' +
                     '</tr>' +
                     '<tr style="font-size:7.5px;"><th colspan="18"></th><th style="width:20px;">A</th><th style="width:20px;">B</th></tr>' +
-                    '<tr class="col-num"><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td></tr>',
+                    '<tr class="col-num">' +
+                        '<td>1</td><td>2</td>' +
+                        '<td><span class="col-btn" onclick="quickFillColumn(3)">3 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(4)">4 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(5)">5 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(6)">6 ▾</span></td>' +
+                        '<td><span class="col-btn" onclick="quickFillColumn(7)">7 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(8)">8 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(9)">9 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(10)">10 ▾</span></td>' +
+                        '<td><span class="col-btn" onclick="quickFillColumn(11)">11 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(12)">12 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(13)">13 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(14)">14 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(15)">15 ▾</span></td>' +
+                        '<td><span class="col-btn" onclick="quickFillColumn(16)">16 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(17)">17 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(18)">18 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(19)">19 ▾</span></td><td><span class="col-btn" onclick="quickFillColumn(20)">20 ▾</span></td>' +
+                        '<td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td>' +
+                    '</tr>',
                 conThead: '<tr>' +
                         '<th rowspan="3" style="width:22px;">ಕ್ರ.<br>ಸಂ</th><th rowspan="3" style="width:65px;">ತರಗತಿ</th><th rowspan="3" style="width:45px;">ದಾಖ<br>ಲಾತಿ</th><th rowspan="3" style="width:35px;">ತರಗತಿ<br>ವಾರು ಗ್ರೇಡ್</th>' +
                         '<th colspan="8">ಅಂಕಿ/ಸಂಖ್ಯೆಗಳ ಹಂತ</th>' +
@@ -536,7 +592,7 @@
                     }
                 }
 
-                localStorage.setItem('FLN_MASTER_CONSOLIDATED_V3', JSON.stringify(masterData));
+                localStorage.setItem('FLN_MASTER_CONSOLIDATED_V4', JSON.stringify(masterData));
             } catch(e) {
                 console.log("Save error", e);
             }
@@ -544,7 +600,7 @@
 
         function loadAppData() {
             try {
-                var saved = localStorage.getItem('FLN_MASTER_CONSOLIDATED_V3');
+                var saved = localStorage.getItem('FLN_MASTER_CONSOLIDATED_V4');
                 if (saved) {
                     var parsed = JSON.parse(saved);
                     if (parsed && typeof parsed === 'object') {
@@ -650,8 +706,12 @@
             }
 
             var rowHtml = '<td>' +
-                    '<span class="sl-num">' + rId + '</span>' +
-                    '<button type="button" class="del-btn no-print" onclick="deleteStudentRow(this)">×</button>' +
+                    '<div class="row-actions">' +
+                        '<span class="sl-num">' + rId + '</span>' +
+                        '<button type="button" class="del-btn no-print" onclick="deleteStudentRow(this)">×</button>' +
+                        '<button type="button" class="mini-btn mini-b no-print" onclick="quickFillRow(this, \'B\')" title="ಈ ಮಗುವಿಗೆ ಎಲ್ಲವೂ B ತುಂಬಿ">B</button>' +
+                        '<button type="button" class="mini-btn mini-a no-print" onclick="quickFillRow(this, \'A\')" title="ಈ ಮಗುವಿಗೆ ಎಲ್ಲವೂ A ತುಂಬಿ">A</button>' +
+                    '</div>' +
                 '</td>' +
                 '<td><input type="text" class="student-name" value="' + (name || "") + '" placeholder="ವಿದ್ಯಾರ್ಥಿ ಹೆಸರು" oninput="saveAppData()"></td>';
 
@@ -672,6 +732,55 @@
 
             tr.innerHTML = rowHtml;
             tbody.appendChild(tr);
+        }
+
+        // --- QUICK FILL SHORTCUTS ---
+        // 1. Bulk Fill entire class with A or B
+        function bulkFillAll(grade) {
+            if (confirm("ಈ ತರಗತಿಯ ಎಲ್ಲಾ ವಿದ್ಯಾರ್ಥಿಗಳ ಎಲ್ಲಾ ಕಾಲಂಗಳಿಗೂ '" + grade + "' ತುಂಬಬೇಕೆ?")) {
+                var rows = document.querySelectorAll('#studentRows tr');
+                for (var r = 0; r < rows.length; r++) {
+                    var selects = rows[r].querySelectorAll('select.grade-select');
+                    for (var s = 0; s < selects.length; s++) {
+                        selects[s].value = grade;
+                    }
+                    if (selects.length > 0) calculateRow(selects[0], false);
+                }
+                calculateTotals();
+                saveAppData();
+            }
+        }
+
+        // 2. Fill single student row horizontally
+        function quickFillRow(btn, grade) {
+            var row = btn.closest('tr');
+            var selects = row.querySelectorAll('select.grade-select');
+            for (var s = 0; s < selects.length; s++) {
+                selects[s].value = grade;
+            }
+            if (selects.length > 0) calculateRow(selects[0], true);
+        }
+
+        // 3. Fill single column vertically for all students
+        function quickFillColumn(colNum) {
+            var grade = prompt("ಕಾಲಂ " + colNum + " ರ ಎಲ್ಲಾ ವಿದ್ಯಾರ್ಥಿಗಳಿಗೆ ಯಾವ ಗ್ರೇಡ್ ತುಂಬಬೇಕು? (A ಅಥವಾ B ಟೈಪ್ ಮಾಡಿ):", "B");
+            if (!grade) return;
+            grade = grade.trim().toUpperCase();
+            if (grade !== 'A' && grade !== 'B') {
+                alert("ಕೇವಲ A ಅಥವಾ B ಮಾತ್ರ ನಮೂದಿಸಿ!");
+                return;
+            }
+
+            var rows = document.querySelectorAll('#studentRows tr');
+            for (var r = 0; r < rows.length; r++) {
+                var sel = rows[r].querySelector('select.grade-select[data-col="' + colNum + '"]');
+                if (sel) {
+                    sel.value = grade;
+                    calculateRow(sel, false);
+                }
+            }
+            calculateTotals();
+            saveAppData();
         }
 
         function deleteStudentRow(btn) {
@@ -774,7 +883,7 @@
             }
         }
 
-        // --- DYNAMIC CONSOLIDATED REPORT (PERFECTLY ALIGNED) ---
+        // --- CONSOLIDATED REPORT (PERFECTLY ALIGNED) ---
         function generateConsolidatedReport() {
             var subKey = masterData.currentSubject || "english";
             var cfg = SUBJECT_CONFIGS[subKey] || SUBJECT_CONFIGS.english;
@@ -936,25 +1045,26 @@
                 return;
             }
 
-            // Clone to sanitize inputs & selects into pure text
             var clone = targetTable.cloneNode(true);
             var selects = clone.querySelectorAll('select');
             for (var i = 0; i < selects.length; i++) {
-                var parent = selects[i].parentNode;
                 var origSel = targetTable.querySelectorAll('select')[i];
-                parent.innerText = origSel ? origSel.value : "";
+                selects[i].parentNode.innerText = origSel ? origSel.value : "";
             }
 
             var inputs = clone.querySelectorAll('input');
             for (var i = 0; i < inputs.length; i++) {
-                var parent = inputs[i].parentNode;
                 var origInp = targetTable.querySelectorAll('input')[i];
-                parent.innerText = origInp ? origInp.value : "";
+                inputs[i].parentNode.innerText = origInp ? origInp.value : "";
             }
 
-            var delBtns = clone.querySelectorAll('.del-btn');
-            for (var i = 0; i < delBtns.length; i++) {
-                delBtns[i].remove();
+            var extraBtns = clone.querySelectorAll('.del-btn, .mini-btn, .col-btn');
+            for (var i = 0; i < extraBtns.length; i++) {
+                if (extraBtns[i].classList.contains('col-btn')) {
+                    extraBtns[i].parentNode.innerText = extraBtns[i].innerText.replace(' ▾', '');
+                } else {
+                    extraBtns[i].remove();
+                }
             }
 
             var wb = XLSX.utils.table_to_book(clone, { sheet: "FLN_Data", raw: true });
