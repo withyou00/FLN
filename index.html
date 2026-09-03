@@ -262,7 +262,6 @@
                 </select>
             </label>
 
-            <!-- Bulk Fill Shortcuts -->
             <button class="btn btn-fill-b" onclick="bulkFillAll('B')" title="ಈ ತರಗತಿಯ ಎಲ್ಲಾ ಮಕ್ಕಳಿಗೂ B ತುಂಬಿ">⚡ ಎಲ್ಲರಿಗೂ 'B'</button>
             <button class="btn btn-fill-a" onclick="bulkFillAll('A')" title="ಈ ತರಗತಿಯ ಎಲ್ಲಾ ಮಕ್ಕಳಿಗೂ A ತುಂಬಿ">⚡ ಎಲ್ಲರಿಗೂ 'A'</button>
 
@@ -306,22 +305,22 @@
         </div>
     </div>
 
-    <!-- VIEW 2: CONSOLIDATED FORM -->
+    <!-- VIEW 2: CONSOLIDATED FORM (EXACT PDF STRUCTURE) -->
     <div id="consolidatedView" style="display:none;">
         <div class="header-title">
             <h3>ಕರ್ನಾಟಕ ಸರ್ಕಾರ</h3>
             <h3>ಆಯುಕ್ತರ ಕಾರ್ಯಾಲಯ ಧಾರವಾಡ ಆಯುಕ್ತಾಲಯ ಶಾಲಾ ಶಿಕ್ಷಣ ಇಲಾಖೆ ಧಾರವಾಡ</h3>
             <h2>FLN ಸಾಧಿಸದ ಮಕ್ಕಳಲ್ಲಿ ಪ್ರಾವೀಣ್ಯತೆ ಸಾಧಿಸಬೇಕಾದ ಕಲಿಕಾ ಫಲಗಳ ಹಂತವಾರು ಮೌಲ್ಯಾಂಕನ ನಮೂನೆ - 2026-27</h2>
             <h4 id="conHeaderSubjectLine"></h4>
-            <h2 id="conHeaderFormTitle">ಶಾಲಾ ಹಂತದ ಕ್ರೋಢೀಕೃತ ನಮೂನೆ - 1 (ಆರಂಭಿಕ ಹಂತ)</h2>
+            <h2 id="conHeaderFormTitle">ಶಾಲಾ ಹಂತದ ಕ್ರೋಢೀಕೃತ ನಮೂನೆ-1 (Baseline Stage - ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome-1)</h2>
         </div>
 
         <table class="meta-table">
             <tr>
-                <td style="width: 30%;">ಶಾಲೆಯ ಹೆಸರು: <span id="conSchoolDisplay"></span></td>
-                <td style="width: 25%;">ಕ್ಲಸ್ಟರ್: <span id="conClusterDisplay"></span></td>
-                <td style="width: 25%;">ತಾಲೂಕು: <span id="conTalukDisplay"></span></td>
-                <td style="width: 20%;">ಸರ್ಕಾರಿ/ಅನುದಾನಿತ/ಅನುದಾನರಹಿತ: <input type="text" class="input-line" id="schoolTypeInput" style="width: 70px;" oninput="saveCurrentHeaderData()"></td>
+                <td style="width: 30%;">School Name: <span id="conSchoolDisplay"></span></td>
+                <td style="width: 25%;">Cluster: <span id="conClusterDisplay"></span></td>
+                <td style="width: 25%;">Taluka: <span id="conTalukDisplay"></span></td>
+                <td style="width: 20%;">Govt/Aided/Unaided: <input type="text" class="input-line" id="schoolTypeInput" style="width: 70px;" oninput="saveCurrentHeaderData()"></td>
             </tr>
         </table>
 
@@ -356,6 +355,7 @@
 
         var SUBJECT_CONFIGS = {
             english: {
+                subjectNameKn: "English",
                 studentTitle: 'Class 4th To 10 : Second Language - English &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Month: <input type="text" id="monthInput" class="input-line" style="width: 110px;" oninput="saveCurrentHeaderData()">',
                 studentOutcome: 'ನಮೂನೆ-1 (Baseline Stage - ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome-1)',
                 conTitle: 'Class 4th To 10 : Second Language - English &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Month: <span id="conMonthDisplay"></span>',
@@ -402,20 +402,25 @@
                         '<td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td>' +
                     '</tr>',
                 conThead: '<tr>' +
-                        '<th rowspan="3" style="width:22px;">SL<br>No</th><th rowspan="3" style="width:60px;">Class</th><th rowspan="3" style="width:40px;">Enroll<br>ment</th><th rowspan="3" style="width:35px;">CLASS</th>' +
+                        '<th rowspan="4" style="width:22px;">SL<br>No</th><th rowspan="4" style="width:65px;">Class</th><th rowspan="4" style="width:40px;">Enroll<br>ment</th><th rowspan="4" style="width:30px;">CLASS</th>' +
                         '<th colspan="18">Alphabets, Words, Sentences and Short Para Stage</th>' +
                         '<th colspan="4" rowspan="2">Baseline Stage<br><span style="font-size:7px;font-weight:normal;">(English - FLN ನ 1ನೆ ಕಲಿಕಾ ಫಲಕೆ ಗ್ರೇಡ್‌ಗಳು A/B)</span></th>' +
-                        '<th colspan="2" rowspan="2">Finally</th><th rowspan="3" style="width:35px;">%</th>' +
+                        '<th colspan="2" rowspan="2">Finally</th>' +
                     '</tr>' +
                     '<tr><th colspan="18">FLN LO-1. Reads simple sentences and a short paragraph with understanding.</th></tr>' +
+                    '<tr>' +
+                        '<th colspan="4">Letter Stage (Alphabet/Vowels/consonants)</th><th colspan="5">Word Stage (2/3/4/5 Letters Words)</th><th colspan="5">Sentence Stage (3 to 5 Sentences)</th><th colspan="4">Short Paragraph Stage (3 to 5 Sentences)</th>' +
+                        '<th rowspan="2">Letter<br>Stage<br>(3-6)</th><th rowspan="2">Word<br>Stage<br>(7-11)</th><th rowspan="2">Sentence<br>Stage<br>(12-16)</th><th rowspan="2">Short<br>Paragraph<br>(17-20)</th>' +
+                        '<th colspan="2">To the column 21 to 24</th>' +
+                    '</tr>' +
                     '<tr style="font-size:7px;">' +
-                        '<th>Alpha</th><th>Vowel</th><th>Conso</th><th>Oral</th><th>2-Ltr</th><th>3-Ltr</th><th>4-Ltr</th><th>5-Ltr</th><th>Oral</th><th>2-Wrd</th><th>3-Wrd</th><th>4-Wrd</th><th>5-Wrd</th><th>Oral</th><th>3-Sen</th><th>4-Sen</th><th>5-Sen</th><th>Oral</th>' +
-                        '<th>Letter<br>(3-6)</th><th>Word<br>(7-11)</th><th>Sentence<br>(12-16)</th><th>Para<br>(17-20)</th>' +
+                        '<th>Alphabet</th><th>Vowels</th><th>Conso</th><th>Orally(3-5)</th><th>2 Ltr</th><th>3 Ltr</th><th>4 Ltr</th><th>5 Ltr</th><th>Orally(7-10)</th><th>2 Wrd</th><th>3 Wrd</th><th>4 Wrd</th><th>5 Wrd</th><th>Orally(12-15)</th><th>3 Sen</th><th>4 Sen</th><th>5 Sen</th><th>Orally(17-20)</th>' +
                         '<th>A/B</th><th>B</th>' +
                     '</tr>' +
-                    '<tr class="col-num"><td>1</td><td>2</td><td></td><td></td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td></td></tr>'
+                    '<tr class="col-num"><td>1</td><td>2</td><td></td><td></td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td></tr>'
             },
             kannada: {
+                subjectNameKn: "ಕನ್ನಡ",
                 studentTitle: '4 ರಿಂದ 10 ನೇ ತರಗತಿ : ಪ್ರಥಮ ಭಾಷೆ - ಕನ್ನಡ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ತಿಂಗಳು: <input type="text" id="monthInput" class="input-line" style="width: 110px;" oninput="saveCurrentHeaderData()">',
                 studentOutcome: 'ನಮೂನೆ-1 (ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome - 1)',
                 conTitle: '4 ರಿಂದ 10 ನೇ ತರಗತಿ : ಪ್ರಥಮ ಭಾಷೆ - ಕನ್ನಡ (ಉರ್ದು/ಇಂಗ್ಲಿಷ/ಹಿಂದಿ/ಸಂಸ್ಕೃತ/ಮರಾಠಿ/ತೆಲುಗು/ಇತರ) &nbsp;&nbsp;&nbsp;&nbsp; ತಿಂಗಳು: <span id="conMonthDisplay"></span>',
@@ -462,20 +467,25 @@
                         '<td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td>' +
                     '</tr>',
                 conThead: '<tr>' +
-                        '<th rowspan="3" style="width:22px;">ಕ್ರ.<br>ಸಂ</th><th rowspan="3" style="width:65px;">ತರಗತಿ</th><th rowspan="3" style="width:45px;">ಒಟ್ಟು<br>ದಾಖಲಾತಿ</th><th rowspan="3" style="width:35px;">ತರಗತಿ<br>ವಾರು ಗ್ರೇಡ್</th>' +
+                        '<th rowspan="4" style="width:22px;">ಕ್ರ.<br>ಸಂ</th><th rowspan="4" style="width:65px;">ತರಗತಿ</th><th rowspan="4" style="width:45px;">ಒಟ್ಟು<br>ದಾಖಲಾತಿ</th><th rowspan="4" style="width:30px;">ತರಗತಿ<br>ವಾರು ಗ್ರೇಡ್</th>' +
                         '<th colspan="15">ಸ್ವರ, ವ್ಯಂಜನ, ಕಾಗುಣಿತ, ಸಜಾತಿ &amp; ವಿಜಾತಿ ಒತ್ತಕ್ಷರ, ವಾಕ್ಯ ಮತ್ತು ಪ್ಯಾರಾ ಹಂತ</th>' +
                         '<th colspan="4" rowspan="2">ಆರಂಭಿಕ ಹಂತ<br><span style="font-size:7px;font-weight:normal;">(FL-1 ಕಲಿಕಾ ಫಲಕ್ಕೆ ಗ್ರೇಡ್‌ಗಳು A/B)</span></th>' +
-                        '<th colspan="2" rowspan="2" style="width:40px;">ಅಂತಿಮ<br>(FLN-1)</th><th rowspan="3" style="width:35px;">%</th>' +
+                        '<th colspan="2" rowspan="2" style="width:40px;">ಅಂತಿಮ<br>(FLN-1)</th>' +
                     '</tr>' +
                     '<tr><th colspan="15">FLN LO-1. ವಾಕ್ಯ/ಪ್ಯಾರಾವನ್ನು ಸರಾಗವಾಗಿ ಅರ್ಥಸಹಿತ ಓದಿ, ಅರ್ಥವನ್ನು ಹೇಳುವರು.</th></tr>' +
+                    '<tr>' +
+                        '<th colspan="5">ಅಕ್ಷರ ಹಂತ</th><th colspan="4">ಪದ ಹಂತ</th><th colspan="3">ವಾಕ್ಯ ಹಂತ</th><th colspan="3">ಪ್ಯಾರಾ ಹಂತ</th>' +
+                        '<th rowspan="2">ಅಕ್ಷರ<br>(3-7)</th><th rowspan="2">ಪದ<br>(8-11)</th><th rowspan="2">ವಾಕ್ಯ<br>(12-14)</th><th rowspan="2">ಪ್ಯಾರಾ<br>(15-17)</th>' +
+                        '<th colspan="2">ಕಾಲಂ 18 ರಿಂದ 21 ಕ್ಕೆ</th>' +
+                    '</tr>' +
                     '<tr style="font-size:7px;">' +
                         '<th>ಸ್ವರ</th><th>ವ್ಯಂಜನ</th><th>ಕಾಗುಣಿತ</th><th>ಒತ್ತಕ್ಷರ</th><th>ಮೌಖಿಕ</th><th>ಒತ್ತಕ್ಷರ-</th><th>ಸಜಾತಿ</th><th>ವಿಜಾತಿ</th><th>ಮೌಖಿಕ</th><th>ಒತ್ತಕ್ಷರ-</th><th>ಒತ್ತಕ್ಷರ+</th><th>ಮೌಖಿಕ</th><th>ಒತ್ತಕ್ಷರ-</th><th>ಒತ್ತಕ್ಷರ+</th><th>ಮೌಖಿಕ</th>' +
-                        '<th>ಅಕ್ಷರ<br>(3-7)</th><th>ಪದ<br>(8-11)</th><th>ವಾಕ್ಯ<br>(12-14)</th><th>ಪ್ಯಾರಾ<br>(15-17)</th>' +
                         '<th>A/B</th><th>B</th>' +
                     '</tr>' +
-                    '<tr class="col-num"><td>1</td><td>2</td><td></td><td></td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td></td></tr>'
+                    '<tr class="col-num"><td>1</td><td>2</td><td></td><td></td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td></tr>'
             },
             maths: {
+                subjectNameKn: "ಗಣಿತ",
                 studentTitle: '4 ರಿಂದ 5 ಮತ್ತು 6 ರಿಂದ 10 ನೇ ತರಗತಿ : ಗಣಿತ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ತಿಂಗಳು: <input type="text" id="monthInput" class="input-line" style="width: 110px;" oninput="saveCurrentHeaderData()">',
                 studentOutcome: 'ನಮೂನೆ - 1 (ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome-1 and 2*)',
                 conTitle: '4 ರಿಂದ 5 ಮತ್ತು 6 ರಿಂದ 10 ನೇ ತರಗತಿ : ಗಣಿತ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ತಿಂಗಳು: <span id="conMonthDisplay"></span>',
@@ -517,21 +527,23 @@
                         '<td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td>' +
                     '</tr>',
                 conThead: '<tr>' +
-                        '<th rowspan="3" style="width:22px;">ಕ್ರ.<br>ಸಂ</th><th rowspan="3" style="width:65px;">ತರಗತಿ</th><th rowspan="3" style="width:45px;">ದಾಖ<br>ಲಾತಿ</th><th rowspan="3" style="width:35px;">ತರಗತಿ<br>ವಾರು ಗ್ರೇಡ್</th>' +
+                        '<th rowspan="4" style="width:22px;">ಕ್ರ.<br>ಸಂ</th><th rowspan="4" style="width:65px;">ತರಗತಿ</th><th rowspan="4" style="width:40px;">ದಾಖ<br>ಲಾತಿ</th><th rowspan="4" style="width:30px;">ತರಗತಿ<br>ವಾರು ಗ್ರೇಡ್</th>' +
                         '<th colspan="8">ಅಂಕಿ/ಸಂಖ್ಯೆಗಳ ಹಂತ</th>' +
                         '<th colspan="10">ಸಂಕಲನ ಮತ್ತು ವ್ಯವಕಲನ ಹಂತ</th>' +
                         '<th colspan="4" rowspan="2">ಆರಂಭಿಕ ಹಂತ<br><span style="font-size:7px;font-weight:normal;">(FLN ಫಲಕ್ಕೆ ಗ್ರೇಡ್‌ಗಳು A/B)</span></th>' +
-                        '<th colspan="2" rowspan="2">ಅಂತಿಮ</th><th rowspan="3" style="width:35px;">%</th>' +
+                        '<th colspan="2" rowspan="2">ಅಂತಿಮ</th>' +
                     '</tr>' +
+                    '<tr><th colspan="4">1 ರಿಂದ 99 / 999</th><th colspan="4">100 ರಿಂದ 999 / 9999</th><th colspan="5">ಸಂಕಲನ</th><th colspan="5">ವ್ಯವಕಲನ</th></tr>' +
                     '<tr>' +
-                        '<th colspan="4">1 ರಿಂದ 99 / 999</th><th colspan="4">100 ರಿಂದ 999 / 9999</th><th colspan="5">ಸಂಕಲನ</th><th colspan="5">ವ್ಯವಕಲನ</th>' +
+                        '<th colspan="4">1 ರಿಂದ 99 / 999</th><th colspan="4">100 ರಿಂದ 999 / 9999</th><th colspan="5">1 ರಿಂದ 999 / 9999</th><th colspan="5">1 ರಿಂದ 999 / 9999</th>' +
+                        '<th rowspan="2">1-99/999<br>(21)</th><th rowspan="2">100-999<br>(22)</th><th rowspan="2">ಸಂಕಲನ<br>(23)</th><th rowspan="2">ವ್ಯವಕಲನ<br>(24)</th>' +
+                        '<th colspan="2">ಕಾಲಂ 21 ರಿಂದ 24 ಕ್ಕೆ</th>' +
                     '</tr>' +
                     '<tr style="font-size:7px;">' +
                         '<th>ಗುರುತು</th><th>ಬರೆ</th><th>ಅರ್ಥ</th><th>ಮೌಖಿಕ</th><th>ಗುರುತು</th><th>ಬರೆ</th><th>ಅರ್ಥ</th><th>ಮೌಖಿಕ</th><th>1 ಅಂಕಿ</th><th>2 ಅಂಕಿ</th><th>3 ಅಂಕಿ</th><th>4 ಅಂಕಿ</th><th>ಮೌಖಿಕ</th><th>1 ಅಂಕಿ</th><th>2 ಅಂಕಿ</th><th>3 ಅಂಕಿ</th><th>4 ಅಂಕಿ</th><th>ಮೌಖಿಕ</th>' +
-                        '<th>1-99/999<br>(21)</th><th>100-999<br>(22)</th><th>ಸಂಕಲನ<br>(23)</th><th>ವ್ಯವಕಲನ<br>(24)</th>' +
                         '<th>A</th><th>B</th>' +
                     '</tr>' +
-                    '<tr class="col-num"><td>1</td><td>2</td><td></td><td></td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td></td></tr>'
+                    '<tr class="col-num"><td>1</td><td>2</td><td></td><td></td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td></tr>'
             }
         };
 
@@ -612,7 +624,7 @@
 
         function persistMasterData() {
             try {
-                localStorage.setItem('FLN_MASTER_CONSOLIDATED_V9', JSON.stringify(masterData));
+                localStorage.setItem('FLN_MASTER_CONSOLIDATED_V10', JSON.stringify(masterData));
             } catch(e) {
                 console.log("Storage error", e);
             }
@@ -620,7 +632,7 @@
 
         function loadAppData() {
             try {
-                var saved = localStorage.getItem('FLN_MASTER_CONSOLIDATED_V9');
+                var saved = localStorage.getItem('FLN_MASTER_CONSOLIDATED_V10');
                 if (saved) {
                     var parsed = JSON.parse(saved);
                     if (parsed && typeof parsed === 'object') {
@@ -923,19 +935,20 @@
             return "A";
         }
 
+        // --- CONSOLIDATED REPORT ---
         function generateConsolidatedReport() {
             var subKey = masterData.currentSubject || "english";
             var cfg = SUBJECT_CONFIGS[subKey] || SUBJECT_CONFIGS.english;
 
-            document.getElementById('conSchoolDisplay').innerText = masterData.school || "-";
-            document.getElementById('conClusterDisplay').innerText = masterData.cluster || "-";
-            document.getElementById('conTalukDisplay').innerText = masterData.taluk || "-";
-            document.getElementById('conDateDisplay').innerText = masterData.date || "-";
+            document.getElementById('conSchoolDisplay').innerText = masterData.school || "";
+            document.getElementById('conClusterDisplay').innerText = masterData.cluster || "";
+            document.getElementById('conTalukDisplay').innerText = masterData.taluk || "";
+            document.getElementById('conDateDisplay').innerText = masterData.date || "";
 
             document.getElementById('conHeaderSubjectLine').innerHTML = cfg.conTitle;
             document.getElementById('conHeaderFormTitle').innerText = cfg.conForm;
             if (document.getElementById('conMonthDisplay')) {
-                document.getElementById('conMonthDisplay').innerText = masterData.month || "-";
+                document.getElementById('conMonthDisplay').innerText = masterData.month || "";
             }
 
             var classList = ["4", "5", "6", "7", "8", "9", "10"];
@@ -1004,20 +1017,15 @@
                     grandB[col] += classB[col];
                 }
 
-                var lastColIndex = cfg.totalCols;
-                var classBCount = classB[lastColIndex] || 0;
-                var percentB = validCount > 0 ? Math.round((classBCount / validCount) * 100) + "%" : "0%";
-
                 rowsHtml += '<tr>' +
                                 '<td rowspan="2">' + (i + 1) + '</td>' +
-                                '<td rowspan="2" style="font-weight:700;">' + c + ' ನೆಯ ತರಗತಿ</td>' +
+                                '<td rowspan="2" style="font-weight:700;">' + (subKey === 'english' ? (c + 'th Class') : (c + ' ನೆಯ ತರಗತಿ')) + '</td>' +
                                 '<td rowspan="2" style="font-weight:700; color:blue;">' + validCount + '</td>' +
                                 '<td style="font-weight:700;">A</td>';
                 for (var col = cfg.startCol; col <= cfg.totalCols; col++) {
                     rowsHtml += '<td>' + classA[col] + '</td>';
                 }
-                rowsHtml += '<td rowspan="2" style="font-weight:700;">' + percentB + '</td>' +
-                            '</tr>' +
+                rowsHtml += '</tr>' +
                             '<tr><td style="font-weight:700;">B</td>';
                 for (var col = cfg.startCol; col <= cfg.totalCols; col++) {
                     rowsHtml += '<td>' + classB[col] + '</td>';
@@ -1025,22 +1033,20 @@
                 rowsHtml += '</tr>';
             }
 
-            var grandPercentB = grandTotalEnrollment > 0 ? Math.round((grandB[cfg.totalCols] / grandTotalEnrollment) * 100) + "%" : "0%";
-
             var footHtml = '<tr class="total-row" style="background:#f9f9f9;">' +
-                                '<td rowspan="2" colspan="2" style="font-weight:700;">ಅಂತಿಮ ಶಾಲಾ ಒಟ್ಟು</td>' +
+                                '<td rowspan="2" colspan="2" style="font-weight:700;">' + (subKey === 'english' ? 'ಅಂತಿಮ ಶಾಲಾ ಒಟ್ಟು' : 'ಅಂತಿಮ ಶಾಲಾ ಒಟ್ಟು') + '</td>' +
                                 '<td rowspan="2" style="font-weight:700; font-size:11px;">' + grandTotalEnrollment + '</td>' +
                                 '<td style="font-weight:700;">ಒಟ್ಟು A</td>';
             for (var col = cfg.startCol; col <= cfg.totalCols; col++) {
                 footHtml += '<td>' + grandA[col] + '</td>';
             }
-            footHtml += '<td>0%</td></tr>' +
+            footHtml += '</tr>' +
                         '<tr class="total-row" style="background:#f9f9f9;">' +
                             '<td style="font-weight:700;">ಒಟ್ಟು B</td>';
             for (var col = cfg.startCol; col <= cfg.totalCols; col++) {
                 footHtml += '<td>' + grandB[col] + '</td>';
             }
-            footHtml += '<td style="font-weight:700; color:red;">' + grandPercentB + '</td></tr>';
+            footHtml += '</tr>';
 
             var finalTableHtml = '<table class="fln-table" id="consolidatedTable">' +
                                     '<thead>' + cfg.conThead + '</thead>' +
@@ -1064,7 +1070,7 @@
             return "A";
         }
 
-        // --- ENHANCED PROFESSIONAL EXCEL EXPORT ---
+        // --- 100% PDF MATCHING EXCEL EXPORT ---
         function exportToExcel() {
             saveCurrentClassData(masterData.currentClass);
             saveCurrentHeaderData();
@@ -1079,34 +1085,32 @@
             var colWidths = [];
 
             if (currentView === 'student') {
-                var totalTableCols = (sub === 'kannada') ? 23 : 26;
+                var totalCols = (sub === 'kannada') ? 23 : 26;
                 fileName = "FLN_Evaluation_" + sub.toUpperCase() + "_Class_" + c + ".xlsx";
 
-                var headerHtml = '<tr><th colspan="' + totalTableCols + '" style="font-size:16px; font-weight:bold; text-align:center;">ಕರ್ನಾಟಕ ಸರ್ಕಾರ</th></tr>' +
-                    '<tr><th colspan="' + totalTableCols + '" style="font-size:14px; font-weight:bold; text-align:center;">ಆಯುಕ್ತರ ಕಾರ್ಯಾಲಯ ಧಾರವಾಡ ಆಯುಕ್ತಾಲಯ ಶಾಲಾ ಶಿಕ್ಷಣ ಇಲಾಖೆ ಧಾರವಾಡ</th></tr>' +
-                    '<tr><th colspan="' + totalTableCols + '" style="font-size:13px; font-weight:bold; text-align:center;">FLN ಸಾಧಿಸದ ಮಕ್ಕಳಲ್ಲಿ ಪ್ರಾವೀಣ್ಯತೆ ಸಾಧಿಸಬೇಕಾದ ಕಲಿಕಾ ಫಲಗಳ ಹಂತವಾರು ಮೌಲ್ಯಾಂಕನ ನಮೂನೆ - 2026-27</th></tr>' +
-                    '<tr><th colspan="' + totalTableCols + '" style="font-size:12px; font-weight:bold; text-align:center;">ತರಗತಿ: ' + c + ' ನೆಯ ತರಗತಿ  |  ವಿಷಯ: ' + sub.toUpperCase() + '  |  ತಿಂಗಳು: ' + (masterData.month || '') + '</th></tr>' +
-                    '<tr><td colspan="' + totalTableCols + '" style="font-weight:bold;">ಶಾಲೆಯ ಹೆಸರು: ' + (masterData.school || '') + '  |  ಶಿಕ್ಷಕರ ಹೆಸರು: ' + (masterData.teacher || '') + '  |  ಕ್ಲಸ್ಟರ್: ' + (masterData.cluster || '') + '  |  ತಾಲೂಕು: ' + (masterData.taluk || '') + '</td></tr>' +
-                    '<tr><td colspan="' + totalTableCols + '">&nbsp;</td></tr>';
+                var headerHtml = '<tr><th colspan="' + totalCols + '" style="font-size:16px; font-weight:bold; text-align:center;">ಕರ್ನಾಟಕ ಸರ್ಕಾರ</th></tr>' +
+                    '<tr><th colspan="' + totalCols + '" style="font-size:13px; font-weight:bold; text-align:center;">ಆಯುಕ್ತರ ಕಾರ್ಯಾಲಯ ಧಾರವಾಡ ಆಯುಕ್ತಾಲಯ ಶಾಲಾ ಶಿಕ್ಷಣ ಇಲಾಖೆ ಧಾರವಾಡ</th></tr>' +
+                    '<tr><th colspan="' + totalCols + '" style="font-size:13px; font-weight:bold; text-align:center;">FLN ಸಾಧಿಸದ ಮಕ್ಕಳಲ್ಲಿ ಪ್ರಾವೀಣ್ಯತೆ ಸಾಧಿಸಬೇಕಾದ ಕಲಿಕಾ ಫಲಗಳ ಹಂತವಾರು ಮೌಲ್ಯಾಂಕನ ನಮೂನೆ - 2026-27</th></tr>' +
+                    '<tr><th colspan="' + totalCols + '" style="font-size:12px; font-weight:bold; text-align:center;">Class 4th To 10 : ' + (sub === 'english' ? 'Second Language - English' : sub) + '        Month: ' + (masterData.month || '') + '</th></tr>' +
+                    '<tr><th colspan="' + totalCols + '" style="font-size:12px; font-weight:bold; text-align:center;">ನಮೂನೆ-1 (Baseline Stage - ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome-1)</th></tr>' +
+                    '<tr><td colspan="' + totalCols + '" style="font-weight:bold;">School Name: ' + (masterData.school || '') + '    Teacher Name: ' + (masterData.teacher || '') + '    Cluster: ' + (masterData.cluster || '') + '    Taluka: ' + (masterData.taluk || '') + '    Class: ' + c + 'th Class</td></tr>' +
+                    '<tr><td colspan="' + totalCols + '">&nbsp;</td></tr>';
 
                 var origTable = document.getElementById('mainTable');
                 var clone = origTable.cloneNode(true);
 
-                // Replace selects with values
                 var selects = clone.querySelectorAll('select');
                 for (var i = 0; i < selects.length; i++) {
                     var origSel = origTable.querySelectorAll('select')[i];
                     selects[i].parentNode.innerText = origSel ? origSel.value : "";
                 }
 
-                // Replace input with student name
                 var inputs = clone.querySelectorAll('input');
                 for (var i = 0; i < inputs.length; i++) {
                     var origInp = origTable.querySelectorAll('input')[i];
                     inputs[i].parentNode.innerText = origInp ? origInp.value : "";
                 }
 
-                // Remove action buttons
                 var extraBtns = clone.querySelectorAll('.del-btn, .mini-btn, .col-btn');
                 for (var i = 0; i < extraBtns.length; i++) {
                     if (extraBtns[i].classList.contains('col-btn')) {
@@ -1116,62 +1120,62 @@
                     }
                 }
 
-                var signHtml = '<tr><td colspan="' + totalTableCols + '">&nbsp;</td></tr>' +
+                var signHtml = '<tr><td colspan="' + totalCols + '">&nbsp;</td></tr>' +
                     '<tr><td colspan="4" style="font-weight:bold;">ದಿನಾಂಕ: ' + (masterData.date || '') + '</td>' +
                     '<td colspan="7" style="font-weight:bold;">ಶಿಕ್ಷಕರ ಸಹಿ: ........................</td>' +
                     '<td colspan="7" style="font-weight:bold;">ಪರಿಶೀಲಕರ ಸಹಿ: ........................</td>' +
-                    '<td colspan="' + (totalTableCols - 18) + '" style="font-weight:bold;">ಶಾಲಾ ಮುಖ್ಯಸ್ಥರು: ........................</td></tr>';
+                    '<td colspan="' + (totalCols - 18) + '" style="font-weight:bold;">ಶಾಲಾ ಮುಖ್ಯಸ್ಥರು: ........................</td></tr>';
 
                 expTable.innerHTML = headerHtml + clone.innerHTML + signHtml;
 
-                // Dedicated column widths: 32 chars wide for Student Name so names never get truncated!
                 colWidths = [
                     { wch: 6 },  // SL No
                     { wch: 32 }  // Student Name
                 ];
-                for (var i = 2; i < totalTableCols; i++) {
-                    colWidths.push({ wch: 7 });
+                for (var i = 2; i < totalCols; i++) {
+                    colWidths.push({ wch: 6 });
                 }
 
             } else {
-                var totalConCols = (sub === 'kannada') ? 24 : 27;
-                fileName = "FLN_Consolidated_Form_" + sub.toUpperCase() + ".xlsx";
+                // Consolidated Export Matching Image Exactly
+                var totalCols = (sub === 'kannada') ? 23 : 26;
+                fileName = "ಶಾಲಾ_ಕ್ರೋಢೀಕೃತ_ನಮೂನೆ_1_" + sub.toUpperCase() + ".xlsx";
 
-                var headerHtml = '<tr><th colspan="' + totalConCols + '" style="font-size:16px; font-weight:bold; text-align:center;">ಕರ್ನಾಟಕ ಸರ್ಕಾರ</th></tr>' +
-                    '<tr><th colspan="' + totalConCols + '" style="font-size:14px; font-weight:bold; text-align:center;">ಆಯುಕ್ತರ ಕಾರ್ಯಾಲಯ ಧಾರವಾಡ ಆಯುಕ್ತಾಲಯ ಶಾಲಾ ಶಿಕ್ಷಣ ಇಲಾಖೆ ಧಾರವಾಡ</th></tr>' +
-                    '<tr><th colspan="' + totalConCols + '" style="font-size:13px; font-weight:bold; text-align:center;">ಶಾಲಾ ಹಂತದ ಕ್ರೋಢೀಕೃತ ನಮೂನೆ - 1 (ಆರಂಭಿಕ ಹಂತ) - 2026-27</th></tr>' +
-                    '<tr><th colspan="' + totalConCols + '" style="font-size:12px; font-weight:bold; text-align:center;">ವಿಷಯ: ' + sub.toUpperCase() + '  |  ತಿಂಗಳು: ' + (masterData.month || '') + '</th></tr>' +
-                    '<tr><td colspan="' + totalConCols + '" style="font-weight:bold;">ಶಾಲೆಯ ಹೆಸರು: ' + (masterData.school || '') + '  |  ಕ್ಲಸ್ಟರ್: ' + (masterData.cluster || '') + '  |  ತಾಲೂಕು: ' + (masterData.taluk || '') + '  |  ಸರ್ಕಾರಿ/ಅನುದಾನಿತ: ' + (masterData.schoolType || '') + '</td></tr>' +
-                    '<tr><td colspan="' + totalConCols + '">&nbsp;</td></tr>';
+                var headerHtml = '<tr><th colspan="' + totalCols + '" style="font-size:16px; font-weight:bold; text-align:center;">ಕರ್ನಾಟಕ ಸರ್ಕಾರ</th></tr>' +
+                    '<tr><th colspan="' + totalCols + '" style="font-size:13px; font-weight:bold; text-align:center;">ಆಯುಕ್ತರ ಕಾರ್ಯಾಲಯ ಧಾರವಾಡ ಆಯುಕ್ತಾಲಯ ಶಾಲಾ ಶಿಕ್ಷಣ ಇಲಾಖೆ ಧಾರವಾಡ</th></tr>' +
+                    '<tr><th colspan="' + totalCols + '" style="font-size:13px; font-weight:bold; text-align:center;">FLN ಸಾಧಿಸದ ಮಕ್ಕಳಲ್ಲಿ ಪ್ರಾವೀಣ್ಯತೆ ಸಾಧಿಸಬೇಕಾದ ಕಲಿಕಾ ಫಲಗಳ ಹಂತವಾರು ಮೌಲ್ಯಾಂಕನ ನಮೂನೆ - 2026-27</th></tr>' +
+                    '<tr><th colspan="' + totalCols + '" style="font-size:12px; font-weight:bold; text-align:center;">Class 4th To 10 : ' + (sub === 'english' ? 'Second Language - English' : sub) + '        Month: ' + (masterData.month || '') + '</th></tr>' +
+                    '<tr><th colspan="' + totalCols + '" style="font-size:13px; font-weight:bold; text-align:center;">ಶಾಲಾ ಹಂತದ ಕ್ರೋಢೀಕೃತ ನಮೂನೆ-1 (Baseline Stage - ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome-1)</th></tr>' +
+                    '<tr><td colspan="' + totalCols + '" style="font-weight:bold;">School Name: ' + (masterData.school || '') + '        Cluster: ' + (masterData.cluster || '') + '        Taluka: ' + (masterData.taluk || '') + '        Govt/Aided/Unaided: ' + (masterData.schoolType || '') + '</td></tr>' +
+                    '<tr><td colspan="' + totalCols + '">&nbsp;</td></tr>';
 
                 var origTable = document.getElementById('consolidatedTable');
                 var clone = origTable.cloneNode(true);
 
-                var signHtml = '<tr><td colspan="' + totalConCols + '">&nbsp;</td></tr>' +
+                var signHtml = '<tr><td colspan="' + totalCols + '">&nbsp;</td></tr>' +
                     '<tr><td colspan="4" style="font-weight:bold;">ದಿನಾಂಕ: ' + (masterData.date || '') + '</td>' +
                     '<td colspan="7" style="font-weight:bold;">ಶಿಕ್ಷಕರ ಸಹಿ: ........................</td>' +
                     '<td colspan="7" style="font-weight:bold;">ಪರಿಶೀಲಕರ ಸಹಿ: ........................</td>' +
-                    '<td colspan="' + (totalConCols - 18) + '" style="font-weight:bold;">ಶಾಲಾ ಮುಖ್ಯಸ್ಥರು: ........................</td></tr>';
+                    '<td colspan="' + (totalCols - 18) + '" style="font-weight:bold;">ಶಾಲಾ ಮುಖ್ಯಸ್ಥರು: ........................</td></tr>';
 
                 expTable.innerHTML = headerHtml + clone.innerHTML + signHtml;
 
                 colWidths = [
                     { wch: 6 },  // SL No
-                    { wch: 15 }, // Class
-                    { wch: 12 }, // Enrollment
-                    { wch: 8 }   // Grade
+                    { wch: 12 }, // Class
+                    { wch: 10 }, // Enrollment
+                    { wch: 6 }   // CLASS (A/B)
                 ];
-                for (var i = 4; i < totalConCols - 1; i++) {
-                    colWidths.push({ wch: 7 });
+                for (var i = 4; i < totalCols; i++) {
+                    colWidths.push({ wch: 6 });
                 }
-                colWidths.push({ wch: 9 }); // %
             }
 
             var ws = XLSX.utils.table_to_sheet(expTable, { raw: true });
             ws['!cols'] = colWidths;
 
             var wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "FLN_Evaluation");
+            XLSX.utils.book_append_sheet(wb, ws, "FLN_Consolidated");
             XLSX.writeFile(wb, fileName);
         }
 
