@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FLN Assessment & Consolidated Form (Kannada, English, Maths)</title>
     
-    <!-- Google Fonts: Anek Kannada (ಯಾವುದೇ ಸಾಧನದಲ್ಲೂ Anek Kannada ಕಾಣಲು) -->
+    <!-- Google Fonts: Anek Kannada -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anek+Kannada:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -175,7 +175,6 @@
             text-align: left;
         }
         
-        /* Action buttons in row */
         .row-actions {
             display: inline-flex;
             align-items: center;
@@ -590,7 +589,7 @@
                 for (var i = 0; i < nameInputs.length; i++) {
                     names.push(nameInputs[i].value);
                 }
-                if (names.length > 0) masterData.classes[c].students = names;
+                masterData.classes[c].students = names;
 
                 var rows = document.querySelectorAll('#studentRows tr');
                 for (var r = 0; r < rows.length; r++) {
@@ -602,7 +601,7 @@
                     }
                 }
 
-                localStorage.setItem('FLN_MASTER_CONSOLIDATED_V5', JSON.stringify(masterData));
+                localStorage.setItem('FLN_MASTER_CONSOLIDATED_V6', JSON.stringify(masterData));
             } catch(e) {
                 console.log("Save error", e);
             }
@@ -610,7 +609,7 @@
 
         function loadAppData() {
             try {
-                var saved = localStorage.getItem('FLN_MASTER_CONSOLIDATED_V5');
+                var saved = localStorage.getItem('FLN_MASTER_CONSOLIDATED_V6');
                 if (saved) {
                     var parsed = JSON.parse(saved);
                     if (parsed && typeof parsed === 'object') {
@@ -711,7 +710,7 @@
             var c = masterData.currentClass;
             var sub = masterData.currentSubject;
             var savedRowGrades = {};
-            if (masterData.classes[c] && masterData.classes[c].grades[sub] && masterData.classes[c].grades[sub][studentIdx]) {
+            if (masterData.classes[c] && masterData.classes[c].grades && masterData.classes[c].grades[sub] && masterData.classes[c].grades[sub][studentIdx]) {
                 savedRowGrades = masterData.classes[c].grades[sub][studentIdx];
             }
 
@@ -736,15 +735,62 @@
                 '</td>';
             }
 
+            // Bind explicitly via data-grade-col for guaranteed accuracy
             for (var g = 0; g < cfg.gradeCols.length; g++) {
-                rowHtml += '<td class="auto-cell" id="c' + cfg.gradeCols[g] + '_' + rId + '"></td>';
+                rowHtml += '<td class="auto-cell" data-grade-col="' + cfg.gradeCols[g] + '"></td>';
             }
 
             tr.innerHTML = rowHtml;
             tbody.appendChild(tr);
         }
 
-        // 1. Bulk Fill entire class with A or B
+        // --- ACCURATE ROW-LEVEL CALCULATION ---
+        function calculateRow(element, triggerSave) {
+            var row = element.closest('tr');
+            if (!row) return;
+            var cfg = SUBJECT_CONFIGS[masterData.currentSubject] || SUBJECT_CONFIGS.english;
+
+            var rowVals = {};
+            for (var i = 0; i < cfg.stages.length; i++) {
+                var stg = cfg.stages[i];
+                var res = evaluateRange(row, stg.start, stg.end);
+                rowVals[stg.id] = res;
+                var cell = row.querySelector('[data-grade-col="' + stg.id + '"]');
+                if (cell) cell.innerText = res;
+            }
+
+            var finalResults = cfg.evalFinally(rowVals);
+            for (var k in finalResults) {
+                var finCell = row.querySelector('[data-grade-col="' + k + '"]');
+                if (finCell) finCell.innerText = finalResults[k];
+            }
+
+            calculateTotals();
+            if (triggerSave) saveAppData();
+        }
+
+        function calculateTotals() {
+            var cfg = SUBJECT_CONFIGS[masterData.currentSubject] || SUBJECT_CONFIGS.english;
+            var rows = document.querySelectorAll('#studentRows tr');
+
+            for (var g = 0; g < cfg.gradeCols.length; g++) {
+                var c = cfg.gradeCols[g];
+                var countA = 0;
+                var countB = 0;
+                for (var r = 0; r < rows.length; r++) {
+                    var cell = rows[r].querySelector('[data-grade-col="' + c + '"]');
+                    var val = cell ? cell.innerText.trim() : "";
+                    if (val === 'A') countA++;
+                    if (val === 'B') countB++;
+                }
+                var totA = document.getElementById('totA_' + c);
+                var totB = document.getElementById('totB_' + c);
+                if (totA) totA.innerText = countA;
+                if (totB) totB.innerText = countB;
+            }
+        }
+
+        // 1. Bulk Fill entire class
         function bulkFillAll(grade) {
             if (confirm("ಈ ತರಗತಿಯ ಎಲ್ಲಾ ವಿದ್ಯಾರ್ಥಿಗಳ ಎಲ್ಲಾ ಕಾಲಂಗಳಿಗೂ '" + grade + "' ತುಂಬಬೇಕೆ?")) {
                 var rows = document.querySelectorAll('#studentRows tr');
@@ -800,26 +846,28 @@
         }
 
         function reorderRows() {
-            var cfg = SUBJECT_CONFIGS[masterData.currentSubject] || SUBJECT_CONFIGS.english;
             var rows = document.querySelectorAll('#studentRows tr');
             for (var i = 0; i < rows.length; i++) {
                 var newId = i + 1;
                 rows[i].id = 'row_' + newId;
                 var slSpan = rows[i].querySelector('.sl-num');
                 if (slSpan) slSpan.innerText = newId;
-
-                for (var g = 0; g < cfg.gradeCols.length; g++) {
-                    var colNum = cfg.gradeCols[g];
-                    var cell = rows[i].querySelector('.auto-cell:nth-last-child(' + (cfg.gradeCols.length - g) + ')');
-                    if (cell) cell.id = 'c' + colNum + '_' + newId;
-                }
             }
         }
 
+        // Add New Student and immediately trigger auto-calculate & total update
         function addNewStudent() {
             var cfg = SUBJECT_CONFIGS[masterData.currentSubject] || SUBJECT_CONFIGS.english;
-            var newIndex = document.querySelectorAll('#studentRows tr').length + 1;
+            var tbody = document.getElementById('studentRows');
+            var newIndex = tbody.querySelectorAll('tr').length + 1;
             appendStudentRow(newIndex, "", cfg, newIndex - 1);
+            
+            var newRow = tbody.lastElementChild;
+            if (newRow) {
+                var firstSel = newRow.querySelector('select.grade-select');
+                if (firstSel) calculateRow(firstSel, false);
+            }
+            calculateTotals();
             saveAppData();
         }
 
@@ -844,52 +892,6 @@
             if (count === 0) return "";
             if (hasB) return "B";
             return "A";
-        }
-
-        function calculateRow(element, triggerSave) {
-            var row = element.closest('tr');
-            var rId = row.id.split('_')[1];
-            var cfg = SUBJECT_CONFIGS[masterData.currentSubject] || SUBJECT_CONFIGS.english;
-
-            var rowVals = {};
-            for (var i = 0; i < cfg.stages.length; i++) {
-                var stg = cfg.stages[i];
-                var res = evaluateRange(row, stg.start, stg.end);
-                rowVals[stg.id] = res;
-                var cell = document.getElementById('c' + stg.id + '_' + rId);
-                if (cell) cell.innerText = res;
-            }
-
-            var finalResults = cfg.evalFinally(rowVals);
-            for (var k in finalResults) {
-                var finCell = document.getElementById('c' + k + '_' + rId);
-                if (finCell) finCell.innerText = finalResults[k];
-            }
-
-            calculateTotals();
-            if (triggerSave) saveAppData();
-        }
-
-        function calculateTotals() {
-            var cfg = SUBJECT_CONFIGS[masterData.currentSubject] || SUBJECT_CONFIGS.english;
-            var rows = document.querySelectorAll('#studentRows tr');
-
-            for (var g = 0; g < cfg.gradeCols.length; g++) {
-                var c = cfg.gradeCols[g];
-                var countA = 0;
-                var countB = 0;
-                for (var r = 0; r < rows.length; r++) {
-                    var rId = rows[r].id.split('_')[1];
-                    var cell = document.getElementById('c' + c + '_' + rId);
-                    var val = cell ? cell.innerText : "";
-                    if (val === 'A') countA++;
-                    if (val === 'B') countB++;
-                }
-                var totA = document.getElementById('totA_' + c);
-                var totB = document.getElementById('totB_' + c);
-                if (totA) totA.innerText = countA;
-                if (totB) totB.innerText = countB;
-            }
         }
 
         // --- CONSOLIDATED REPORT ---
