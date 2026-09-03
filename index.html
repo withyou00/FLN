@@ -139,6 +139,27 @@
             padding-left: 2px;
         }
 
+        /* Delete Button for each row */
+        .del-btn {
+            background: #ff4d4f;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            width: 14px;
+            height: 14px;
+            font-size: 10px;
+            line-height: 10px;
+            cursor: pointer;
+            padding: 0;
+            margin-left: 2px;
+            display: inline-block;
+            vertical-align: middle;
+            font-weight: bold;
+        }
+        .del-btn:hover {
+            background: #d9363e;
+        }
+
         /* Signatures */
         .footer-signs {
             margin-top: 30px;
@@ -150,7 +171,7 @@
         }
 
         @media print {
-            .no-print {
+            .no-print, .del-btn {
                 display: none !important;
             }
             body {
@@ -229,7 +250,7 @@
 
     <!-- Logic Script -->
     <script>
-        let studentNamesList = ["", "", "", "", ""]; // Keeps student names when subject toggles
+        let studentNamesList = ["", "", "", "", ""];
 
         const SUBJECT_CONFIGS = {
             english: {
@@ -244,7 +265,6 @@
                     { id: 23, start: 12, end: 16 },
                     { id: 24, start: 17, end: 20 }
                 ],
-                finalType: 'split', // 25: A, 26: B
                 evalFinally: (rowVals) => {
                     const stg = [rowVals[21], rowVals[22], rowVals[23], rowVals[24]];
                     if (stg.every(v => v === 'A')) return { 25: 'A', 26: '' };
@@ -254,7 +274,7 @@
                 gradeCols: [21, 22, 23, 24, 25, 26],
                 thead: `
                     <tr>
-                        <th rowspan="4" style="width:24px;">SL<br>No</th>
+                        <th rowspan="4" style="width:28px;">SL<br>No</th>
                         <th rowspan="4" style="width:130px;">Student Names</th>
                         <th colspan="18">Alphabets, Words, Sentences and Short Para Stage</th>
                         <th colspan="4" rowspan="2">Baseline Stage<br><span style="font-size:7.5px;font-weight:normal;">(English - FLN ನ 1ನೆ ಕಲಿಕಾ ಫಲಕೆ ಗ್ರೇಡ್‌ಗಳು A/B)</span></th>
@@ -303,7 +323,6 @@
                     { id: 20, start: 12, end: 14 },
                     { id: 21, start: 15, end: 17 }
                 ],
-                finalType: 'single', // Col 22
                 evalFinally: (rowVals) => {
                     const stg = [rowVals[18], rowVals[19], rowVals[20], rowVals[21]];
                     if (stg.every(v => v === 'A')) return { 22: 'A' };
@@ -313,7 +332,7 @@
                 gradeCols: [18, 19, 20, 21, 22],
                 thead: `
                     <tr>
-                        <th rowspan="4" style="width:24px;">ಕ್ರ.<br>ಸಂ</th>
+                        <th rowspan="4" style="width:28px;">ಕ್ರ.<br>ಸಂ</th>
                         <th rowspan="4" style="width:130px;">ವಿದ್ಯಾರ್ಥಿಯ ಹೆಸರು</th>
                         <th colspan="15">ಸ್ವರ, ವ್ಯಂಜನ, ಕಾಗುಣಿತ, ಸಜಾತಿ &amp; ವಿಜಾತಿ ಒತ್ತಕ್ಷರ, ವಾಕ್ಯ ಮತ್ತು ಪ್ಯಾರಾ ಹಂತ</th>
                         <th colspan="4" rowspan="2">ಆರಂಭಿಕ ಹಂತ<br><span style="font-size:7.5px;font-weight:normal;">(FL-1 ಕಲಿಕಾ ಫಲಕ್ಕೆ ಹಂತವಾರು ಗ್ರೇಡ್‌ಗಳು A/B)</span></th>
@@ -361,7 +380,6 @@
                     { id: 23, start: 11, end: 15 },
                     { id: 24, start: 16, end: 20 }
                 ],
-                finalType: 'single', // Col 25
                 evalFinally: (rowVals) => {
                     const stg = [rowVals[21], rowVals[22], rowVals[23], rowVals[24]];
                     if (stg.every(v => v === 'A')) return { 25: 'A' };
@@ -371,7 +389,7 @@
                 gradeCols: [21, 22, 23, 24, 25],
                 thead: `
                     <tr>
-                        <th rowspan="4" style="width:24px;">ಕ್ರ.<br>ಸಂ</th>
+                        <th rowspan="4" style="width:28px;">ಕ್ರ.<br>ಸಂ</th>
                         <th rowspan="4" style="width:130px;">ವಿದ್ಯಾರ್ಥಿಯ ಹೆಸರು</th>
                         <th colspan="8">ಅಂಕಿ / ಸಂಖ್ಯೆಗಳ ಹಂತ (FLN LO-1)</th>
                         <th colspan="10">ಸಂಕಲನ ಮತ್ತು ವ್ಯವಕಲನ ಹಂತ (FLN LO-2)</th>
@@ -410,9 +428,7 @@
 
         function saveCurrentNames() {
             const inputs = document.querySelectorAll('.student-name');
-            if (inputs.length > 0) {
-                studentNamesList = Array.from(inputs).map(inp => inp.value);
-            }
+            studentNamesList = Array.from(inputs).map(inp => inp.value);
         }
 
         function changeClass() {
@@ -429,11 +445,9 @@
             const subKey = document.getElementById('subjectSelect').value;
             const cfg = SUBJECT_CONFIGS[subKey];
 
-            // Header titles update
             document.getElementById('headerSubjectLine').innerHTML = cfg.titleLine;
             document.getElementById('headerOutcomeLine').innerHTML = cfg.outcomeLine;
 
-            // Build Table
             let html = `<table class="fln-table" id="mainTable">
                             <thead>${cfg.thead}</thead>
                             <tbody id="studentRows"></tbody>
@@ -451,7 +465,6 @@
 
             document.getElementById('tableContainer').innerHTML = html;
 
-            // Populate rows
             if (studentNamesList.length === 0) studentNamesList = ["", "", "", "", ""];
             studentNamesList.forEach((name, idx) => {
                 appendRowHtml(idx + 1, name, cfg);
@@ -465,172 +478,4 @@
             const tr = document.createElement('tr');
             tr.id = `row_${rId}`;
 
-            let rowHtml = `<td>${rId}</td><td><input type="text" class="student-name" value="${name}" placeholder="ಹೆಸರು"></td>`;
-
-            // Sub-skill Dropdowns
-            for (let c = cfg.startCol; c <= cfg.endCol; c++) {
-                rowHtml += `<td>
-                    <select class="grade-select" data-col="${c}" onchange="calculateRow(this)">
-                        <option value=""></option>
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                    </select>
-                </td>`;
-            }
-
-            // Auto columns
-            cfg.gradeCols.forEach(c => {
-                rowHtml += `<td class="auto-cell" id="c${c}_${rId}"></td>`;
-            });
-
-            tr.innerHTML = rowHtml;
-            tbody.appendChild(tr);
-        }
-
-        function addNewStudent() {
-            saveCurrentNames();
-            studentNamesList.push("");
-            const subKey = document.getElementById('subjectSelect').value;
-            appendRowHtml(studentNamesList.length, "", SUBJECT_CONFIGS[subKey]);
-        }
-
-        function clearTable() {
-            if (confirm("ಎಲ್ಲಾ ವಿದ್ಯಾರ್ಥಿಗಳ ವಿವರಗಳನ್ನು ತೆರವುಗೊಳಿಸಬೇಕೆ?")) {
-                studentNamesList = ["", "", "", "", ""];
-                renderTable();
-            }
-        }
-
-        function evaluateRange(row, startCol, endCol) {
-            let hasB = false;
-            let hasEmpty = false;
-            let count = 0;
-            for (let c = startCol; c <= endCol; c++) {
-                const val = row.querySelector(`select[data-col="${c}"]`)?.value || "";
-                if (val === 'B') hasB = true;
-                if (val === '') hasEmpty = true;
-                if (val !== '') count++;
-            }
-            if (count === 0) return "";
-            if (hasB) return "B";
-            if (!hasEmpty && !hasB) return "A";
-            return "";
-        }
-
-        function calculateRow(element) {
-            const row = element.closest('tr');
-            const rId = row.id.split('_')[1];
-            const subKey = document.getElementById('subjectSelect').value;
-            const cfg = SUBJECT_CONFIGS[subKey];
-
-            const rowVals = {};
-
-            // Calculate Stages
-            cfg.stages.forEach(stg => {
-                const res = evaluateRange(row, stg.start, stg.end);
-                rowVals[stg.id] = res;
-                document.getElementById(`c${stg.id}_${rId}`).innerText = res;
-            });
-
-            // Calculate Finally
-            const finalResults = cfg.evalFinally(rowVals);
-            for (let c in finalResults) {
-                document.getElementById(`c${c}_${rId}`).innerText = finalResults[c];
-            }
-
-            calculateTotals();
-        }
-
-        function calculateTotals() {
-            const subKey = document.getElementById('subjectSelect').value;
-            const cfg = SUBJECT_CONFIGS[subKey];
-            const rows = document.querySelectorAll('#studentRows tr');
-
-            cfg.gradeCols.forEach(c => {
-                let countA = 0;
-                let countB = 0;
-                rows.forEach(r => {
-                    const rId = r.id.split('_')[1];
-                    const val = document.getElementById(`c${c}_${rId}`)?.innerText;
-                    if (val === 'A') countA++;
-                    if (val === 'B') countB++;
-                });
-
-                const totA = document.getElementById(`totA_${c}`);
-                const totB = document.getElementById(`totB_${c}`);
-                if (totA) totA.innerText = countA;
-                if (totB) totB.innerText = countB;
-            });
-        }
-
-        // Smart Excel Import for Student Names
-        function importExcelNames(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                try {
-                    const data = new Uint8Array(event.target.result);
-                    const workbook = XLSX.read(data, { type: 'array' });
-                    const sheet = workbook.Sheets[workbook.SheetNames[0]];
-                    const json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-
-                    if (!json || json.length === 0) {
-                        alert("Excel ನಲ್ಲಿ ಡೇಟಾ ಇಲ್ಲ!");
-                        return;
-                    }
-
-                    let nameCol = -1;
-                    let startRow = 0;
-                    const keys = ['name', 'student', 'candidate', 'ಹೆಸರು', 'ವಿದ್ಯಾರ್ಥಿ'];
-
-                    for (let r = 0; r < Math.min(json.length, 10); r++) {
-                        if (!json[r]) continue;
-                        for (let c = 0; c < json[r].length; c++) {
-                            const val = String(json[r][c] || '').toLowerCase().trim();
-                            if (keys.some(k => val.includes(k))) {
-                                nameCol = c;
-                                startRow = r + 1;
-                                break;
-                            }
-                        }
-                        if (nameCol !== -1) break;
-                    }
-
-                    if (nameCol === -1) nameCol = json[0].length > 1 ? 1 : 0;
-
-                    const newNames = [];
-                    for (let r = startRow; r < json.length; r++) {
-                        const val = json[r]?.[nameCol];
-                        if (val !== undefined && val !== null) {
-                            const name = String(val).trim();
-                            if (name && isNaN(name) && !keys.some(k => name.toLowerCase().includes(k))) {
-                                newNames.push(name);
-                            }
-                        }
-                    }
-
-                    if (newNames.length > 0) {
-                        studentNamesList = newNames;
-                        renderTable();
-                        alert(`${newNames.length} ವಿದ್ಯಾರ್ಥಿಗಳ ಹೆಸರುಗಳು Import ಆಗಿವೆ!`);
-                    } else {
-                        alert("ಮಕ್ಕಳ ಹೆಸರುಗಳು ಪತ್ತೆಯಾಗಲಿಲ್ಲ. Excel ನಲ್ಲಿ 'Name' ಕಾಲಂ ಇರುವುದನ್ನು ಪರಿಶೀಲಿಸಿ.");
-                    }
-                } catch (err) {
-                    alert("Excel ಫೈಲ್ ಓದಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ!");
-                }
-                e.target.value = '';
-            };
-            reader.readAsArrayBuffer(file);
-        }
-
-        // Initialize Page
-        window.onload = function() {
-            changeClass();
-            renderTable();
-        };
-    </script>
-</body>
-</html>
+            let rowHtml =
