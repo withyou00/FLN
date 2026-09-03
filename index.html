@@ -478,4 +478,202 @@
             const tr = document.createElement('tr');
             tr.id = `row_${rId}`;
 
-            let rowHtml =
+            let rowHtml = `
+                <td>
+                    <span class="sl-num">${rId}</span>
+                    <button type="button" class="del-btn no-print" onclick="deleteStudentRow(this)" title="ಈ ವಿದ್ಯಾರ್ಥಿಯನ್ನು ಅಳಿಸಿ">×</button>
+                </td>
+                <td><input type="text" class="student-name" value="${name}" placeholder="ಹೆಸರು"></td>
+            `;
+
+            for (let c = cfg.startCol; c <= cfg.endCol; c++) {
+                rowHtml += `<td>
+                    <select class="grade-select" data-col="${c}" onchange="calculateRow(this)">
+                        <option value=""></option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                    </select>
+                </td>`;
+            }
+
+            cfg.gradeCols.forEach(c => {
+                rowHtml += `<td class="auto-cell" id="c${c}_${rId}"></td>`;
+            });
+
+            tr.innerHTML = rowHtml;
+            tbody.appendChild(tr);
+        }
+
+        // Delete Row Function
+        function deleteStudentRow(btn) {
+            const row = btn.closest('tr');
+            row.remove();
+            reorderRows();
+            calculateTotals();
+        }
+
+        // Re-indexes rows after deletion
+        function reorderRows() {
+            const subKey = document.getElementById('subjectSelect').value;
+            const cfg = SUBJECT_CONFIGS[subKey];
+            const rows = document.querySelectorAll('#studentRows tr');
+
+            rows.forEach((tr, index) => {
+                const newId = index + 1;
+                tr.id = `row_${newId}`;
+                tr.querySelector('.sl-num').innerText = newId;
+
+                // Re-ID the auto-cells
+                cfg.gradeCols.forEach(c => {
+                    const cell = tr.querySelector(`.auto-cell:nth-last-child(${cfg.gradeCols.length - cfg.gradeCols.indexOf(c)})`);
+                    if (cell) cell.id = `c${c}_${newId}`;
+                });
+            });
+
+            saveCurrentNames();
+        }
+
+        function addNewStudent() {
+            saveCurrentNames();
+            studentNamesList.push("");
+            const subKey = document.getElementById('subjectSelect').value;
+            appendRowHtml(studentNamesList.length, "", SUBJECT_CONFIGS[subKey]);
+        }
+
+        function clearTable() {
+            if (confirm("ಎಲ್ಲಾ ವಿದ್ಯಾರ್ಥಿಗಳ ವಿವರಗಳನ್ನು ತೆರವುಗೊಳಿಸಬೇಕೆ?")) {
+                studentNamesList = ["", "", "", "", ""];
+                renderTable();
+            }
+        }
+
+        function evaluateRange(row, startCol, endCol) {
+            let hasB = false;
+            let hasEmpty = false;
+            let count = 0;
+            for (let c = startCol; c <= endCol; c++) {
+                const val = row.querySelector(`select[data-col="${c}"]`)?.value || "";
+                if (val === 'B') hasB = true;
+                if (val === '') hasEmpty = true;
+                if (val !== '') count++;
+            }
+            if (count === 0) return "";
+            if (hasB) return "B";
+            if (!hasEmpty && !hasB) return "A";
+            return "";
+        }
+
+        function calculateRow(element) {
+            const row = element.closest('tr');
+            const rId = row.id.split('_')[1];
+            const subKey = document.getElementById('subjectSelect').value;
+            const cfg = SUBJECT_CONFIGS[subKey];
+
+            const rowVals = {};
+
+            cfg.stages.forEach(stg => {
+                const res = evaluateRange(row, stg.start, stg.end);
+                rowVals[stg.id] = res;
+                document.getElementById(`c${stg.id}_${rId}`).innerText = res;
+            });
+
+            const finalResults = cfg.evalFinally(rowVals);
+            for (let c in finalResults) {
+                document.getElementById(`c${c}_${rId}`).innerText = finalResults[c];
+            }
+
+            calculateTotals();
+        }
+
+        function calculateTotals() {
+            const subKey = document.getElementById('subjectSelect').value;
+            const cfg = SUBJECT_CONFIGS[subKey];
+            const rows = document.querySelectorAll('#studentRows tr');
+
+            cfg.gradeCols.forEach(c => {
+                let countA = 0;
+                let countB = 0;
+                rows.forEach(r => {
+                    const rId = r.id.split('_')[1];
+                    const val = document.getElementById(`c${c}_${rId}`)?.innerText;
+                    if (val === 'A') countA++;
+                    if (val === 'B') countB++;
+                });
+
+                const totA = document.getElementById(`totA_${c}`);
+                const totB = document.getElementById(`totB_${c}`);
+                if (totA) totA.innerText = countA;
+                if (totB) totB.innerText = countB;
+            });
+        }
+
+        // Excel Import
+        function importExcelNames(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                try {
+                    const data = new Uint8Array(event.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+                    if (!json || json.length === 0) {
+                        alert("Excel ನಲ್ಲಿ ಯಾವುದೇ ಡೇಟಾ ಇಲ್ಲ!");
+                        return;
+                    }
+
+                    let nameCol = -1;
+                    let startRow = 0;
+                    const keys = ['name', 'student', 'candidate', 'ಹೆಸರು', 'ವಿದ್ಯಾರ್ಥಿ'];
+
+                    for (let r = 0; r < Math.min(json.length, 10); r++) {
+                        if (!json[r]) continue;
+                        for (let c = 0; c < json[r].length; c++) {
+                            const val = String(json[r][c] || '').toLowerCase().trim();
+                            if (keys.some(k => val.includes(k))) {
+                                nameCol = c;
+                                startRow = r + 1;
+                                break;
+                            }
+                        }
+                        if (nameCol !== -1) break;
+                    }
+
+                    if (nameCol === -1) nameCol = json[0].length > 1 ? 1 : 0;
+
+                    const newNames = [];
+                    for (let r = startRow; r < json.length; r++) {
+                        const val = json[r]?.[nameCol];
+                        if (val !== undefined && val !== null) {
+                            const name = String(val).trim();
+                            if (name && isNaN(name) && !keys.some(k => name.toLowerCase().includes(k))) {
+                                newNames.push(name);
+                            }
+                        }
+                    }
+
+                    if (newNames.length > 0) {
+                        studentNamesList = newNames;
+                        renderTable();
+                        alert(`${newNames.length} ವಿದ್ಯಾರ್ಥಿಗಳ ಹೆಸರುಗಳು ಯಶಸ್ವಿಯಾಗಿ Import ಆಗಿವೆ!`);
+                    } else {
+                        alert("ಮಕ್ಕಳ ಹೆಸರುಗಳನ್ನು ಗುರುತಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ.");
+                    }
+                } catch (err) {
+                    alert("Excel ಫೈಲ್ ಓದಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ!");
+                }
+                e.target.value = '';
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        window.onload = function() {
+            changeClass();
+            renderTable();
+        };
+    </script>
+</body>
+</html>
