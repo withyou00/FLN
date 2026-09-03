@@ -339,7 +339,6 @@
     <script>
         var currentView = 'student';
 
-        // Master Central Data: Strictly per-class data separation
         var masterData = {
             school: "", teacher: "", cluster: "", taluk: "", schoolType: "", month: "", date: "",
             currentClass: "4",
@@ -558,7 +557,6 @@
             }
         }
 
-        // Saves current header inputs
         function saveCurrentHeaderData() {
             var elSchool = document.getElementById('schoolNameInput');
             var elTeacher = document.getElementById('teacherNameInput');
@@ -578,7 +576,6 @@
             persistMasterData();
         }
 
-        // Strictly saves data of a SPECIFIC class without cross-class overwrite
         function saveCurrentClassData(classId) {
             if (!classId) classId = masterData.currentClass;
             var sub = masterData.currentSubject;
@@ -615,7 +612,7 @@
 
         function persistMasterData() {
             try {
-                localStorage.setItem('FLN_MASTER_CONSOLIDATED_V8', JSON.stringify(masterData));
+                localStorage.setItem('FLN_MASTER_CONSOLIDATED_V9', JSON.stringify(masterData));
             } catch(e) {
                 console.log("Storage error", e);
             }
@@ -623,7 +620,7 @@
 
         function loadAppData() {
             try {
-                var saved = localStorage.getItem('FLN_MASTER_CONSOLIDATED_V8');
+                var saved = localStorage.getItem('FLN_MASTER_CONSOLIDATED_V9');
                 if (saved) {
                     var parsed = JSON.parse(saved);
                     if (parsed && typeof parsed === 'object') {
@@ -634,7 +631,6 @@
                 console.log("Load error", e);
             }
 
-            // Ensure class storage exists
             var classList = ["4", "5", "6", "7", "8", "9", "10"];
             for (var i = 0; i < classList.length; i++) {
                 var cl = classList[i];
@@ -658,23 +654,18 @@
             renderStudentTable();
         }
 
-        // Switch Class: Saves OLD class data first, then loads NEW class data!
         function changeClass() {
-            // 1. Save data of old class before switching
             saveCurrentClassData(masterData.currentClass);
             saveCurrentHeaderData();
 
-            // 2. Set new class
             var newClass = document.getElementById('classSelect').value;
             masterData.currentClass = newClass;
             document.getElementById('displayClass').innerText = newClass + " ನೆಯ ತರಗತಿ";
 
-            // 3. Render table for new class
             renderStudentTable();
             persistMasterData();
         }
 
-        // Switch Subject
         function changeSubject() {
             saveCurrentClassData(masterData.currentClass);
             saveCurrentHeaderData();
@@ -779,7 +770,6 @@
             tbody.appendChild(tr);
         }
 
-        // Real-time calculation per row
         function calculateRow(element, triggerSave) {
             var row = element.closest('tr');
             if (!row) return;
@@ -828,7 +818,6 @@
             }
         }
 
-        // 1. Bulk Fill entire active class
         function bulkFillAll(grade) {
             if (confirm("ಈ ತರಗತಿಯ ಎಲ್ಲಾ ವಿದ್ಯಾರ್ಥಿಗಳ ಎಲ್ಲಾ ಕಾಲಂಗಳಿಗೂ '" + grade + "' ತುಂಬಬೇಕೆ?")) {
                 var rows = document.querySelectorAll('#studentRows tr');
@@ -845,7 +834,6 @@
             }
         }
 
-        // 2. Fill single student row
         function quickFillRow(btn, grade) {
             var row = btn.closest('tr');
             var selects = row.querySelectorAll('select.grade-select');
@@ -855,7 +843,6 @@
             if (selects.length > 0) calculateRow(selects[0], true);
         }
 
-        // 3. Fill column vertically
         function quickFillColumn(colNum) {
             var grade = prompt("ಕಾಲಂ " + colNum + " ರ ಎಲ್ಲಾ ವಿದ್ಯಾರ್ಥಿಗಳಿಗೆ ಯಾವ ಗ್ರೇಡ್ ತುಂಬಬೇಕು? (A ಅಥವಾ B ಟೈಪ್ ಮಾಡಿ):", "B");
             if (!grade) return;
@@ -896,7 +883,6 @@
             }
         }
 
-        // Add New Student
         function addNewStudent() {
             var cfg = SUBJECT_CONFIGS[masterData.currentSubject] || SUBJECT_CONFIGS.english;
             var tbody = document.getElementById('studentRows');
@@ -913,7 +899,6 @@
             persistMasterData();
         }
 
-        // Clear Current Class Only
         function clearCurrentClass() {
             var c = masterData.currentClass;
             if (confirm(c + " ನೆಯ ತರಗತಿಯ ಮಕ್ಕಳ ವಿವರಗಳನ್ನು ಮಾತ್ರ ತೆರವುಗೊಳಿಸಬೇಕೆ?")) {
@@ -938,7 +923,6 @@
             return "A";
         }
 
-        // --- CONSOLIDATED REPORT ---
         function generateConsolidatedReport() {
             var subKey = masterData.currentSubject || "english";
             var cfg = SUBJECT_CONFIGS[subKey] || SUBJECT_CONFIGS.english;
@@ -1080,52 +1064,114 @@
             return "A";
         }
 
-        // --- EXPORT TO EXCEL (.XLSX) ---
+        // --- ENHANCED PROFESSIONAL EXCEL EXPORT ---
         function exportToExcel() {
             saveCurrentClassData(masterData.currentClass);
             saveCurrentHeaderData();
             persistMasterData();
 
-            var targetTable;
+            var sub = masterData.currentSubject || "english";
+            var c = masterData.currentClass || "4";
+            var cfg = SUBJECT_CONFIGS[sub];
+
+            var expTable = document.createElement('table');
             var fileName = "";
-            var sub = masterData.currentSubject;
+            var colWidths = [];
 
             if (currentView === 'student') {
-                targetTable = document.getElementById('mainTable');
-                fileName = "FLN_Student_Form_" + sub + "_Class" + masterData.currentClass + ".xlsx";
-            } else {
-                targetTable = document.getElementById('consolidatedTable');
-                fileName = "FLN_Consolidated_Form_" + sub + ".xlsx";
-            }
+                var totalTableCols = (sub === 'kannada') ? 23 : 26;
+                fileName = "FLN_Evaluation_" + sub.toUpperCase() + "_Class_" + c + ".xlsx";
 
-            if (!targetTable) {
-                alert("ಡೇಟಾ ಟೇಬಲ್ ಲಭ್ಯವಿಲ್ಲ!");
-                return;
-            }
+                var headerHtml = '<tr><th colspan="' + totalTableCols + '" style="font-size:16px; font-weight:bold; text-align:center;">ಕರ್ನಾಟಕ ಸರ್ಕಾರ</th></tr>' +
+                    '<tr><th colspan="' + totalTableCols + '" style="font-size:14px; font-weight:bold; text-align:center;">ಆಯುಕ್ತರ ಕಾರ್ಯಾಲಯ ಧಾರವಾಡ ಆಯುಕ್ತಾಲಯ ಶಾಲಾ ಶಿಕ್ಷಣ ಇಲಾಖೆ ಧಾರವಾಡ</th></tr>' +
+                    '<tr><th colspan="' + totalTableCols + '" style="font-size:13px; font-weight:bold; text-align:center;">FLN ಸಾಧಿಸದ ಮಕ್ಕಳಲ್ಲಿ ಪ್ರಾವೀಣ್ಯತೆ ಸಾಧಿಸಬೇಕಾದ ಕಲಿಕಾ ಫಲಗಳ ಹಂತವಾರು ಮೌಲ್ಯಾಂಕನ ನಮೂನೆ - 2026-27</th></tr>' +
+                    '<tr><th colspan="' + totalTableCols + '" style="font-size:12px; font-weight:bold; text-align:center;">ತರಗತಿ: ' + c + ' ನೆಯ ತರಗತಿ  |  ವಿಷಯ: ' + sub.toUpperCase() + '  |  ತಿಂಗಳು: ' + (masterData.month || '') + '</th></tr>' +
+                    '<tr><td colspan="' + totalTableCols + '" style="font-weight:bold;">ಶಾಲೆಯ ಹೆಸರು: ' + (masterData.school || '') + '  |  ಶಿಕ್ಷಕರ ಹೆಸರು: ' + (masterData.teacher || '') + '  |  ಕ್ಲಸ್ಟರ್: ' + (masterData.cluster || '') + '  |  ತಾಲೂಕು: ' + (masterData.taluk || '') + '</td></tr>' +
+                    '<tr><td colspan="' + totalTableCols + '">&nbsp;</td></tr>';
 
-            var clone = targetTable.cloneNode(true);
-            var selects = clone.querySelectorAll('select');
-            for (var i = 0; i < selects.length; i++) {
-                var origSel = targetTable.querySelectorAll('select')[i];
-                selects[i].parentNode.innerText = origSel ? origSel.value : "";
-            }
+                var origTable = document.getElementById('mainTable');
+                var clone = origTable.cloneNode(true);
 
-            var inputs = clone.querySelectorAll('input');
-            for (var i = 0; i < inputs.length; i++) {
-                var origInp = targetTable.querySelectorAll('input')[i];
-                inputs[i].parentNode.innerText = origInp ? origInp.value : "";
-            }
-
-            var extraBtns = clone.querySelectorAll('.del-btn, .mini-btn, .col-btn');
-            for (var i = 0; i < extraBtns.length; i++) {
-                if (extraBtns[i].classList.contains('col-btn')) {
-                    extraBtns[i].parentNode.innerText = extraBtns[i].innerText.replace(' ▾', '');
-                } else {
-                    extraBtns[i].remove();
+                // Replace selects with values
+                var selects = clone.querySelectorAll('select');
+                for (var i = 0; i < selects.length; i++) {
+                    var origSel = origTable.querySelectorAll('select')[i];
+                    selects[i].parentNode.innerText = origSel ? origSel.value : "";
                 }
+
+                // Replace input with student name
+                var inputs = clone.querySelectorAll('input');
+                for (var i = 0; i < inputs.length; i++) {
+                    var origInp = origTable.querySelectorAll('input')[i];
+                    inputs[i].parentNode.innerText = origInp ? origInp.value : "";
+                }
+
+                // Remove action buttons
+                var extraBtns = clone.querySelectorAll('.del-btn, .mini-btn, .col-btn');
+                for (var i = 0; i < extraBtns.length; i++) {
+                    if (extraBtns[i].classList.contains('col-btn')) {
+                        extraBtns[i].parentNode.innerText = extraBtns[i].innerText.replace(' ▾', '');
+                    } else {
+                        extraBtns[i].remove();
+                    }
+                }
+
+                var signHtml = '<tr><td colspan="' + totalTableCols + '">&nbsp;</td></tr>' +
+                    '<tr><td colspan="4" style="font-weight:bold;">ದಿನಾಂಕ: ' + (masterData.date || '') + '</td>' +
+                    '<td colspan="7" style="font-weight:bold;">ಶಿಕ್ಷಕರ ಸಹಿ: ........................</td>' +
+                    '<td colspan="7" style="font-weight:bold;">ಪರಿಶೀಲಕರ ಸಹಿ: ........................</td>' +
+                    '<td colspan="' + (totalTableCols - 18) + '" style="font-weight:bold;">ಶಾಲಾ ಮುಖ್ಯಸ್ಥರು: ........................</td></tr>';
+
+                expTable.innerHTML = headerHtml + clone.innerHTML + signHtml;
+
+                // Dedicated column widths: 32 chars wide for Student Name so names never get truncated!
+                colWidths = [
+                    { wch: 6 },  // SL No
+                    { wch: 32 }  // Student Name
+                ];
+                for (var i = 2; i < totalTableCols; i++) {
+                    colWidths.push({ wch: 7 });
+                }
+
+            } else {
+                var totalConCols = (sub === 'kannada') ? 24 : 27;
+                fileName = "FLN_Consolidated_Form_" + sub.toUpperCase() + ".xlsx";
+
+                var headerHtml = '<tr><th colspan="' + totalConCols + '" style="font-size:16px; font-weight:bold; text-align:center;">ಕರ್ನಾಟಕ ಸರ್ಕಾರ</th></tr>' +
+                    '<tr><th colspan="' + totalConCols + '" style="font-size:14px; font-weight:bold; text-align:center;">ಆಯುಕ್ತರ ಕಾರ್ಯಾಲಯ ಧಾರವಾಡ ಆಯುಕ್ತಾಲಯ ಶಾಲಾ ಶಿಕ್ಷಣ ಇಲಾಖೆ ಧಾರವಾಡ</th></tr>' +
+                    '<tr><th colspan="' + totalConCols + '" style="font-size:13px; font-weight:bold; text-align:center;">ಶಾಲಾ ಹಂತದ ಕ್ರೋಢೀಕೃತ ನಮೂನೆ - 1 (ಆರಂಭಿಕ ಹಂತ) - 2026-27</th></tr>' +
+                    '<tr><th colspan="' + totalConCols + '" style="font-size:12px; font-weight:bold; text-align:center;">ವಿಷಯ: ' + sub.toUpperCase() + '  |  ತಿಂಗಳು: ' + (masterData.month || '') + '</th></tr>' +
+                    '<tr><td colspan="' + totalConCols + '" style="font-weight:bold;">ಶಾಲೆಯ ಹೆಸರು: ' + (masterData.school || '') + '  |  ಕ್ಲಸ್ಟರ್: ' + (masterData.cluster || '') + '  |  ತಾಲೂಕು: ' + (masterData.taluk || '') + '  |  ಸರ್ಕಾರಿ/ಅನುದಾನಿತ: ' + (masterData.schoolType || '') + '</td></tr>' +
+                    '<tr><td colspan="' + totalConCols + '">&nbsp;</td></tr>';
+
+                var origTable = document.getElementById('consolidatedTable');
+                var clone = origTable.cloneNode(true);
+
+                var signHtml = '<tr><td colspan="' + totalConCols + '">&nbsp;</td></tr>' +
+                    '<tr><td colspan="4" style="font-weight:bold;">ದಿನಾಂಕ: ' + (masterData.date || '') + '</td>' +
+                    '<td colspan="7" style="font-weight:bold;">ಶಿಕ್ಷಕರ ಸಹಿ: ........................</td>' +
+                    '<td colspan="7" style="font-weight:bold;">ಪರಿಶೀಲಕರ ಸಹಿ: ........................</td>' +
+                    '<td colspan="' + (totalConCols - 18) + '" style="font-weight:bold;">ಶಾಲಾ ಮುಖ್ಯಸ್ಥರು: ........................</td></tr>';
+
+                expTable.innerHTML = headerHtml + clone.innerHTML + signHtml;
+
+                colWidths = [
+                    { wch: 6 },  // SL No
+                    { wch: 15 }, // Class
+                    { wch: 12 }, // Enrollment
+                    { wch: 8 }   // Grade
+                ];
+                for (var i = 4; i < totalConCols - 1; i++) {
+                    colWidths.push({ wch: 7 });
+                }
+                colWidths.push({ wch: 9 }); // %
             }
 
-            var wb = XLSX.utils.table_to_book(clone, { sheet: "FLN_Data", raw: true });
+            var ws = XLSX.utils.table_to_sheet(expTable, { raw: true });
+            ws['!cols'] = colWidths;
+
+            var wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "FLN_Evaluation");
             XLSX.writeFile(wb, fileName);
         }
 
@@ -1137,7 +1183,7 @@
             window.print();
         }
 
-        // Excel Import (Specific to active class only)
+        // Excel Import
         function importExcelNames(e) {
             var file = e.target.files[0];
             if (!file) return;
@@ -1181,7 +1227,7 @@
                     if (newNames.length > 0) {
                         var c = masterData.currentClass;
                         masterData.classes[c].students = newNames;
-                        masterData.classes[c].grades[masterData.currentSubject] = {}; // fresh grades for imported class
+                        masterData.classes[c].grades[masterData.currentSubject] = {};
                         renderStudentTable();
                         saveCurrentClassData(c);
                         persistMasterData();
