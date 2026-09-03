@@ -16,13 +16,13 @@
         }
         body {
             margin: 0;
-            padding: 10px;
+            padding: 8px;
             font-size: 11px;
             color: #000;
             background: #fff;
         }
         .no-print {
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             display: flex;
             gap: 10px;
             align-items: center;
@@ -126,14 +126,14 @@
             padding-left: 3px;
         }
 
-        /* Footer Signatures matching Image 1 */
+        /* Footer Signatures */
         .footer-signs {
-            margin-top: 35px;
+            margin-top: 30px;
             display: flex;
             justify-content: space-between;
             font-size: 12px;
             font-weight: bold;
-            padding: 0 30px;
+            padding: 0 40px;
         }
 
         @media print {
@@ -154,7 +154,7 @@
 </head>
 <body>
 
-    <!-- Controls (Not printed) -->
+    <!-- Top Action Buttons -->
     <div class="no-print">
         <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display:none;" onchange="importExcelNames(event)">
         <button class="btn btn-excel" onclick="document.getElementById('excelFileInput').click()">📥 Excel ನಿಂದ ಹೆಸರು Import ಮಾಡಿ</button>
@@ -176,12 +176,12 @@
     <table class="meta-table">
         <tr>
             <td>School: <input type="text" class="input-line" style="width: 250px;"></td>
-            <td>Cluster &amp;Taluk : <input type="text" class="input-line" style="width: 200px;"></td>
+            <td>Cluster &amp; Taluk : <input type="text" class="input-line" style="width: 200px;"></td>
             <td>Teacher: <input type="text" class="input-line" style="width: 180px;"></td>
         </tr>
     </table>
 
-    <!-- Main Table -->
+    <!-- Main Assessment Table -->
     <table class="fln-table" id="mainTable">
         <thead>
             <tr>
@@ -249,38 +249,39 @@
             </tr>
         </thead>
         <tbody id="studentRows">
-            <!-- Rows dynamically loaded -->
+            <!-- Dynamic rows will be inserted here -->
         </tbody>
         <tfoot>
+            <!-- Totals strictly for Columns 21 to 26 -->
             <tr class="total-row">
-                <td colspan="2" style="text-align: right; padding-right: 8px;">ಒಟ್ಟು A</td>
-                <td id="totA_3">0</td><td id="totA_4">0</td><td id="totA_5">0</td><td id="totA_6">0</td>
-                <td id="totA_7">0</td><td id="totA_8">0</td><td id="totA_9">0</td><td id="totA_10">0</td><td id="totA_11">0</td>
-                <td id="totA_12">0</td><td id="totA_13">0</td><td id="totA_14">0</td><td id="totA_15">0</td><td id="totA_16">0</td>
-                <td id="totA_17">0</td><td id="totA_18">0</td><td id="totA_19">0</td><td id="totA_20">0</td>
-                <td id="totA_21">0</td><td id="totA_22">0</td><td id="totA_23">0</td><td id="totA_24">0</td>
-                <td id="totA_25">0</td><td id="totA_26">-</td>
+                <td colspan="20" style="text-align: right; padding-right: 12px; font-weight: bold; background-color: #f9f9f9;">ಒಟ್ಟು A</td>
+                <td id="totA_21">0</td>
+                <td id="totA_22">0</td>
+                <td id="totA_23">0</td>
+                <td id="totA_24">0</td>
+                <td id="totA_25">0</td>
+                <td id="totA_26">-</td>
             </tr>
             <tr class="total-row">
-                <td colspan="2" style="text-align: right; padding-right: 8px;">ಒಟ್ಟು B</td>
-                <td id="totB_3">0</td><td id="totB_4">0</td><td id="totB_5">0</td><td id="totB_6">0</td>
-                <td id="totB_7">0</td><td id="totB_8">0</td><td id="totB_9">0</td><td id="totB_10">0</td><td id="totB_11">0</td>
-                <td id="totB_12">0</td><td id="totB_13">0</td><td id="totB_14">0</td><td id="totB_15">0</td><td id="totB_16">0</td>
-                <td id="totB_17">0</td><td id="totB_18">0</td><td id="totB_19">0</td><td id="totB_20">0</td>
-                <td id="totB_21">0</td><td id="totB_22">0</td><td id="totB_23">0</td><td id="totB_24">0</td>
-                <td id="totB_25">-</td><td id="totB_26">0</td>
+                <td colspan="20" style="text-align: right; padding-right: 12px; font-weight: bold; background-color: #f9f9f9;">ಒಟ್ಟು B</td>
+                <td id="totB_21">0</td>
+                <td id="totB_22">0</td>
+                <td id="totB_23">0</td>
+                <td id="totB_24">0</td>
+                <td id="totB_25">-</td>
+                <td id="totB_26">0</td>
             </tr>
         </tfoot>
     </table>
 
-    <!-- Footer Signatures Exactly Matching Image 1 -->
+    <!-- Bottom Signatures -->
     <div class="footer-signs">
         <div>ದಿನಾಂಕ: <input type="text" class="input-line" style="width: 100px;"></div>
         <div>ವ.ಶಿ.</div>
         <div>ಮು.ಗು.</div>
     </div>
 
-    <!-- Scripts -->
+    <!-- Calculations and Excel Handling -->
     <script>
         let rowCount = 0;
 
@@ -303,7 +304,7 @@
                 <td><input type="text" class="student-name" value="${studentName}" placeholder="ಹೆಸರು"></td>
             `;
 
-            // Dropdowns 3 to 20
+            // Dropdowns for Columns 3 to 20
             for (let c = 3; c <= 20; c++) {
                 cells += `<td>${createDropdown(c)}</td>`;
             }
@@ -353,19 +354,19 @@
             const row = element.closest('tr');
             const rId = row.id.split('_')[1];
 
-            // 1. Column 21: Letter Stage (3 to 6)
+            // 1. Column 21: Letter Stage (3-6)
             const g21 = evaluateStage(row, 3, 6);
             document.getElementById(`c21_${rId}`).innerText = g21;
 
-            // 2. Column 22: Word Stage (7 to 11)
+            // 2. Column 22: Word Stage (7-11)
             const g22 = evaluateStage(row, 7, 11);
             document.getElementById(`c22_${rId}`).innerText = g22;
 
-            // 3. Column 23: Sentence Stage (12 to 16)
+            // 3. Column 23: Sentence Stage (12-16)
             const g23 = evaluateStage(row, 12, 16);
             document.getElementById(`c23_${rId}`).innerText = g23;
 
-            // 4. Column 24: Short Paragraph Stage (17 to 20)
+            // 4. Column 24: Short Paragraph Stage (17-20)
             const g24 = evaluateStage(row, 17, 20);
             document.getElementById(`c24_${rId}`).innerText = g24;
 
@@ -389,19 +390,7 @@
         }
 
         function calculateTotals() {
-            // Columns 3 to 20 totals
-            for (let c = 3; c <= 20; c++) {
-                let countA = 0;
-                let countB = 0;
-                document.querySelectorAll(`select[data-col="${c}"]`).forEach(sel => {
-                    if (sel.value === "A") countA++;
-                    if (sel.value === "B") countB++;
-                });
-                document.getElementById(`totA_${c}`).innerText = countA;
-                document.getElementById(`totB_${c}`).innerText = countB;
-            }
-
-            // Columns 21 to 24 totals
+            // Totals calculated ONLY for Columns 21 to 24
             for (let c = 21; c <= 24; c++) {
                 let countA = 0;
                 let countB = 0;
@@ -414,7 +403,7 @@
                 document.getElementById(`totB_${c}`).innerText = countB;
             }
 
-            // Finally 25 (A) & 26 (B)
+            // Totals calculated for Column 25 (A) and Column 26 (B)
             let finalA = 0;
             let finalB = 0;
             for (let r = 1; r <= rowCount; r++) {
@@ -425,7 +414,7 @@
             document.getElementById(`totB_26`).innerText = finalB;
         }
 
-        // Excel Import: Only Detects & Imports Student Names
+        // Import ONLY names from Excel
         function importExcelNames(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -439,7 +428,7 @@
                     const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
 
                     if (!jsonData || jsonData.length === 0) {
-                        alert("Excel ನಲ್ಲಿ ಯಾವುದೇ ಡೇಟಾ ಇಲ್ಲ!");
+                        alert("Excel ನಲ್ಲಿ ಡೇಟಾ ಕಂಡುಬಂದಿಲ್ಲ!");
                         return;
                     }
 
@@ -461,7 +450,6 @@
                         if (nameColIdx !== -1) break;
                     }
 
-                    // Fallback to Column 1 (B) or 0 (A) if header not found
                     if (nameColIdx === -1) {
                         nameColIdx = jsonData[0].length > 1 ? 1 : 0;
                     }
@@ -482,9 +470,9 @@
                     }
 
                     if (count > 0) {
-                        alert(`${count} ವಿದ್ಯಾರ್ಥಿಗಳ ಹೆಸರುಗಳು ಯಶಸ್ವಿಯಾಗಿ Import ಆಗಿವೆ.`);
+                        alert(`${count} ವಿದ್ಯಾರ್ಥಿಗಳ ಹೆಸರುಗಳನ್ನು ಯಶಸ್ವಿಯಾಗಿ Import ಮಾಡಲಾಗಿದೆ.`);
                     } else {
-                        alert("ಮಕ್ಕಳ ಹೆಸರುಗಳನ್ನು ಗುರುತಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು Excel ನಲ್ಲಿ 'Name' ಅಥವಾ 'ಹೆಸರು' ಎಂಬ ಕಾಲಂ ಇರುವುದನ್ನು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ.");
+                        alert("ಮಕ್ಕಳ ಹೆಸರುಗಳನ್ನು ಗುರುತಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು Excel ನಲ್ಲಿ 'Name' ಅಥವಾ 'ಹೆಸರು' ಎಂದು ಹೆಡರ್ ಇರುವುದನ್ನು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ.");
                     }
 
                 } catch (err) {
