@@ -10,8 +10,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anek+Kannada:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- SheetJS for Excel Import & Export -->
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <!-- Advanced Excel Engine with Full Center Alignment & Border Styling -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
     
     <style>
         @page {
@@ -305,7 +305,7 @@
         </div>
     </div>
 
-    <!-- VIEW 2: CONSOLIDATED FORM (EXACT PDF STRUCTURE) -->
+    <!-- VIEW 2: CONSOLIDATED FORM -->
     <div id="consolidatedView" style="display:none;">
         <div class="header-title">
             <h3>ಕರ್ನಾಟಕ ಸರ್ಕಾರ</h3>
@@ -355,7 +355,6 @@
 
         var SUBJECT_CONFIGS = {
             english: {
-                subjectNameKn: "English",
                 studentTitle: 'Class 4th To 10 : Second Language - English &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Month: <input type="text" id="monthInput" class="input-line" style="width: 110px;" oninput="saveCurrentHeaderData()">',
                 studentOutcome: 'ನಮೂನೆ-1 (Baseline Stage - ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome-1)',
                 conTitle: 'Class 4th To 10 : Second Language - English &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Month: <span id="conMonthDisplay"></span>',
@@ -420,7 +419,6 @@
                     '<tr class="col-num"><td>1</td><td>2</td><td></td><td></td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td></tr>'
             },
             kannada: {
-                subjectNameKn: "ಕನ್ನಡ",
                 studentTitle: '4 ರಿಂದ 10 ನೇ ತರಗತಿ : ಪ್ರಥಮ ಭಾಷೆ - ಕನ್ನಡ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ತಿಂಗಳು: <input type="text" id="monthInput" class="input-line" style="width: 110px;" oninput="saveCurrentHeaderData()">',
                 studentOutcome: 'ನಮೂನೆ-1 (ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome - 1)',
                 conTitle: '4 ರಿಂದ 10 ನೇ ತರಗತಿ : ಪ್ರಥಮ ಭಾಷೆ - ಕನ್ನಡ (ಉರ್ದು/ಇಂಗ್ಲಿಷ/ಹಿಂದಿ/ಸಂಸ್ಕೃತ/ಮರಾಠಿ/ತೆಲುಗು/ಇತರ) &nbsp;&nbsp;&nbsp;&nbsp; ತಿಂಗಳು: <span id="conMonthDisplay"></span>',
@@ -485,7 +483,6 @@
                     '<tr class="col-num"><td>1</td><td>2</td><td></td><td></td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td></tr>'
             },
             maths: {
-                subjectNameKn: "ಗಣಿತ",
                 studentTitle: '4 ರಿಂದ 5 ಮತ್ತು 6 ರಿಂದ 10 ನೇ ತರಗತಿ : ಗಣಿತ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ತಿಂಗಳು: <input type="text" id="monthInput" class="input-line" style="width: 110px;" oninput="saveCurrentHeaderData()">',
                 studentOutcome: 'ನಮೂನೆ - 1 (ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome-1 and 2*)',
                 conTitle: '4 ರಿಂದ 5 ಮತ್ತು 6 ರಿಂದ 10 ನೇ ತರಗತಿ : ಗಣಿತ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ತಿಂಗಳು: <span id="conMonthDisplay"></span>',
@@ -624,7 +621,7 @@
 
         function persistMasterData() {
             try {
-                localStorage.setItem('FLN_MASTER_CONSOLIDATED_V10', JSON.stringify(masterData));
+                localStorage.setItem('FLN_MASTER_CONSOLIDATED_V11', JSON.stringify(masterData));
             } catch(e) {
                 console.log("Storage error", e);
             }
@@ -632,7 +629,7 @@
 
         function loadAppData() {
             try {
-                var saved = localStorage.getItem('FLN_MASTER_CONSOLIDATED_V10');
+                var saved = localStorage.getItem('FLN_MASTER_CONSOLIDATED_V11');
                 if (saved) {
                     var parsed = JSON.parse(saved);
                     if (parsed && typeof parsed === 'object') {
@@ -935,7 +932,6 @@
             return "A";
         }
 
-        // --- CONSOLIDATED REPORT ---
         function generateConsolidatedReport() {
             var subKey = masterData.currentSubject || "english";
             var cfg = SUBJECT_CONFIGS[subKey] || SUBJECT_CONFIGS.english;
@@ -1070,7 +1066,7 @@
             return "A";
         }
 
-        // --- 100% PDF MATCHING EXCEL EXPORT ---
+        // --- 100% PERFECT CENTER-ALIGNED EXCEL EXPORT ---
         function exportToExcel() {
             saveCurrentClassData(masterData.currentClass);
             saveCurrentHeaderData();
@@ -1082,10 +1078,9 @@
 
             var expTable = document.createElement('table');
             var fileName = "";
-            var colWidths = [];
+            var totalCols = (sub === 'kannada') ? 23 : 26;
 
             if (currentView === 'student') {
-                var totalCols = (sub === 'kannada') ? 23 : 26;
                 fileName = "FLN_Evaluation_" + sub.toUpperCase() + "_Class_" + c + ".xlsx";
 
                 var headerHtml = '<tr><th colspan="' + totalCols + '" style="font-size:16px; font-weight:bold; text-align:center;">ಕರ್ನಾಟಕ ಸರ್ಕಾರ</th></tr>' +
@@ -1093,7 +1088,7 @@
                     '<tr><th colspan="' + totalCols + '" style="font-size:13px; font-weight:bold; text-align:center;">FLN ಸಾಧಿಸದ ಮಕ್ಕಳಲ್ಲಿ ಪ್ರಾವೀಣ್ಯತೆ ಸಾಧಿಸಬೇಕಾದ ಕಲಿಕಾ ಫಲಗಳ ಹಂತವಾರು ಮೌಲ್ಯಾಂಕನ ನಮೂನೆ - 2026-27</th></tr>' +
                     '<tr><th colspan="' + totalCols + '" style="font-size:12px; font-weight:bold; text-align:center;">Class 4th To 10 : ' + (sub === 'english' ? 'Second Language - English' : sub) + '        Month: ' + (masterData.month || '') + '</th></tr>' +
                     '<tr><th colspan="' + totalCols + '" style="font-size:12px; font-weight:bold; text-align:center;">ನಮೂನೆ-1 (Baseline Stage - ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome-1)</th></tr>' +
-                    '<tr><td colspan="' + totalCols + '" style="font-weight:bold;">School Name: ' + (masterData.school || '') + '    Teacher Name: ' + (masterData.teacher || '') + '    Cluster: ' + (masterData.cluster || '') + '    Taluka: ' + (masterData.taluk || '') + '    Class: ' + c + 'th Class</td></tr>' +
+                    '<tr><td colspan="' + totalCols + '" style="font-weight:bold; text-align:left;">School Name: ' + (masterData.school || '') + '    Teacher Name: ' + (masterData.teacher || '') + '    Cluster: ' + (masterData.cluster || '') + '    Taluka: ' + (masterData.taluk || '') + '    Class: ' + c + 'th Class</td></tr>' +
                     '<tr><td colspan="' + totalCols + '">&nbsp;</td></tr>';
 
                 var origTable = document.getElementById('mainTable');
@@ -1121,24 +1116,14 @@
                 }
 
                 var signHtml = '<tr><td colspan="' + totalCols + '">&nbsp;</td></tr>' +
-                    '<tr><td colspan="4" style="font-weight:bold;">ದಿನಾಂಕ: ' + (masterData.date || '') + '</td>' +
-                    '<td colspan="7" style="font-weight:bold;">ಶಿಕ್ಷಕರ ಸಹಿ: ........................</td>' +
-                    '<td colspan="7" style="font-weight:bold;">ಪರಿಶೀಲಕರ ಸಹಿ: ........................</td>' +
-                    '<td colspan="' + (totalCols - 18) + '" style="font-weight:bold;">ಶಾಲಾ ಮುಖ್ಯಸ್ಥರು: ........................</td></tr>';
+                    '<tr><td colspan="4" style="font-weight:bold; text-align:left;">ದಿನಾಂಕ: ' + (masterData.date || '') + '</td>' +
+                    '<td colspan="7" style="font-weight:bold; text-align:center;">ಶಿಕ್ಷಕರ ಸಹಿ: ........................</td>' +
+                    '<td colspan="7" style="font-weight:bold; text-align:center;">ಪರಿಶೀಲಕರ ಸಹಿ: ........................</td>' +
+                    '<td colspan="' + (totalCols - 18) + '" style="font-weight:bold; text-align:right;">ಶಾಲಾ ಮುಖ್ಯಸ್ಥರು: ........................</td></tr>';
 
                 expTable.innerHTML = headerHtml + clone.innerHTML + signHtml;
 
-                colWidths = [
-                    { wch: 6 },  // SL No
-                    { wch: 32 }  // Student Name
-                ];
-                for (var i = 2; i < totalCols; i++) {
-                    colWidths.push({ wch: 6 });
-                }
-
             } else {
-                // Consolidated Export Matching Image Exactly
-                var totalCols = (sub === 'kannada') ? 23 : 26;
                 fileName = "ಶಾಲಾ_ಕ್ರೋಢೀಕೃತ_ನಮೂನೆ_1_" + sub.toUpperCase() + ".xlsx";
 
                 var headerHtml = '<tr><th colspan="' + totalCols + '" style="font-size:16px; font-weight:bold; text-align:center;">ಕರ್ನಾಟಕ ಸರ್ಕಾರ</th></tr>' +
@@ -1146,32 +1131,79 @@
                     '<tr><th colspan="' + totalCols + '" style="font-size:13px; font-weight:bold; text-align:center;">FLN ಸಾಧಿಸದ ಮಕ್ಕಳಲ್ಲಿ ಪ್ರಾವೀಣ್ಯತೆ ಸಾಧಿಸಬೇಕಾದ ಕಲಿಕಾ ಫಲಗಳ ಹಂತವಾರು ಮೌಲ್ಯಾಂಕನ ನಮೂನೆ - 2026-27</th></tr>' +
                     '<tr><th colspan="' + totalCols + '" style="font-size:12px; font-weight:bold; text-align:center;">Class 4th To 10 : ' + (sub === 'english' ? 'Second Language - English' : sub) + '        Month: ' + (masterData.month || '') + '</th></tr>' +
                     '<tr><th colspan="' + totalCols + '" style="font-size:13px; font-weight:bold; text-align:center;">ಶಾಲಾ ಹಂತದ ಕ್ರೋಢೀಕೃತ ನಮೂನೆ-1 (Baseline Stage - ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome-1)</th></tr>' +
-                    '<tr><td colspan="' + totalCols + '" style="font-weight:bold;">School Name: ' + (masterData.school || '') + '        Cluster: ' + (masterData.cluster || '') + '        Taluka: ' + (masterData.taluk || '') + '        Govt/Aided/Unaided: ' + (masterData.schoolType || '') + '</td></tr>' +
+                    '<tr><td colspan="' + totalCols + '" style="font-weight:bold; text-align:left;">School Name: ' + (masterData.school || '') + '        Cluster: ' + (masterData.cluster || '') + '        Taluka: ' + (masterData.taluk || '') + '        Govt/Aided/Unaided: ' + (masterData.schoolType || '') + '</td></tr>' +
                     '<tr><td colspan="' + totalCols + '">&nbsp;</td></tr>';
 
                 var origTable = document.getElementById('consolidatedTable');
                 var clone = origTable.cloneNode(true);
 
                 var signHtml = '<tr><td colspan="' + totalCols + '">&nbsp;</td></tr>' +
-                    '<tr><td colspan="4" style="font-weight:bold;">ದಿನಾಂಕ: ' + (masterData.date || '') + '</td>' +
-                    '<td colspan="7" style="font-weight:bold;">ಶಿಕ್ಷಕರ ಸಹಿ: ........................</td>' +
-                    '<td colspan="7" style="font-weight:bold;">ಪರಿಶೀಲಕರ ಸಹಿ: ........................</td>' +
-                    '<td colspan="' + (totalCols - 18) + '" style="font-weight:bold;">ಶಾಲಾ ಮುಖ್ಯಸ್ಥರು: ........................</td></tr>';
+                    '<tr><td colspan="4" style="font-weight:bold; text-align:left;">ದಿನಾಂಕ: ' + (masterData.date || '') + '</td>' +
+                    '<td colspan="7" style="font-weight:bold; text-align:center;">ಶಿಕ್ಷಕರ ಸಹಿ: ........................</td>' +
+                    '<td colspan="7" style="font-weight:bold; text-align:center;">ಪರಿಶೀಲಕರ ಸಹಿ: ........................</td>' +
+                    '<td colspan="' + (totalCols - 18) + '" style="font-weight:bold; text-align:right;">ಶಾಲಾ ಮುಖ್ಯಸ್ಥರು: ........................</td></tr>';
 
                 expTable.innerHTML = headerHtml + clone.innerHTML + signHtml;
+            }
 
-                colWidths = [
-                    { wch: 6 },  // SL No
-                    { wch: 12 }, // Class
-                    { wch: 10 }, // Enrollment
-                    { wch: 6 }   // CLASS (A/B)
-                ];
-                for (var i = 4; i < totalCols; i++) {
-                    colWidths.push({ wch: 6 });
+            // Convert to sheet
+            var ws = XLSX.utils.table_to_sheet(expTable, { raw: true });
+
+            // Apply 100% Guaranteed Centering and Borders to ALL Cells in Excel
+            var thinBorder = {
+                top: { style: "thin", color: { rgb: "000000" } },
+                bottom: { style: "thin", color: { rgb: "000000" } },
+                left: { style: "thin", color: { rgb: "000000" } },
+                right: { style: "thin", color: { rgb: "000000" } }
+            };
+
+            for (var cellRef in ws) {
+                if (cellRef[0] === '!') continue;
+                var cell = ws[cellRef];
+                var rowNum = parseInt(cellRef.replace(/[^0-9]/g, ''), 10);
+                var colLetter = cellRef.replace(/[0-9]/g, '');
+
+                if (!cell.s) cell.s = {};
+
+                // Default: Perfect center alignment for numbers and table cells
+                cell.s.alignment = { horizontal: "center", vertical: "center", wrapText: true };
+                cell.s.font = { name: "Anek Kannada", sz: 10 };
+                cell.s.border = thinBorder;
+
+                // Title Rows (Rows 1 to 5): Big bold, centered, NO border
+                if (rowNum >= 1 && rowNum <= 5) {
+                    cell.s.font = { name: "Anek Kannada", sz: (rowNum === 1 ? 15 : 12), bold: true };
+                    cell.s.alignment = { horizontal: "center", vertical: "center" };
+                    delete cell.s.border;
+                }
+                // Meta info line (Row 6) & Blank space (Row 7): Left aligned, NO border
+                else if (rowNum === 6 || rowNum === 7) {
+                    cell.s.alignment = { horizontal: "left", vertical: "center" };
+                    cell.s.font = { name: "Anek Kannada", sz: 10.5, bold: true };
+                    delete cell.s.border;
+                }
+                // Table Headers (Rows 8 to 12): Gray background, bold, centered
+                else if (rowNum >= 8 && rowNum <= 12) {
+                    cell.s.fill = { fgColor: { rgb: "F2F2F2" } };
+                    cell.s.font = { name: "Anek Kannada", sz: 9.5, bold: true };
+                    cell.s.alignment = { horizontal: "center", vertical: "center", wrapText: true };
+                }
+                // Student Name / Class column (Column B): Left aligned so names are natural
+                else if (colLetter === 'B' && rowNum > 12) {
+                    cell.s.alignment = { horizontal: "left", vertical: "center" };
+                    cell.s.font = { name: "Anek Kannada", sz: 10.5, bold: true };
                 }
             }
 
-            var ws = XLSX.utils.table_to_sheet(expTable, { raw: true });
+            // Set Column Widths
+            var colWidths = [];
+            if (currentView === 'student') {
+                colWidths = [{ wch: 6 }, { wch: 32 }]; // SL No: 6, Student Name: 32
+                for (var i = 2; i < totalCols; i++) colWidths.push({ wch: 6 });
+            } else {
+                colWidths = [{ wch: 6 }, { wch: 14 }, { wch: 10 }, { wch: 6 }]; // SL, Class, Enrollment, Grade
+                for (var i = 4; i < totalCols; i++) colWidths.push({ wch: 6 });
+            }
             ws['!cols'] = colWidths;
 
             var wb = XLSX.utils.book_new();
