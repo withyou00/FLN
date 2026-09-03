@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FLN Assessment & Consolidated Form (Kannada, English, Maths)</title>
     
+    <!-- Google Fonts: Anek Kannada (ಯಾವುದೇ ಸಾಧನದಲ್ಲೂ Anek Kannada ಕಾಣಲು) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anek+Kannada:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <!-- SheetJS for Excel Import & Export -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     
@@ -15,14 +20,18 @@
         }
         * {
             box-sizing: border-box;
-            font-family: 'Segoe UI', 'Tunga', 'Nudi', Arial, sans-serif;
+            font-family: 'Anek Kannada', sans-serif;
         }
         body {
             margin: 0;
             padding: 5px;
-            font-size: 10px;
+            font-size: 10.5px;
             color: #000;
             background: #fff;
+            font-family: 'Anek Kannada', sans-serif;
+        }
+        input, select, button {
+            font-family: 'Anek Kannada', sans-serif;
         }
         .no-print {
             margin-bottom: 8px;
@@ -37,7 +46,7 @@
         }
         .tab-btn {
             font-size: 12px;
-            font-weight: bold;
+            font-weight: 700;
             padding: 5px 12px;
             border-radius: 4px;
             cursor: pointer;
@@ -51,7 +60,7 @@
         }
         .select-control {
             font-size: 12px;
-            font-weight: bold;
+            font-weight: 700;
             padding: 4px 8px;
             border-radius: 4px;
             border: 1px solid #777;
@@ -66,7 +75,7 @@
             font-size: 11.5px;
             cursor: pointer;
             border-radius: 4px;
-            font-weight: bold;
+            font-weight: 700;
             display: inline-flex;
             align-items: center;
             gap: 3px;
@@ -80,11 +89,11 @@
 
         .header-title {
             text-align: center;
-            line-height: 1.2;
+            line-height: 1.25;
         }
-        .header-title h3 { margin: 1px 0; font-size: 12px; }
-        .header-title h2 { margin: 2px 0; font-size: 13.5px; font-weight: bold; }
-        .header-title h4 { margin: 1px 0; font-size: 11.5px; }
+        .header-title h3 { margin: 1px 0; font-size: 12.5px; font-weight: 600; }
+        .header-title h2 { margin: 2px 0; font-size: 14.5px; font-weight: 800; }
+        .header-title h4 { margin: 1px 0; font-size: 12px; font-weight: 600; }
 
         .meta-table {
             width: 100%;
@@ -92,15 +101,15 @@
             border-collapse: collapse;
         }
         .meta-table td {
-            font-size: 10.5px;
-            font-weight: bold;
+            font-size: 11px;
+            font-weight: 700;
             padding: 2px 3px;
         }
         .input-line {
             border: none;
             border-bottom: 1px dotted #000;
             outline: none;
-            font-size: 10.5px;
+            font-size: 11px;
             padding: 1px 3px;
         }
 
@@ -109,7 +118,7 @@
             width: 100%;
             border-collapse: collapse;
             text-align: center;
-            font-size: 8.5px;
+            font-size: 9px;
         }
         table.fln-table th, table.fln-table td {
             border: 1px solid #000;
@@ -118,11 +127,11 @@
         }
         table.fln-table th {
             background-color: #ffffff;
-            font-weight: bold;
+            font-weight: 700;
         }
         .col-num {
-            font-size: 8px;
-            font-weight: bold;
+            font-size: 8.5px;
+            font-weight: 700;
             background-color: #f2f2f2;
         }
         .col-btn {
@@ -130,6 +139,7 @@
             color: #0d6efd;
             text-decoration: underline;
             padding: 1px 2px;
+            font-weight: 700;
         }
         .col-btn:hover {
             background-color: #e2e6ea;
@@ -137,7 +147,7 @@
         select.grade-select {
             width: 90%;
             font-size: 9.5px;
-            font-weight: bold;
+            font-weight: 700;
             text-align: center;
             border: 1px solid #aaa;
             border-radius: 2px;
@@ -146,20 +156,20 @@
             cursor: pointer;
         }
         .auto-cell {
-            font-weight: bold;
-            font-size: 9.5px;
+            font-weight: 700;
+            font-size: 10px;
             background-color: #fafafa;
         }
         .total-row td {
-            font-weight: bold;
-            font-size: 9.5px;
+            font-weight: 700;
+            font-size: 10px;
         }
         .student-name {
             width: 96%;
             border: none;
             outline: none;
             font-size: 11px;
-            font-weight: 500;
+            font-weight: 600;
             background: transparent;
             padding: 2px 4px;
             text-align: left;
@@ -178,7 +188,7 @@
             background: #fff;
             border-radius: 2px;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 700;
             line-height: 10px;
         }
         .mini-btn:hover { background: #e9ecef; }
@@ -204,8 +214,8 @@
             margin-top: 25px;
             display: flex;
             justify-content: space-between;
-            font-size: 11px;
-            font-weight: bold;
+            font-size: 11.5px;
+            font-weight: 700;
             padding: 0 35px;
         }
 
@@ -283,7 +293,7 @@
                 <td style="width: 25%;">ಶಿಕ್ಷಕರ ಹೆಸರು: <input type="text" id="teacherNameInput" class="input-line" style="width: 65%;" oninput="saveAppData()"></td>
                 <td style="width: 18%;">ಕ್ಲಸ್ಟರ್: <input type="text" id="clusterInput" class="input-line" style="width: 60%;" oninput="saveAppData()"></td>
                 <td style="width: 15%;">ತಾಲೂಕು: <input type="text" id="talukInput" class="input-line" style="width: 55%;" oninput="saveAppData()"></td>
-                <td style="width: 10%;">ತರಗತಿ: <span id="displayClass" style="font-weight:bold; color:blue;">4 ನೆಯ ತರಗತಿ</span></td>
+                <td style="width: 10%;">ತರಗತಿ: <span id="displayClass" style="font-weight:700; color:blue;">4 ನೆಯ ತರಗತಿ</span></td>
             </tr>
         </table>
 
@@ -592,7 +602,7 @@
                     }
                 }
 
-                localStorage.setItem('FLN_MASTER_CONSOLIDATED_V4', JSON.stringify(masterData));
+                localStorage.setItem('FLN_MASTER_CONSOLIDATED_V5', JSON.stringify(masterData));
             } catch(e) {
                 console.log("Save error", e);
             }
@@ -600,7 +610,7 @@
 
         function loadAppData() {
             try {
-                var saved = localStorage.getItem('FLN_MASTER_CONSOLIDATED_V4');
+                var saved = localStorage.getItem('FLN_MASTER_CONSOLIDATED_V5');
                 if (saved) {
                     var parsed = JSON.parse(saved);
                     if (parsed && typeof parsed === 'object') {
@@ -734,7 +744,6 @@
             tbody.appendChild(tr);
         }
 
-        // --- QUICK FILL SHORTCUTS ---
         // 1. Bulk Fill entire class with A or B
         function bulkFillAll(grade) {
             if (confirm("ಈ ತರಗತಿಯ ಎಲ್ಲಾ ವಿದ್ಯಾರ್ಥಿಗಳ ಎಲ್ಲಾ ಕಾಲಂಗಳಿಗೂ '" + grade + "' ತುಂಬಬೇಕೆ?")) {
@@ -883,7 +892,7 @@
             }
         }
 
-        // --- CONSOLIDATED REPORT (PERFECTLY ALIGNED) ---
+        // --- CONSOLIDATED REPORT ---
         function generateConsolidatedReport() {
             var subKey = masterData.currentSubject || "english";
             var cfg = SUBJECT_CONFIGS[subKey] || SUBJECT_CONFIGS.english;
@@ -971,15 +980,15 @@
 
                 rowsHtml += '<tr>' +
                                 '<td rowspan="2">' + (i + 1) + '</td>' +
-                                '<td rowspan="2" style="font-weight:bold;">' + c + ' ನೆಯ ತರಗತಿ</td>' +
-                                '<td rowspan="2" style="font-weight:bold; color:blue;">' + validCount + '</td>' +
-                                '<td style="font-weight:bold;">A</td>';
+                                '<td rowspan="2" style="font-weight:700;">' + c + ' ನೆಯ ತರಗತಿ</td>' +
+                                '<td rowspan="2" style="font-weight:700; color:blue;">' + validCount + '</td>' +
+                                '<td style="font-weight:700;">A</td>';
                 for (var col = cfg.startCol; col <= cfg.totalCols; col++) {
                     rowsHtml += '<td>' + classA[col] + '</td>';
                 }
-                rowsHtml += '<td rowspan="2" style="font-weight:bold;">' + percentB + '</td>' +
+                rowsHtml += '<td rowspan="2" style="font-weight:700;">' + percentB + '</td>' +
                             '</tr>' +
-                            '<tr><td style="font-weight:bold;">B</td>';
+                            '<tr><td style="font-weight:700;">B</td>';
                 for (var col = cfg.startCol; col <= cfg.totalCols; col++) {
                     rowsHtml += '<td>' + classB[col] + '</td>';
                 }
@@ -989,19 +998,19 @@
             var grandPercentB = grandTotalEnrollment > 0 ? Math.round((grandB[cfg.totalCols] / grandTotalEnrollment) * 100) + "%" : "0%";
 
             var footHtml = '<tr class="total-row" style="background:#f9f9f9;">' +
-                                '<td rowspan="2" colspan="2" style="font-weight:bold;">ಅಂತಿಮ ಶಾಲಾ ಒಟ್ಟು</td>' +
-                                '<td rowspan="2" style="font-weight:bold; font-size:11px;">' + grandTotalEnrollment + '</td>' +
-                                '<td style="font-weight:bold;">ಒಟ್ಟು A</td>';
+                                '<td rowspan="2" colspan="2" style="font-weight:700;">ಅಂತಿಮ ಶಾಲಾ ಒಟ್ಟು</td>' +
+                                '<td rowspan="2" style="font-weight:700; font-size:11px;">' + grandTotalEnrollment + '</td>' +
+                                '<td style="font-weight:700;">ಒಟ್ಟು A</td>';
             for (var col = cfg.startCol; col <= cfg.totalCols; col++) {
                 footHtml += '<td>' + grandA[col] + '</td>';
             }
             footHtml += '<td>0%</td></tr>' +
                         '<tr class="total-row" style="background:#f9f9f9;">' +
-                            '<td style="font-weight:bold;">ಒಟ್ಟು B</td>';
+                            '<td style="font-weight:700;">ಒಟ್ಟು B</td>';
             for (var col = cfg.startCol; col <= cfg.totalCols; col++) {
                 footHtml += '<td>' + grandB[col] + '</td>';
             }
-            footHtml += '<td style="font-weight:bold; color:red;">' + grandPercentB + '</td></tr>';
+            footHtml += '<td style="font-weight:700; color:red;">' + grandPercentB + '</td></tr>';
 
             var finalTableHtml = '<table class="fln-table" id="consolidatedTable">' +
                                     '<thead>' + cfg.conThead + '</thead>' +
