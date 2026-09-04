@@ -80,12 +80,24 @@
             align-items: center;
             gap: 3px;
         }
-        .btn-excel { background-color: #198754; }
+        .btn-save-manual { background-color: #198754; box-shadow: 0 2px 4px rgba(25, 135, 84, 0.4); }
+        .btn-excel { background-color: #0d6efd; }
         .btn-export-excel { background-color: #0f5132; }
         .btn-pdf { background-color: #dc3545; }
         .btn-clear { background-color: #6c757d; }
         .btn-fill-b { background-color: #6f42c1; }
         .btn-fill-a { background-color: #0dcaf0; color: #000; }
+
+        .save-badge {
+            font-size: 11px;
+            color: #198754;
+            font-weight: 700;
+            margin-left: auto;
+            background: #e8f5e9;
+            padding: 3px 8px;
+            border-radius: 4px;
+            border: 1px solid #c8e6c9;
+        }
 
         .header-title {
             text-align: center;
@@ -271,8 +283,13 @@
             <button class="btn btn-clear" onclick="clearCurrentClass()">🗑️ Clear</button>
         </span>
 
+        <!-- Manual Save Button -->
+        <button class="btn btn-save-manual" onclick="manualSave()">💾 ಸೇವ್ ಮಾಡಿ (Save)</button>
+
         <button class="btn btn-export-excel" onclick="exportToExcel()">📊 Export Excel</button>
         <button class="btn btn-pdf" onclick="exportToPDF()">📄 Export PDF / Print</button>
+
+        <span class="save-badge" id="saveStatusBadge">✅ ಡೇಟಾ ಸುರಕ್ಷಿತವಾಗಿದೆ</span>
     </div>
 
     <!-- VIEW 1: STUDENT LEVEL FORM -->
@@ -337,6 +354,7 @@
     <!-- SCRIPT SECTION -->
     <script>
         var currentView = 'student';
+        var STORAGE_KEY = 'FLN_PERMANENT_APP_DATA'; // Permanent Fixed Storage Key
 
         var masterData = {
             school: "", teacher: "", cluster: "", taluk: "", schoolType: "", month: "", date: "",
@@ -355,6 +373,7 @@
 
         var SUBJECT_CONFIGS = {
             english: {
+                subjectNameKn: "English",
                 studentTitle: 'Class 4th To 10 : Second Language - English &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Month: <input type="text" id="monthInput" class="input-line" style="width: 110px;" oninput="saveCurrentHeaderData()">',
                 studentOutcome: 'ನಮೂನೆ-1 (Baseline Stage - ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome-1)',
                 conTitle: 'Class 4th To 10 : Second Language - English &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Month: <span id="conMonthDisplay"></span>',
@@ -409,7 +428,7 @@
                     '<tr><th colspan="18">FLN LO-1. Reads simple sentences and a short paragraph with understanding.</th></tr>' +
                     '<tr>' +
                         '<th colspan="4">Letter Stage (Alphabet/Vowels/consonants)</th><th colspan="5">Word Stage (2/3/4/5 Letters Words)</th><th colspan="5">Sentence Stage (3 to 5 Sentences)</th><th colspan="4">Short Paragraph Stage (3 to 5 Sentences)</th>' +
-                        '<th rowspan="2">Letter<br>Stage<br>(3-6)</th><th rowspan="2">Word<br>Stage<br>(7-11)</th><th rowspan="2">Sentence<br>Stage<br>(12-16)</th><th rowspan="2">Short<br>Paragraph<br>(17-20)</th>' +
+                        '<th rowspan="2">Letter<br>Stage<br>(3-6)</th><th rowspan="2">Word<br>Stage<br>(7-11)</th><th rowspan="2" style="font-size:6.5px;">Sentence<br>Stage<br>(12-16)</th><th rowspan="2" style="font-size:6.5px;">Short<br>Paragraph<br>(17-20)</th>' +
                         '<th colspan="2">To the column 21 to 24</th>' +
                     '</tr>' +
                     '<tr style="font-size:7px;">' +
@@ -419,6 +438,7 @@
                     '<tr class="col-num"><td>1</td><td>2</td><td></td><td></td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td></tr>'
             },
             kannada: {
+                subjectNameKn: "ಕನ್ನಡ",
                 studentTitle: '4 ರಿಂದ 10 ನೇ ತರಗತಿ : ಪ್ರಥಮ ಭಾಷೆ - ಕನ್ನಡ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ತಿಂಗಳು: <input type="text" id="monthInput" class="input-line" style="width: 110px;" oninput="saveCurrentHeaderData()">',
                 studentOutcome: 'ನಮೂನೆ-1 (ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome - 1)',
                 conTitle: '4 ರಿಂದ 10 ನೇ ತರಗತಿ : ಪ್ರಥಮ ಭಾಷೆ - ಕನ್ನಡ (ಉರ್ದು/ಇಂಗ್ಲಿಷ/ಹಿಂದಿ/ಸಂಸ್ಕೃತ/ಮರಾಠಿ/ತೆಲುಗು/ಇತರ) &nbsp;&nbsp;&nbsp;&nbsp; ತಿಂಗಳು: <span id="conMonthDisplay"></span>',
@@ -483,6 +503,7 @@
                     '<tr class="col-num"><td>1</td><td>2</td><td></td><td></td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td></tr>'
             },
             maths: {
+                subjectNameKn: "ಗಣಿತ",
                 studentTitle: '4 ರಿಂದ 5 ಮತ್ತು 6 ರಿಂದ 10 ನೇ ತರಗತಿ : ಗಣಿತ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ತಿಂಗಳು: <input type="text" id="monthInput" class="input-line" style="width: 110px;" oninput="saveCurrentHeaderData()">',
                 studentOutcome: 'ನಮೂನೆ - 1 (ಆರಂಭಿಕ ಹಂತ) (FLN-Learning Outcome-1 and 2*)',
                 conTitle: '4 ರಿಂದ 5 ಮತ್ತು 6 ರಿಂದ 10 ನೇ ತರಗತಿ : ಗಣಿತ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ತಿಂಗಳು: <span id="conMonthDisplay"></span>',
@@ -585,6 +606,7 @@
             persistMasterData();
         }
 
+        // Saves active class data into memory
         function saveCurrentClassData(classId) {
             if (!classId) classId = masterData.currentClass;
             var sub = masterData.currentSubject;
@@ -619,17 +641,42 @@
             }
         }
 
+        // Writes to permanent browser memory
         function persistMasterData() {
             try {
-                localStorage.setItem('FLN_MASTER_CONSOLIDATED_V11', JSON.stringify(masterData));
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(masterData));
+                var badge = document.getElementById('saveStatusBadge');
+                if (badge) {
+                    badge.innerText = "💾 ಆಟೋ ಸೇವ್ ಆಗಿದೆ";
+                    badge.style.opacity = "1";
+                    setTimeout(function() { badge.style.opacity = "0.7"; }, 2000);
+                }
             } catch(e) {
                 console.log("Storage error", e);
             }
         }
 
+        // Manual Save Button
+        function manualSave() {
+            saveCurrentClassData(masterData.currentClass);
+            saveCurrentHeaderData();
+            persistMasterData();
+            var count = 0;
+            if (masterData.classes[masterData.currentClass] && masterData.classes[masterData.currentClass].students) {
+                count = masterData.classes[masterData.currentClass].students.length;
+            }
+            alert("✅ " + masterData.currentClass + " ನೆಯ ತರಗತಿಯ ಎಲ್ಲಾ " + count + " ಮಕ್ಕಳ ಡೇಟಾ ಯಶಸ್ವಿಯಾಗಿ ಸೇವ್ ಆಗಿದೆ!");
+        }
+
+        // Restores data even if user clicked back or closed browser
         function loadAppData() {
             try {
-                var saved = localStorage.getItem('FLN_MASTER_CONSOLIDATED_V11');
+                var saved = localStorage.getItem(STORAGE_KEY);
+                // Backward-compatible search if permanent key is new
+                if (!saved) saved = localStorage.getItem('FLN_MASTER_CONSOLIDATED_V11');
+                if (!saved) saved = localStorage.getItem('FLN_MASTER_CONSOLIDATED_V10');
+                if (!saved) saved = localStorage.getItem('FLN_MASTER_CONSOLIDATED_V9');
+
                 if (saved) {
                     var parsed = JSON.parse(saved);
                     if (parsed && typeof parsed === 'object') {
@@ -1066,7 +1113,7 @@
             return "A";
         }
 
-        // --- 100% PERFECT CENTER-ALIGNED EXCEL EXPORT ---
+        // --- EXPORT TO EXCEL ---
         function exportToExcel() {
             saveCurrentClassData(masterData.currentClass);
             saveCurrentHeaderData();
@@ -1146,10 +1193,8 @@
                 expTable.innerHTML = headerHtml + clone.innerHTML + signHtml;
             }
 
-            // Convert to sheet
             var ws = XLSX.utils.table_to_sheet(expTable, { raw: true });
 
-            // Apply 100% Guaranteed Centering and Borders to ALL Cells in Excel
             var thinBorder = {
                 top: { style: "thin", color: { rgb: "000000" } },
                 bottom: { style: "thin", color: { rgb: "000000" } },
@@ -1165,53 +1210,43 @@
 
                 if (!cell.s) cell.s = {};
 
-                // Default: Perfect center alignment for numbers and table cells
                 cell.s.alignment = { horizontal: "center", vertical: "center", wrapText: true };
                 cell.s.font = { name: "Anek Kannada", sz: 10 };
                 cell.s.border = thinBorder;
 
-                // Title Rows (Rows 1 to 5): Big bold, centered, NO border
                 if (rowNum >= 1 && rowNum <= 5) {
                     cell.s.font = { name: "Anek Kannada", sz: (rowNum === 1 ? 15 : 12), bold: true };
                     cell.s.alignment = { horizontal: "center", vertical: "center" };
                     delete cell.s.border;
-                }
-                // Meta info line (Row 6) & Blank space (Row 7): Left aligned, NO border
-                else if (rowNum === 6 || rowNum === 7) {
+                } else if (rowNum === 6 || rowNum === 7) {
                     cell.s.alignment = { horizontal: "left", vertical: "center" };
                     cell.s.font = { name: "Anek Kannada", sz: 10.5, bold: true };
                     delete cell.s.border;
-                }
-                // Table Headers (Rows 8 to 12): Gray background, bold, centered
-                else if (rowNum >= 8 && rowNum <= 12) {
+                } else if (rowNum >= 8 && rowNum <= 12) {
                     cell.s.fill = { fgColor: { rgb: "F2F2F2" } };
                     cell.s.font = { name: "Anek Kannada", sz: 9.5, bold: true };
                     cell.s.alignment = { horizontal: "center", vertical: "center", wrapText: true };
-                }
-                // Student Name / Class column (Column B): Left aligned so names are natural
-                else if (colLetter === 'B' && rowNum > 12) {
+                } else if (colLetter === 'B' && rowNum > 12) {
                     cell.s.alignment = { horizontal: "left", vertical: "center" };
                     cell.s.font = { name: "Anek Kannada", sz: 10.5, bold: true };
                 }
             }
 
-            // Set Column Widths
             var colWidths = [];
             if (currentView === 'student') {
-                colWidths = [{ wch: 6 }, { wch: 32 }]; // SL No: 6, Student Name: 32
+                colWidths = [{ wch: 6 }, { wch: 32 }];
                 for (var i = 2; i < totalCols; i++) colWidths.push({ wch: 6 });
             } else {
-                colWidths = [{ wch: 6 }, { wch: 14 }, { wch: 10 }, { wch: 6 }]; // SL, Class, Enrollment, Grade
+                colWidths = [{ wch: 6 }, { wch: 14 }, { wch: 10 }, { wch: 6 }];
                 for (var i = 4; i < totalCols; i++) colWidths.push({ wch: 6 });
             }
             ws['!cols'] = colWidths;
 
             var wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "FLN_Consolidated");
+            XLSX.utils.book_append_sheet(wb, ws, "FLN_Data");
             XLSX.writeFile(wb, fileName);
         }
 
-        // --- EXPORT TO PDF / PRINT ---
         function exportToPDF() {
             saveCurrentClassData(masterData.currentClass);
             saveCurrentHeaderData();
@@ -1279,9 +1314,29 @@
             reader.readAsArrayBuffer(file);
         }
 
+        // Auto Save on Page Hide / App Switch / Back Button Click
+        window.addEventListener('beforeunload', function() {
+            saveCurrentClassData(masterData.currentClass);
+            saveCurrentHeaderData();
+            persistMasterData();
+        });
+
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'hidden') {
+                saveCurrentClassData(masterData.currentClass);
+                saveCurrentHeaderData();
+                persistMasterData();
+            }
+        });
+
+        // Restore State on Load and on Back/Forward Navigation
         window.onload = function() {
             loadAppData();
         };
+
+        window.addEventListener('pageshow', function(event) {
+            loadAppData();
+        });
     </script>
 </body>
 </html>
